@@ -4,3 +4,6 @@ include/*
 src/parser.c
 src/scanner.c
 tinycc
+
+!bin
+!include
