@@ -41,7 +41,7 @@ return                                      { printf("Token: RETURN, lexeme: %s,
 {digit}*                                    { printf("Token: INTEGER_LITERAL, lexeme: %s, line_no: %d\n", yytext, line_no); return INTEGER_LITERAL; }
 {letter}({letter}|{digit})*                 { printf("Token: IDENTIFIER, lexeme: %s, line_no: %d\n", yytext, line_no); return IDENTIFIER; }
 
-.                                           { printf("Invalid Token: %s\t at line_no: %d", yytext, line_no); exit(-1); }
+.                                           { printf("Invalid Token: %s\t at line_no: %d\n", yytext, line_no); exit(-1); }
 
 
 %%

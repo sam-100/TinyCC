@@ -15,6 +15,6 @@ int yywrap(void) {
 
 int main(int argc, char **argv) {
     while(yylex());
-    printf("Program parsed successfully!\n");
+    printf("Program scanned successfully!\n");
     return 0;
 }
