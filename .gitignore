@@ -1,0 +1,6 @@
+
+bin/*
+include/*
+src/parser.c
+src/scanner.c
+tinycc
