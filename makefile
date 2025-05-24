@@ -1,17 +1,17 @@
 CC=gcc
-BIN= bin/scanner.o bin/main.o
-CFLAGS= -c -I include
+BIN= bin/scanner.o bin/main.o bin/parser.o
+CFLAGS= -I include
 # Target compiler rule
 tinycc: ${BIN}
 	$(CC) -o $@ ${BIN}
 
 # Object files in the bin directory
 bin/main.o: src/main.c
-	$(CC) -o $@ ${CFLAGS} src/main.c
+	$(CC) -c -o $@ ${CFLAGS} src/main.c
 bin/scanner.o: src/scanner.c include/parser.h
-	$(CC) -o $@ ${CFLAGS} src/scanner.c
+	$(CC) -c -o $@ ${CFLAGS} src/scanner.c
 bin/parser.o: src/parser.c
-	$(CC) -o $@ ${CFLAGS} src/parser.c
+	$(CC) -c -o $@ ${CFLAGS} src/parser.c
 	
 # Scanner and parser
 src/scanner.c: src/scanner.flex

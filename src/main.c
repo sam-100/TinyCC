@@ -3,18 +3,18 @@
 #include <stdlib.h>
 
 extern int yylex(void);
+extern int yyparse(void);
 
 int yywrap(void) {
     return 1;
 }
 
-// void yyerror(const char *msg) {
-//     fprintf(stderr, msg);
-//     exit(-1);
-// }
+void yyerror(const char *msg) {
+    fprintf(stderr, "%s\n", msg);
+    exit(-1);
+}
 
 int main(int argc, char **argv) {
-    while(yylex());
-    printf("Program scanned successfully!\n");
+    yyparse();
     return 0;
 }
