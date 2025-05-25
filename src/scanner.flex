@@ -20,6 +20,8 @@ true                                        { printf("Token: BOOLEAN_LITERAL, le
 false                                       { printf("Token: BOOLEAN_LITERAL, lexeme: \"%s\", line_no: %d\n", yytext, line_no); return BOOLEAN_LITERAL; }
 \'{letter}\'                                  { printf("Token: CHAR_LITERAL, lexeme: \"%s\", line_no: %d\n", yytext, line_no); return CHAR_LITERAL; }
 {digit}*                                    { printf("Token: INTEGER_LITERAL, lexeme: \"%s\", line_no: %d\n", yytext, line_no); return INTEGER_LITERAL; }
+print                                       { printf("Token: PRINT, lexeme: \"%s\", line_no: %d\n", yytext, line_no); return PRINT; }
+read                                       { printf("Token: READ, lexeme: \"%s\", line_no: %d\n", yytext, line_no); return READ; }
 
 
 integer                                     { printf("Token: INTEGER, lexeme: \"%s\", line_no: %d\n", yytext, line_no); return INTEGER; }
