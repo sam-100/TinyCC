@@ -6,6 +6,7 @@
 extern int yylex(void);
 extern int yyparse(void);
 
+
 int yywrap(void) {
     return 1;
 }
@@ -16,7 +17,6 @@ void yyerror(const char *msg) {
 }
 
 int main(int argc, char **argv) {
-
     process_arguments(argc, argv);
     yyparse();
     return 0;

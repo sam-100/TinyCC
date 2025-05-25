@@ -14,8 +14,9 @@ main: function void () {
 
     read a;
     read b;
-
-    sum: integer = 0;
+    a = 'x';
+    b = '9';
+    sum: integer = 012300;
     sum = add(a, b);
     print sum;
 }
