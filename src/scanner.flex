@@ -42,9 +42,13 @@ return                                      { fprintf(f_tokens, "Token: RETURN, 
 \-                                          { fprintf(f_tokens, "Token: MINUS, lexeme: \"%s\", line_no: %d\n", yytext, line_no); return MINUS; }
 \*                                          { fprintf(f_tokens, "Token: MULTIPLY, lexeme: \"%s\", line_no: %d\n", yytext, line_no); return MULTIPLY; }
 \/                                          { fprintf(f_tokens, "Token: DIVIDE, lexeme: \"%s\", line_no: %d\n", yytext, line_no); return DIVIDE; }
-\<                                          { fprintf(f_tokens, "Token: GREATER_THAN, lexeme: \"%s\", line_no: %d\n", yytext, line_no); return GREATER_THAN; }
-\>                                          { fprintf(f_tokens, "Token: LESS_THAN, lexeme: \"%s\", line_no: %d\n", yytext, line_no); return LESS_THAN; }
-\=                                          { fprintf(f_tokens, "Token: EQUALS, lexeme: \"%s\", line_no: %d\n", yytext, line_no); return EQUALS; }
+\=                                          { fprintf(f_tokens, "Token: ASSIGN, lexeme: \"%s\", line_no: %d\n", yytext, line_no); return ASSIGN; }
+\<                                          { fprintf(f_tokens, "Token: GT, lexeme: \"%s\", line_no: %d\n", yytext, line_no); return GT; }
+\<\=                                        { fprintf(f_tokens, "Token: LE, lexeme: \"%s\", line_no: %d\n", yytext, line_no); return LE; }
+\>                                          { fprintf(f_tokens, "Token: LT, lexeme: \"%s\", line_no: %d\n", yytext, line_no); return LT; }
+\>\=                                        { fprintf(f_tokens, "Token: GE, lexeme: \"%s\", line_no: %d\n", yytext, line_no); return GE; }
+\=\=                                        { fprintf(f_tokens, "Token: EQ, lexeme: \"%s\", line_no: %d\n", yytext, line_no); return EQ; }
+
 
 
 \(                                          { fprintf(f_tokens, "Token: OPEN_BRACKET, lexeme: \"%s\", line_no: %d\n", yytext, line_no); return OPEN_BRACKET; }

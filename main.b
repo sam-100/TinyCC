@@ -18,5 +18,6 @@ main: function void () {
     b = '9';
     sum: integer = 012300;
     sum = add(a, b);
+    printf(a, b);
     print sum;
 }

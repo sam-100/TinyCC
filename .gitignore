@@ -1,9 +1,8 @@
 
 bin/*
-include/*
+include/parser.h
 src/parser.c
 src/scanner.c
 tinycc
 
 !bin/.gitkeep
-!include/.gitkeep

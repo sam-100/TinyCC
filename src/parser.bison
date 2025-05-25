@@ -10,13 +10,17 @@ extern int yyerror(const char *msg);
 %token PRINT READ                          
 %token IDENTIFIER INTEGER_LITERAL BOOLEAN_LITERAL CHAR_LITERAL
 %token COLON SEMICOLON SINGLE_QUOTE DOUBLE_QUOTE COMMA DOT          
-%token PLUS MINUS MULTIPLY DIVIDE EQUALS GREATER_THAN LESS_THAN     // arithmetic operator
+%token PLUS MINUS MULTIPLY DIVIDE                                               // arithmetic operators
+%token LT GT EQ LE GE                                                           // comparison operators
+%token ASSIGN
 %token OPEN_BRACKET CLOSED_BRACKET 
 %token OPEN_SQUARE_BRACKET CLOSED_SQUARE_BRACKET
 %token OPEN_CURLY_BRACKET CLOSED_CURLY_BRACKET 
 
+%left LT LE EQ GT GE
 %left PLUS MINUS
 %left MULTIPLY DIVIDE
+%right UMINUS
 
 %%
 
@@ -34,7 +38,7 @@ declaration:
 
 var_declaration:
         IDENTIFIER COLON type SEMICOLON
-        | IDENTIFIER COLON type EQUALS exprn SEMICOLON
+        | IDENTIFIER COLON type ASSIGN exprn SEMICOLON
         ;
 func_declaration:
         IDENTIFIER COLON FUNCTION type OPEN_BRACKET param_list CLOSED_BRACKET func_body
@@ -56,14 +60,17 @@ func_body:
 
 stmt_list:
         stmt_list stmt_declaration
-        | stmt_declaration
+        | stmt_declaration 
         ;
+
+
 stmt_declaration:
         var_declaration
         | assign_stmt
         | return_stmt
         | print_stmt
         | read_stmt
+        | func_call_stmt
         ;
 
 print_stmt:
@@ -73,6 +80,10 @@ print_stmt:
 
 read_stmt:
         READ IDENTIFIER SEMICOLON
+        ;
+
+func_call_stmt: 
+        func_call SEMICOLON
         ;
 
 type:   INTEGER
@@ -87,7 +98,7 @@ literal: INTEGER_LITERAL
         ;
 
 assign_stmt:
-        IDENTIFIER EQUALS exprn SEMICOLON
+        IDENTIFIER ASSIGN exprn SEMICOLON
         ;
 
 return_stmt:
@@ -96,11 +107,12 @@ return_stmt:
 
 exprn:  
         OPEN_BRACKET exprn CLOSED_BRACKET
-        | exprn PLUS exprn 
+        | exprn PLUS exprn
         | exprn MINUS exprn 
         | exprn MULTIPLY exprn 
         | exprn DIVIDE exprn 
-        | IDENTIFIER
+        | MINUS exprn %prec UMINUS 
+        | IDENTIFIER 
         | literal
         | func_call
         ;
