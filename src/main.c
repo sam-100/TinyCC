@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <unistd.h>
 #include <stdlib.h>
+#include "arguments.h"
 
 extern int yylex(void);
 extern int yyparse(void);
@@ -15,6 +16,8 @@ void yyerror(const char *msg) {
 }
 
 int main(int argc, char **argv) {
+
+    process_arguments(argc, argv);
     yyparse();
     return 0;
 }

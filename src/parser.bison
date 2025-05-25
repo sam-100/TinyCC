@@ -6,20 +6,22 @@ extern int yyerror(const char *msg);
 %}
 
 
-%token INTEGER VOID FUNCTION RETURN                                 // keyword
-%token IDENTIFIER INTEGER_LITERAL                                   
+%token INTEGER CHARACTER BOOLEAN VOID FUNCTION RETURN                                 // keyword
+%token IDENTIFIER INTEGER_LITERAL BOOLEAN_LITERAL CHAR_LITERAL
 %token COLON SEMICOLON SINGLE_QUOTE DOUBLE_QUOTE COMMA DOT          // symbols
 %token OPEN_BRACKET CLOSED_BRACKET OPEN_SQUARE_BRACKET CLOSED_SQUARE_BRACKET OPEN_CURLY_BRACKET CLOSED_CURLY_BRACKET    // brackets
 %token PLUS MINUS MULTIPLY DIVIDE EQUALS GREATER_THAN LESS_THAN     // arithmetic operator
 
+%left PLUS MINUS
+%left MULTIPLY DIVIDE
+
 %%
 
-start:  decl_list               { printf("Program parsed successfully!"); }
+start:  decl_list               { printf("Program parsed successfully!\n"); }
     ;
 
 decl_list:  decl_list declaration
         |   declaration
-        |   
         ;
 
 declaration: 
@@ -28,20 +30,19 @@ declaration:
         ;
 
 var_declaration:
-        IDENTIFIER COLON INTEGER SEMICOLON
+        IDENTIFIER COLON type SEMICOLON
         ;
 func_declaration:
-        IDENTIFIER COLON FUNCTION INTEGER OPEN_BRACKET param_list CLOSED_BRACKET func_body
+        IDENTIFIER COLON FUNCTION type OPEN_BRACKET param_list CLOSED_BRACKET func_body
         ;
 
 param_list:     
         param_list COMMA param_declaration
         | param_declaration
-        | 
         ;
 
 param_declaration:
-        IDENTIFIER COLON INTEGER
+        IDENTIFIER COLON type
         ;
     
 func_body: 
@@ -51,12 +52,22 @@ func_body:
 stmt_list:
         stmt_list stmt_declaration
         | stmt_declaration
-        |
         ;
 stmt_declaration:
         var_declaration
         | assign_stmt
         | return_stmt
+        ;
+
+type:   INTEGER
+        | VOID
+        | BOOLEAN
+        | CHARACTER
+        ;
+
+literal: INTEGER_LITERAL
+        | BOOLEAN_LITERAL
+        | CHAR_LITERAL
         ;
 
 assign_stmt:
@@ -69,12 +80,12 @@ return_stmt:
 
 exprn:  
         OPEN_BRACKET exprn CLOSED_BRACKET
-        | exprn PLUS exprn
-        | exprn MINUS exprn
-        | exprn MULTIPLY exprn
-        | exprn DIVIDE exprn
+        | exprn PLUS exprn %prec PLUS
+        | exprn MINUS exprn %prec MINUS
+        | exprn MULTIPLY exprn %prec MULTIPLY
+        | exprn DIVIDE exprn %prec DIVIDE
         | IDENTIFIER
-        | INTEGER_LITERAL
+        | literal
         ;
 
 

@@ -15,9 +15,22 @@ letter  [a-zA-Z]
 [ \t]                                       ;
 \n                                          { line_no++; }
 
+
+true                                        { printf("Token: BOOLEAN_LITERAL, lexeme: \"%s\", line_no: %d\n", yytext, line_no); return BOOLEAN_LITERAL; }
+false                                       { printf("Token: BOOLEAN_LITERAL, lexeme: \"%s\", line_no: %d\n", yytext, line_no); return BOOLEAN_LITERAL; }
+\'{letter}\'                                  { printf("Token: CHAR_LITERAL, lexeme: \"%s\", line_no: %d\n", yytext, line_no); return CHAR_LITERAL; }
+{digit}*                                    { printf("Token: INTEGER_LITERAL, lexeme: \"%s\", line_no: %d\n", yytext, line_no); return INTEGER_LITERAL; }
+
+
 integer                                     { printf("Token: INTEGER, lexeme: \"%s\", line_no: %d\n", yytext, line_no); return INTEGER; }
+void                                     { printf("Token: VOID, lexeme: \"%s\", line_no: %d\n", yytext, line_no); return VOID; }
+boolean                                     { printf("Token: BOOLEAN, lexeme: \"%s\", line_no: %d\n", yytext, line_no); return BOOLEAN; }
+char                                     { printf("Token: CHARACTER, lexeme: \"%s\", line_no: %d\n", yytext, line_no); return CHARACTER; }
+
+
 function                                    { printf("Token: FUNCTION, lexeme: \"%s\", line_no: %d\n", yytext, line_no); return FUNCTION; }
 return                                      { printf("Token: RETURN, lexeme: \"%s\", line_no: %d\n", yytext, line_no); return RETURN; }
+
 
 \+                                          { printf("Token: PLUS, lexeme: \"%s\", line_no: %d\n", yytext, line_no); return PLUS; }
 \-                                          { printf("Token: MINUS, lexeme: \"%s\", line_no: %d\n", yytext, line_no); return MINUS; }
@@ -26,6 +39,7 @@ return                                      { printf("Token: RETURN, lexeme: \"%
 \<                                          { printf("Token: GREATER_THAN, lexeme: \"%s\", line_no: %d\n", yytext, line_no); return GREATER_THAN; }
 \>                                          { printf("Token: LESS_THAN, lexeme: \"%s\", line_no: %d\n", yytext, line_no); return LESS_THAN; }
 \=                                          { printf("Token: EQUALS, lexeme: \"%s\", line_no: %d\n", yytext, line_no); return EQUALS; }
+
 
 \(                                          { printf("Token: OPEN_BRACKET, lexeme: \"%s\", line_no: %d\n", yytext, line_no); return OPEN_BRACKET; }
 \)                                          { printf("Token: CLOSED_BRACKET, lexeme: \"%s\", line_no: %d\n", yytext, line_no); return CLOSED_BRACKET; }
@@ -40,7 +54,6 @@ return                                      { printf("Token: RETURN, lexeme: \"%
 \.                                          { printf("Token: DOT, lexeme: \"%s\", line_no: %d\n", yytext, line_no); return DOT; }
 \,                                          { printf("Token: COMMA, lexeme: \"%s\", line_no: %d\n", yytext, line_no); return COMMA; }
 
-{digit}*                                    { printf("Token: INTEGER_LITERAL, lexeme: \"%s\", line_no: %d\n", yytext, line_no); return INTEGER_LITERAL; }
 {letter}({letter}|{digit})*                 { printf("Token: IDENTIFIER, lexeme: \"%s\", line_no: %d\n", yytext, line_no); return IDENTIFIER; }
 
 .                                           { yyerror("Invalid Token!"); exit(1);}
