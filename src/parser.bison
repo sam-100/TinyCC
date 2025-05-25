@@ -80,10 +80,10 @@ return_stmt:
 
 exprn:  
         OPEN_BRACKET exprn CLOSED_BRACKET
-        | exprn PLUS exprn %prec PLUS
-        | exprn MINUS exprn %prec MINUS
-        | exprn MULTIPLY exprn %prec MULTIPLY
-        | exprn DIVIDE exprn %prec DIVIDE
+        | exprn PLUS exprn 
+        | exprn MINUS exprn 
+        | exprn MULTIPLY exprn 
+        | exprn DIVIDE exprn 
         | IDENTIFIER
         | literal
         ;
