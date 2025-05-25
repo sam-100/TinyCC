@@ -102,8 +102,18 @@ exprn:
         | exprn DIVIDE exprn 
         | IDENTIFIER
         | literal
+        | func_call
         ;
 
+func_call: 
+        IDENTIFIER OPEN_BRACKET arg_list CLOSED_BRACKET
+        | IDENTIFIER OPEN_BRACKET CLOSED_BRACKET
+        ;
+
+arg_list:
+        arg_list COMMA exprn
+        | exprn
+        ;
 
 %%
 

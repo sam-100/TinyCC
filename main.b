@@ -16,6 +16,6 @@ main: function void () {
     read b;
 
     sum: integer = 0;
-    sum = a + b;
+    sum = add(a, b);
     print sum;
 }
