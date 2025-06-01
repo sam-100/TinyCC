@@ -15,7 +15,7 @@ decl *create_decl_from_var(var_decl *vd) {
     decl *d = (decl*)calloc(1, sizeof(decl));
     d->kind = VAR_DECL;
     d->vd = vd;
-    d->next = NULL;
+    d->next = nullptr;
     return d;
 }
 
@@ -23,7 +23,7 @@ decl *create_decl_from_func(func_decl *fd) {
     decl *d = (decl*)calloc(1, sizeof(decl));
     d->kind = FUNC_DECL;
     d->fd = fd;
-    d->next = NULL;
+    d->next = nullptr;
     return d;
 }
 
@@ -36,7 +36,7 @@ var_decl *create_var_decl(char *name, type_t type, exprn *e) {
     var_decl *vd = (var_decl*)malloc(sizeof(var_decl));
     vd->name = name;
     vd->type = type;
-    if(e != NULL) {
+    if(e != nullptr) {
         vd->initialized = true;
         vd->rhs = e;
         if(e->type == LITERAL_EXPRN) {
@@ -46,7 +46,7 @@ var_decl *create_var_decl(char *name, type_t type, exprn *e) {
         }
     } else {
         vd->initialized = false;
-        vd->rhs = NULL;
+        vd->rhs = nullptr;
     }
     return vd;
 }
@@ -126,7 +126,7 @@ exprn *create_exprn_bool(bool val) {
 argument *create_arg(exprn *e) {
     argument *a = (argument*)malloc(sizeof(argument));
     a->e = e;
-    a->next = NULL;
+    a->next = nullptr;
     return a;
 }
 
@@ -139,7 +139,7 @@ parameter *create_param(char *name, type_t type) {
     parameter *p = (parameter*)malloc(sizeof(parameter));
     p->name = name;
     p->type = type;
-    p->next = NULL;
+    p->next = nullptr;
     return p;
 }
 parameter *append_param(parameter *p, parameter *np) {
@@ -216,42 +216,42 @@ statement *create_stmt_from_var_decl(var_decl_stmt *vd) {
     statement *stmt = (statement*)malloc(sizeof(statement));
     stmt->kind = STMT_VAR_DECL;
     stmt->vd_stmt = vd;
-    stmt->next = NULL;
+    stmt->next = nullptr;
     return stmt;
 }
 statement *create_stmt_from_assign(assign_stmt *as) {
     statement *stmt = (statement*)malloc(sizeof(statement));
     stmt->kind = STMT_ASSIGN;
     stmt->as_stmt = as;
-    stmt->next = NULL;
+    stmt->next = nullptr;
     return stmt;
 }
 statement *create_stmt_from_return(return_stmt *rs) {
     statement *stmt = (statement*)malloc(sizeof(statement));
     stmt->kind = STMT_RETURN;
     stmt->ret_stmt = rs;
-    stmt->next = NULL;
+    stmt->next = nullptr;
     return stmt;
 }
 statement *create_stmt_from_print(print_stmt *ps) {
     statement *stmt = (statement*)malloc(sizeof(statement));
     stmt->kind = STMT_PRINT;
     stmt->p_stmt = ps;
-    stmt->next = NULL;
+    stmt->next = nullptr;
     return stmt;
 }
 statement *create_stmt_from_read(read_stmt *rs) {
     statement *stmt = (statement*)malloc(sizeof(statement));
     stmt->kind = STMT_READ;
     stmt->r_stmt = rs;
-    stmt->next = NULL;
+    stmt->next = nullptr;
     return stmt;
 }
 statement *create_stmt_from_func_call(func_call_stmt *fs) {
     statement *stmt = (statement*)malloc(sizeof(statement));
     stmt->kind = STMT_FUNC_CALL;
     stmt->fc_stmt = fs;
-    stmt->next = NULL;
+    stmt->next = nullptr;
     return stmt;
 }
 statement *append_stmt(statement *stmt, statement *next_stmt) {

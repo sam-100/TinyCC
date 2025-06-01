@@ -2,10 +2,11 @@
 #include <unistd.h>
 #include <stdlib.h>
 #include "arguments.h"
+#include "ast.h"
 
 extern int yylex(void);
 extern int yyparse(void);
-
+program *root;
 
 int yywrap(void) {
     return 1;
@@ -19,5 +20,6 @@ void yyerror(const char *msg) {
 int main(int argc, char **argv) {
     process_arguments(argc, argv);
     yyparse();
+    printf("Program parsed successfully!\n");
     return 0;
 }
