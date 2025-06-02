@@ -28,12 +28,12 @@ void process_arguments(int argc, char **argv) {
     int i=1; 
     while(i < argc) {
         if(strcmp(argv[i], "--show-tokens") == 0) {
-            f_tokens = fopen("tokens.txt", "w");
+            f_tokens = fopen("output/tokens.txt", "w");
             i++;
             continue;
         }
         if(strcmp(argv[i], "--show-ast") == 0) {
-            f_ast = fopen("ast.txt", "w");
+            f_ast = fopen("output/ast.txt", "w");
             i++;
             continue;
         }

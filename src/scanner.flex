@@ -170,6 +170,7 @@ return                                      {
                                             }
 
 {letter}({letter}|{digit})*                 { 
+                                                yylval.s_val = strdup(yytext);
                                                 fprintf(f_tokens, "Token: IDENTIFIER, lexeme: \"%s\", line_no: %d\n", yytext, line_no); 
                                                 return IDENTIFIER; 
                                             }

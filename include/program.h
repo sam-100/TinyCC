@@ -8,8 +8,7 @@ typedef struct program {
 } program;
 
 
-
 program *create_program(decl *d);
-
+void print_program(program *p);
 
 #endif

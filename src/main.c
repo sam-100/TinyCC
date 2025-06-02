@@ -2,7 +2,7 @@
 #include <unistd.h>
 #include <stdlib.h>
 #include "arguments.h"
-#include "print-ast.h"
+#include "program.h"
 #include "utils.h"
 
 extern int yylex(void);

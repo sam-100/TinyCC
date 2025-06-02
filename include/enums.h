@@ -9,13 +9,6 @@ typedef enum {
 } type_t;
 
 typedef enum {
-    VAR_DECLARATION, 
-    VAR_DEFINITION, 
-    FUNC_DECLARATION, 
-    FUNC_DEFINITION, 
-} global_decl_t;
-
-typedef enum {
     STMT_VAR_DECL, 
     STMT_ASSIGN, 
     STMT_RETURN, 
@@ -26,8 +19,8 @@ typedef enum {
 
 
 typedef enum {
-    VAR_DECL, 
-    FUNC_DECL
+    DECL_VAR, 
+    DECL_FUNC
 } decl_t;
 
 typedef enum {
@@ -40,5 +33,13 @@ typedef enum {
     ASSIGN_EXPRN, 
     ASSIGN_FUNC_CALL,
 } assign_t;
+
+typedef enum {
+    OP_PLUS, 
+    OP_MINUS, 
+    OP_MUL, 
+    OP_DIV, 
+} operator_t;
+
 
 #endif

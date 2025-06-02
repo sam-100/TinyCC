@@ -1,6 +1,8 @@
 #ifndef DECLARATIONS_H
 #define DECLARATIONS_H
 
+#include <stdio.h>
+
 typedef struct program program;
 
 typedef struct decl decl;
@@ -21,6 +23,8 @@ typedef struct parameter parameter;
 typedef struct argument argument;
 typedef struct func_call func_call;
 typedef struct func_body func_body;
+
+extern FILE *f_ast;
 
 
 #endif

@@ -3,6 +3,10 @@ bin/*
 include/parser.h
 src/parser.c
 src/scanner.c
+input/*
+output/*
 tinycc
 
 !bin/.gitkeep
+!input/.gitkeep
+!output/.gitkeep

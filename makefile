@@ -1,10 +1,13 @@
 CC=gcc
-BIN= bin/scanner.o bin/main.o bin/parser.o bin/arguments.o bin/utils.o bin/print-ast.o bin/exprn.o bin/stmt.o bin/decl.o bin/func.o bin/program.o
+BIN= bin/scanner.o bin/main.o bin/parser.o bin/arguments.o bin/utils.o bin/exprn.o bin/stmt.o bin/decl.o bin/func.o bin/program.o
 CFLAGS= -I include
 
-# Target compiler rule
+# Target compiler rules
 tinycc: ${BIN}
 	$(CC) -o $@ ${BIN}
+
+gdb: CFLAGS += -g
+gdb: tinycc
 
 # Object files in the bin directory
 bin/main.o: src/main.c include/arguments.h
@@ -17,8 +20,6 @@ bin/arguments.o: src/arguments.c include/arguments.h
 	$(CC) -c -o $@ ${CFLAGS} src/arguments.c
 bin/utils.o: src/utils.c include/utils.h
 	$(CC) -c -o $@ ${CFLAGS} src/utils.c
-bin/print-ast.o: src/print-ast.c include/print-ast.h
-	$(CC) -c -o $@ ${CFLAGS} src/print-ast.c
 bin/exprn.o: src/exprn.c include/exprn.h
 	$(CC) -c -o $@ ${CFLAGS} src/exprn.c
 bin/stmt.o: src/stmt.c include/stmt.h
@@ -41,4 +42,6 @@ clean:
 	@rm -rf bin/* \
 		include/parser.h \
 		src/parser.c src/scanner.c \
+		output/* \
 		tinycc
+

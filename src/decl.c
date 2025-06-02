@@ -1,9 +1,11 @@
 #include "decl.h"
 #include <stdlib.h>
+#include "utils.h"
+#include "enums.h"
 
 decl *create_decl_from_var(var_decl *vd) {
     decl *d = (decl*)calloc(1, sizeof(decl));
-    d->kind = VAR_DECL;
+    d->kind = DECL_VAR;
     d->vd = vd;
     d->next = NULL;
     return d;
@@ -11,14 +13,17 @@ decl *create_decl_from_var(var_decl *vd) {
 
 decl *create_decl_from_func(func_decl *fd) {
     decl *d = (decl*)calloc(1, sizeof(decl));
-    d->kind = FUNC_DECL;
+    d->kind = DECL_FUNC;
     d->fd = fd;
     d->next = NULL;
     return d;
 }
 
 decl *append_decl(decl *d, decl *nd) {
-    d->next = nd;
+    decl *ptr = d;
+    while(ptr->next)
+        ptr = ptr->next;
+    ptr->next = nd;
     return d;
 }
 
@@ -50,4 +55,39 @@ func_decl *create_func_decl(char *name, type_t type, parameter *param_list, func
     return fd;
 }
 
+
+/* Functions to print declaration */
+void print_decl(decl *d) {
+    if(d == NULL)
+        return;
+    
+    if(d->kind == DECL_VAR) {
+        print_var_decl(d->vd);
+    } else if(d->kind == DECL_FUNC) {
+        print_func_decl(d->fd);
+    } else {
+        fprintf(f_ast, "Unknown declaration: %d\n", d->kind);
+    }
+    print_decl(d->next);
+}
+
+void print_var_decl(var_decl *vd) {
+    fprintf(f_ast, "{\n");
+    fprintf(f_ast, "\tVAR DECLARATION: name=%s, type=%s, initialized=%s\n", vd->name, get_type_name(vd->type), btoa(vd->initialized));
+    fprintf(f_ast, "}\n");
+}
+
+void print_func_decl(func_decl *fd) {
+    fprintf(f_ast, "{\n");
+    fprintf(f_ast, "\tname: %s,\n", fd->name);
+    fprintf(f_ast, "\ttype: %s,\n", get_type_name(fd->type));
+    fprintf(f_ast, "\tparameters: ");
+    // print_params(fd->param_list);
+    fprintf(f_ast, "\n");
+    if(fd->body != NULL) {
+        fprintf(f_ast, "\tbody: \n");
+        // print_func_body(fd->body);
+    }
+    fprintf(f_ast, "}\n");
+}
 

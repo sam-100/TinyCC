@@ -4,13 +4,6 @@
 #include "enums.h"
 #include <stdbool.h>
 
-typedef enum {
-    OP_PLUS, 
-    OP_MINUS, 
-    OP_MUL, 
-    OP_DIV, 
-} operator_t;
-
 typedef struct exprn {
     char *name;
     type_t type;
