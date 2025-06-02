@@ -31,7 +31,7 @@ false                                       {
                                                 return BOOLEAN_LITERAL; 
                                             }
 \'({letter}|{digit})\'                      { 
-                                                yylval.c_val = yytext[0];
+                                                yylval.c_val = yytext[1];
                                                 fprintf(f_tokens, "Token: CHAR_LITERAL, lexeme: \"%s\", line_no: %d\n", yytext, line_no); 
                                                 return CHAR_LITERAL; 
                                             }

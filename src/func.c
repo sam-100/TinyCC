@@ -14,12 +14,18 @@ argument *create_arg(exprn *e) {
 }
 
 argument *append_arg(argument *a, argument *na) {
-    a->next = na;
+    argument *ptr=a;
+    while(ptr->next)
+        ptr=ptr->next;
+    ptr->next = na;
     return a;
 }
 
 void print_arg(argument *arg, char *tabs) {
-    
+    for(argument *ptr=arg; ptr != NULL; ptr=ptr->next) {
+        print_exprn(ptr->e, strcat(tabs, "\t"));
+        tabs[strlen(tabs)-1]='\0';
+    }
 }
 
 
@@ -32,9 +38,9 @@ parameter *create_param(char *name, type_t type) {
 }
 parameter *append_param(parameter *p, parameter *np) {
     parameter *ptr = p;
-    while(p->next)
-        p = p->next;
-    p->next = np;
+    while(ptr->next)
+        ptr = ptr->next;
+    ptr->next = np;
     return p;
 }
 
@@ -63,9 +69,13 @@ func_body *create_func_body(statement *stmt_list) {
 
 void print_func_call(func_call *fc, char *tabs) {
     fprintf(f_ast, "%sfunc_call {\n", tabs);
-    fprintf(f_ast, "%s\tname: %s;\n", tabs, fc->name);
-    fprintf(f_ast, "%s\targuments: \n", tabs);
+
+    strcat(tabs, "\t");
+    fprintf(f_ast, "%sname: %s;\n", tabs, fc->name);
+    fprintf(f_ast, "%sarguments: \n", tabs);
     print_arg(fc->arg_list, tabs);
+    tabs[strlen(tabs)-1]='\0';
+
     fprintf(f_ast, "\n");
     fprintf(f_ast, "%s}\n", tabs);
 }
