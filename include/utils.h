@@ -6,10 +6,13 @@
 void error(const char *msg, int status);
 void initialize();
 type_t get_type(int num);
+char *itoa(int num);
+void reverse(char *str);
 
 /* Helper functions to print ast */
 char *get_type_name(type_t type);
-char get_op_name(operator_t op);
+char *get_op_name(operator_t op);
 char *btoa(bool val);
+char *get_literal_value(value val, type_t type);
 
 #endif

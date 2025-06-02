@@ -29,6 +29,7 @@ typedef struct return_stmt {
 typedef struct assign_stmt {
     char *name;
     assign_t kind;
+    type_t type;
     union {
         exprn *e;
         struct func_call *fc;
@@ -56,6 +57,7 @@ statement *create_stmt_from_print(print_stmt *ps);
 statement *create_stmt_from_read(read_stmt *rs);
 statement *create_stmt_from_func_call(func_call_stmt *fs);
 statement *append_stmt(statement *stmt, statement *next_stmt);
+void print_statement(statement *stmt, char *tabs);
 
 var_decl_stmt *create_var_decl_stmt(var_decl *vd);
 assign_stmt *create_assign_stmt_from_func_call(char *name, func_call *fc);
@@ -64,6 +66,10 @@ return_stmt *create_ret_stmt(exprn *e);
 print_stmt *create_print_stmt(exprn *e);
 read_stmt *create_read_stmt(char *name);
 func_call_stmt *create_func_call_stmt(char *name, argument *arg_list);
+
+void print_stmt_var_decl(var_decl_stmt *vdstmt, char *tabs);
+void print_stmt_assignment(assign_stmt *asstmt, char *tabs);
+
 
 
 #endif

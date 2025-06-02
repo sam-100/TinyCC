@@ -1,6 +1,10 @@
 #include "stmt.h"
 #include <unistd.h>
 #include <stdlib.h>
+#include <string.h>
+#include "decl.h"
+#include "utils.h"
+
 
 // Creating statements from sub_stmts
 statement *create_stmt_from_var_decl(var_decl_stmt *vd) {
@@ -46,8 +50,38 @@ statement *create_stmt_from_func_call(func_call_stmt *fs) {
     return stmt;
 }
 statement *append_stmt(statement *stmt, statement *next_stmt) {
-    stmt->next = next_stmt;
+    statement *ptr = stmt;
+    while(ptr->next)
+        ptr = ptr->next;
+    ptr->next = next_stmt;
     return stmt;
+}
+
+void print_statement(statement *stmt, char *tabs) {
+    if(stmt == NULL)
+        return;
+    
+    switch(stmt->kind)
+    {
+        case STMT_VAR_DECL:
+            print_stmt_var_decl(stmt->vd_stmt, tabs);
+            break;
+        case STMT_ASSIGN:
+            print_stmt_assignment(stmt->as_stmt, tabs);
+            break;
+        // case STMT_FUNC_CALL:
+        //     break;
+        // case STMT_PRINT:
+        //     break;
+        // case STMT_READ:
+        //     break;
+        // case STMT_RETURN:
+        //     break;
+        default:
+            fprintf(f_ast, "%sInvalid statement with code %d\n", tabs, (int)stmt->kind);
+            break;
+    }
+    print_statement(stmt->next, tabs);
 }
 
 
@@ -98,3 +132,33 @@ func_call_stmt *create_func_call_stmt(char *name, argument *arg_list) {
     stmt->args = arg_list;
     return stmt;
 }
+
+
+void print_stmt_var_decl(var_decl_stmt *vd_stmt, char *tabs) {
+    fprintf(f_ast, "%svar_decl_stmt {\n", tabs);
+    fprintf(f_ast, "%s\tname: %s;\n", tabs, vd_stmt->vd->name);
+    fprintf(f_ast, "%s\ttype: %s;\n", tabs, get_type_name(vd_stmt->vd->type));
+    fprintf(f_ast, "%s}\n", tabs);
+}
+
+void print_stmt_assignment(assign_stmt *asstmt, char *tabs) {
+    fprintf(f_ast, "%sassign_stmt {\n", tabs);
+    fprintf(f_ast, "%s\tlhs: %s;\n", tabs, asstmt->name);
+    fprintf(f_ast, "%s\trhs: \n", tabs);
+    switch(asstmt->kind)
+    {
+        case ASSIGN_EXPRN:
+            print_exprn(asstmt->e, strcat(tabs, "\t\t"));
+            tabs[strlen(tabs)-2] = '\0';
+            break;
+        case ASSIGN_FUNC_CALL:
+            print_func_call(asstmt->fc, strcat(tabs, "\t\t"));
+            tabs[strlen(tabs)-2] = '\0';
+            break;
+        default:
+            fprintf(f_ast, "%s\tInvalid assignment statement code %d\n", tabs, asstmt->kind);
+            break;
+    }
+    fprintf(f_ast, "%s}\n", tabs);
+}
+

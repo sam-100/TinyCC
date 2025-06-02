@@ -1,6 +1,9 @@
 #ifndef ENUMS_H
 #define ENUMS_H
 
+#include <stdbool.h>
+
+
 typedef enum {
     TYPE_VOID, 
     TYPE_INTEGER, 
@@ -41,5 +44,10 @@ typedef enum {
     OP_DIV, 
 } operator_t;
 
+typedef union {
+        int i_val;
+        bool b_val;
+        char c_val;
+} value;
 
 #endif

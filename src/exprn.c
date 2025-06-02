@@ -1,5 +1,9 @@
 #include "exprn.h"
 #include <stdlib.h>
+#include "utils.h"
+#include "declarations.h"
+#include <string.h>
+#include "enums.h"
 
 exprn *create_exprn(exprn *lhs, operator_t op, exprn *rhs) {
     exprn *e = (exprn*)malloc(sizeof(exprn));
@@ -43,4 +47,31 @@ exprn *create_exprn_bool(bool val) {
     e->kind = LITERAL_EXPRN;
     e->value.b_val = val;
     return e;
+}
+
+void print_exprn(exprn *e, char *tabs) {
+    fprintf(f_ast, "%sexprn {\n", tabs);
+    tabs = strcat(tabs, "\t");
+    switch(e->kind)
+    {
+        case BINARY_EXPRN:
+            fprintf(f_ast, "%slhs:\n", tabs);
+            print_exprn(e->left, strcat(tabs, "\t"));
+            tabs[strlen(tabs)-1]='\0';
+            fprintf(f_ast, "%soperator: %s\n", tabs, get_op_name(e->op));
+            fprintf(f_ast, "%srhs:\n", tabs);
+            print_exprn(e->right, strcat(tabs, "\t"));
+            tabs[strlen(tabs)-1]='\0';
+            break;
+        case IDENTIFIER_EXPRN:
+            fprintf(f_ast, "%sname: %s\n", tabs, e->name);
+            break;
+        case LITERAL_EXPRN:
+            fprintf(f_ast, "%sliteral: %s\n", tabs, get_literal_value(e->value, e->type));
+            break;
+        default:
+            break;
+    }
+    tabs[strlen(tabs)-1] = '\0';
+    fprintf(f_ast, "%s}\n", tabs);
 }

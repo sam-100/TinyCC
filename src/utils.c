@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "parser.h"
+#include <string.h>
 
 void initialize() {
 
@@ -25,6 +26,30 @@ type_t get_type(int t) {
     }
 }
 
+char *itoa(int num) {
+    char *str = malloc(10);
+    int i=0;
+    if(num < 0) {
+        num = -num;
+        str[i++] = '-';
+    }
+    for(; i<10 && num; i++) {
+        str[i] = (char)('0'+num%10);
+        num /= 10;
+    }
+    return str;
+}
+
+void reverse(char *str) {
+    int len = strlen(str);
+    for(int i=0; i<len/2; i++) {
+        char temp = str[i];
+        str[i] = str[len-1-i];
+        str[len-1-i] = temp;
+    }
+}
+
+/* Helper functions to print ast */
 char *get_type_name(type_t type) {
     switch(type)
     {
@@ -41,19 +66,19 @@ char *get_type_name(type_t type) {
     }
 }
 
-char get_op_name(operator_t op) {
+char *get_op_name(operator_t op) {
     switch(op)
     {
         case OP_PLUS:
-            return '+';
+            return "PLUS";
         case OP_MINUS:
-            return '-';
+            return "MINUS";
         case OP_MUL:
-            return '*';
+            return "MULTIPLY";
         case OP_DIV:
-            return '/';
+            return "DIVIDE";
         default:
-            return '?';
+            return "UNKNOWN-OPERATOR";
     }
 }
 
@@ -63,3 +88,20 @@ char *btoa(bool val) {
     return "false";
 }
 
+char *get_literal_value(value val, type_t type) {
+    switch(type)
+    {
+        case TYPE_INTEGER:
+            return itoa(val.i_val);
+        case TYPE_CHARACTER:
+            char *str = malloc(2);
+            str[0] = val.c_val;
+            str[1] = '\0';
+            return str;
+        case TYPE_BOOLEAN:
+            return btoa(val.b_val);
+        default:
+            return "unknown type of expression";
+            break;
+    }
+}
