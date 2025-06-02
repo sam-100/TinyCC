@@ -1,7 +1,8 @@
 #include "ast.h"
 #include <stdlib.h>
 #include <string.h>
-#include <parser.h>
+#include "parser.h"
+#include <stdio.h>
 
 // Create a program 
 program *create_program(decl *d) {
@@ -258,3 +259,4 @@ statement *append_stmt(statement *stmt, statement *next_stmt) {
     stmt->next = next_stmt;
     return stmt;
 }
+

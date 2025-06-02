@@ -1,0 +1,10 @@
+Program {
+Declaration {
+Var Declaration {
+Name: (null);
+Type: integer;
+}
+}
+Declaration {
+}
+}

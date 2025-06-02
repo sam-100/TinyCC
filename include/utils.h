@@ -2,5 +2,6 @@
 #define UTILS_HH
 
 void error(const char *msg, int status);
+void initialize();
 
 #endif

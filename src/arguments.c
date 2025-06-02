@@ -5,7 +5,7 @@
 #include <fcntl.h>
 #include "utils.h"
 
-FILE *f_input, *f_tokens;
+FILE *f_input, *f_tokens, *f_ast, *f_nowhere;
 char *input_name;
 extern FILE *yyin;
 
@@ -19,9 +19,9 @@ void process_arguments(int argc, char **argv) {
 
     // initializing 
     input_name = (char*)malloc(50);
-    f_tokens = NULL;
-
-    // process the arguments
+    f_nowhere = fopen("/dev/null", "rw");
+    f_tokens = f_nowhere;
+    f_ast = f_nowhere;
     
 
     // processing the arguments
@@ -29,6 +29,11 @@ void process_arguments(int argc, char **argv) {
     while(i < argc) {
         if(strcmp(argv[i], "--show-tokens") == 0) {
             f_tokens = fopen("tokens.txt", "w");
+            i++;
+            continue;
+        }
+        if(strcmp(argv[i], "--show-ast") == 0) {
+            f_ast = fopen("ast.txt", "w");
             i++;
             continue;
         }
@@ -53,7 +58,5 @@ void process_arguments(int argc, char **argv) {
         // exit(1);
     }
 
-    if(f_tokens == NULL) {
-        f_tokens = fopen("/dev/null", "w");
-    }
+    
 }

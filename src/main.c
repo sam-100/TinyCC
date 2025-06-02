@@ -18,8 +18,10 @@ void yyerror(const char *msg) {
 }
 
 int main(int argc, char **argv) {
+    initialize();
     process_arguments(argc, argv);
     yyparse();
+    print_program(root);
     printf("Program parsed successfully!\n");
     return 0;
 }
