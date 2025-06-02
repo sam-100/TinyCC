@@ -18,7 +18,7 @@ typedef struct var_decl_stmt {
 
 typedef struct func_call_stmt {
     char *name;
-    type_t *type;
+    type_t type;
     argument *args;
 } func_call_stmt;
 
@@ -69,7 +69,9 @@ func_call_stmt *create_func_call_stmt(char *name, argument *arg_list);
 
 void print_stmt_var_decl(var_decl_stmt *vdstmt, char *tabs);
 void print_stmt_assignment(assign_stmt *asstmt, char *tabs);
-
-
+void print_stmt_func_call(func_call_stmt *fc_stmt, char *tab);
+void print_stmt_print(print_stmt *p, char *tab);
+void print_stmt_read(read_stmt *r_stmt, char *tabs);
+void print_stmt_return(return_stmt *ret_stmt, char *tabs);
 
 #endif
