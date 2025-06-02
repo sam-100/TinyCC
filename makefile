@@ -1,5 +1,5 @@
 CC=gcc
-BIN= bin/scanner.o bin/main.o bin/parser.o bin/arguments.o bin/utils.o bin/ast.o bin/print-ast.o
+BIN= bin/scanner.o bin/main.o bin/parser.o bin/arguments.o bin/utils.o bin/print-ast.o bin/exprn.o bin/stmt.o bin/decl.o bin/func.o bin/program.o
 CFLAGS= -I include
 
 # Target compiler rule
@@ -17,10 +17,18 @@ bin/arguments.o: src/arguments.c include/arguments.h
 	$(CC) -c -o $@ ${CFLAGS} src/arguments.c
 bin/utils.o: src/utils.c include/utils.h
 	$(CC) -c -o $@ ${CFLAGS} src/utils.c
-bin/ast.o: src/ast.c include/ast.h
-	$(CC) -c -o  $@ ${CFLAGS} src/ast.c
 bin/print-ast.o: src/print-ast.c include/print-ast.h
 	$(CC) -c -o $@ ${CFLAGS} src/print-ast.c
+bin/exprn.o: src/exprn.c include/exprn.h
+	$(CC) -c -o $@ ${CFLAGS} src/exprn.c
+bin/stmt.o: src/stmt.c include/stmt.h
+	$(CC) -c -o $@ ${CFLAGS} src/stmt.c
+bin/decl.o: src/decl.c include/decl.h
+	$(CC) -c -o $@ ${CFLAGS} src/decl.c
+bin/program.o: src/program.c include/program.h
+	$(CC) -c -o $@ ${CFLAGS} src/program.c
+bin/func.o: src/func.c include/func.h
+	$(CC) -c -o $@ ${CFLAGS} src/func.c
 
 # Scanner and parser
 src/scanner.c: src/scanner.flex

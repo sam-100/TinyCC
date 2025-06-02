@@ -2,7 +2,8 @@
 #include <unistd.h>
 #include <stdlib.h>
 #include "arguments.h"
-#include "ast.h"
+#include "print-ast.h"
+#include "utils.h"
 
 extern int yylex(void);
 extern int yyparse(void);

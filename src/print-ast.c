@@ -1,6 +1,7 @@
 #include "print-ast.h"
 #include <stdio.h>
 #include "utils.h"
+#include "decl.h"
 
 extern FILE *f_ast;
 

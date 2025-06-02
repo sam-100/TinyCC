@@ -1,5 +1,9 @@
 {
     "files.associations": {
-        "stdbool.h": "c"
+        "stdbool.h": "c",
+        "ast.h": "c",
+        "utils.h": "c",
+        "print-ast.h": "c",
+        "exprn.h": "c"
     }
 }

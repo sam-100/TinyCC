@@ -1,7 +1,8 @@
 #ifndef PRINT_AST_H
 #define PRINT_AST_H
 
-#include "ast.h"
+#include "program.h"
+#include "func.h"
 
 /* Now here functions to print the abstract syntax tree */
 void print_program(program *p);

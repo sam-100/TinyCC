@@ -1,7 +1,12 @@
 %{
 #include <stdio.h>
 #include <stdbool.h>
-#include "ast.h"
+#include "decl.h"
+#include "stmt.h"
+#include "exprn.h"
+#include "func.h"
+#include "program.h"
+#include "utils.h"
 
 extern int yylex(void);
 extern int yyerror(const char *msg);
