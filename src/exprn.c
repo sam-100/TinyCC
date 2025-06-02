@@ -33,18 +33,21 @@ exprn *create_exprn_id(char *name) {
 exprn *create_exprn_int(int val) {
     exprn *e = (exprn*)malloc(sizeof(exprn));
     e->kind = LITERAL_EXPRN;
+    e->type = TYPE_INTEGER;
     e->value.i_val = val;
     return e;
 }
 exprn *create_exprn_char(char val) {
     exprn *e = (exprn*)malloc(sizeof(exprn));
     e->kind = LITERAL_EXPRN;
+    e->type = TYPE_CHARACTER;
     e->value.c_val = val;
     return e;
 }
 exprn *create_exprn_bool(bool val) {
     exprn *e = (exprn*)malloc(sizeof(exprn));
     e->kind = LITERAL_EXPRN;
+    e->type = TYPE_BOOLEAN;
     e->value.b_val = val;
     return e;
 }
