@@ -12,3 +12,7 @@ void print_program(program *p) {
     fprintf(f_ast, "AST of given program: \n\n");
     print_decl(p->decl_list);
 }
+
+void program_resolve(program *p) {
+    
+}

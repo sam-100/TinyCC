@@ -50,4 +50,10 @@ typedef union {
         char c_val;
 } value;
 
+typedef enum {
+    GLOBAL, 
+    PARAMETER, 
+    LOCAL
+} symbol_t;
+
 #endif
