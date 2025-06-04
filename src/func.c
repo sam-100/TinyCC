@@ -35,6 +35,8 @@ parameter *create_param(char *name, type_t type) {
     p->name = name;
     p->type = type;
     p->next = NULL;
+    p->which = 1;
+    p->offset = 0;
     return p;
 }
 parameter *append_param(parameter *p, parameter *np) {
@@ -42,6 +44,9 @@ parameter *append_param(parameter *p, parameter *np) {
     while(ptr->next)
         ptr = ptr->next;
     ptr->next = np;
+    np->which = ptr->which+1;
+    np->offset = ptr->offset+get_size_of_type(ptr->type);
+    // printf("appending parameter %s to %s.\n", np->name, ptr->name);
     return p;
 }
 
@@ -125,11 +130,11 @@ void parameter_resolve(parameter *par, symtab_stack *st) {
         return;
     }
 
-    par->sym = create_symbol(par->name, SYM_VAR, SCOPE_PARAMETER, par->type, -1, false);
+    par->sym = create_symbol(par->name, SYM_VAR, SCOPE_PARAMETER, par->type, par->which, par->offset, false);
     scope_bind(par->name, par->sym, st);
 
     parameter_resolve(par->next, st);
-    printf("Parameter %s resolved at line no: %d\n", par->name, par->line_no);
+
 }
 
 void arg_resolve(argument *arg, symtab_stack *st) {

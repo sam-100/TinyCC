@@ -121,7 +121,7 @@ void var_decl_resolve(var_decl *vd, symtab_stack *st) {
         return;
     }
     
-    vd->sym = create_symbol(vd->name, SYM_VAR, scope_type(st), vd->type, -1, vd->initialized);
+    vd->sym = create_symbol(vd->name, SYM_VAR, scope_type(st), vd->type, -1, -1, vd->initialized);
     scope_bind(vd->name, vd->sym, st);
 }
 
@@ -132,7 +132,7 @@ void func_decl_resolve(func_decl *fd, symtab_stack *st) {
     }
 
     // fd->sym = create_symbol_from_func_decl(fd, st);
-    fd->sym = create_symbol(fd->name, SYM_FUNC, scope_type(st), fd->type, -1, fd->body != 0);
+    fd->sym = create_symbol(fd->name, SYM_FUNC, scope_type(st), fd->type, -1, -1, fd->body != 0);
     scope_bind(fd->name, fd->sym, st);
 
     scope_enter(st);        // enter function scope

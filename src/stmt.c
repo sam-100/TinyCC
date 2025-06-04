@@ -264,7 +264,7 @@ void var_decl_stmt_resolve(var_decl_stmt *vd_stmt, symtab_stack *st) {
         exit(1);
     }
 
-    vd_stmt->sym = create_symbol(vd_stmt->name, SYM_VAR, scope_type(st), vd_stmt->type, -1, vd_stmt->initialized);
+    vd_stmt->sym = create_symbol(vd_stmt->name, SYM_VAR, scope_type(st), vd_stmt->type, -1, -1, vd_stmt->initialized);
     scope_bind(vd_stmt->name, vd_stmt->sym, st);
 }
 

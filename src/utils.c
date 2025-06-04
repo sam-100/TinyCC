@@ -49,6 +49,19 @@ void reverse(char *str) {
     }
 }
 
+int get_size_of_type(type_t type) {
+    switch(type)
+    {
+        case TYPE_INTEGER:
+            return 4;
+        case TYPE_BOOLEAN:
+        case TYPE_CHARACTER:
+            return 1;
+        default:
+            return -1;
+    }
+}
+
 /* Helper functions to print ast */
 char *get_type_name(type_t type) {
     switch(type)

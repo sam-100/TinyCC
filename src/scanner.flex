@@ -68,7 +68,7 @@ void                                        {
                                                 fprintf(f_tokens, "Token: VOID, lexeme: \"%s\", line_no: %d\n", yytext, line_no); 
                                                 return VOID; 
                                             }
-boolean                                     { 
+bool                                        { 
                                                 yylval.i_val = BOOLEAN;
                                                 fprintf(f_tokens, "Token: BOOLEAN, lexeme: \"%s\", line_no: %d\n", yytext, line_no); 
                                                 return BOOLEAN; 

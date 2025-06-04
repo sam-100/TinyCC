@@ -11,6 +11,8 @@ typedef struct parameter {
     type_t type;
     symbol *sym;
     int line_no;
+    int which;
+    int offset;
     struct parameter *next;
 } parameter;
 

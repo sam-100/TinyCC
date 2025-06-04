@@ -8,6 +8,8 @@ void initialize();
 type_t get_type(int num);
 char *itoa(int num);
 void reverse(char *str);
+int get_size_of_type(type_t type);
+
 
 /* Helper functions to print ast */
 char *get_type_name(type_t type);

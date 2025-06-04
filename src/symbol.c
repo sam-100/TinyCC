@@ -5,7 +5,7 @@
 #include "utils.h"
 
 
-symbol *create_symbol(char *name, symbol_t sym_type, scope_t scope, type_t type, int which, bool init) {
+symbol *create_symbol(char *name, symbol_t sym_type, scope_t scope, type_t type, int which, int offset, bool init) {
     symbol *sym = (symbol*)malloc(sizeof(symbol));
     sym->name = name;
     sym->scope=scope;
@@ -13,6 +13,7 @@ symbol *create_symbol(char *name, symbol_t sym_type, scope_t scope, type_t type,
     sym->which=which;
     sym->init = init;
     sym->sym_type = sym_type;
+    sym->offset = offset;
     return sym;
 }
 
@@ -24,5 +25,6 @@ void print_symbol(symbol *sym) {
     fprintf(f_symtab, "\tscope: %s;\n", get_scope_name(sym->scope));
     fprintf(f_symtab, "\tinit: %s;\n", btoa(sym->init));
     fprintf(f_symtab, "\twhich: %d;\n", sym->which);
+    fprintf(f_symtab, "\toffset: %d;\n", sym->offset);
     fprintf(f_symtab, "}\n");
 }

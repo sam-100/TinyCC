@@ -169,7 +169,10 @@ func_body:
 
 
 param_declaration:
-        IDENTIFIER COLON type                           { $$ = create_param($1, $3); $$->line_no = @1.first_line; }
+        IDENTIFIER COLON type                           { 
+                                                                $$ = create_param($1, $3); 
+                                                                $$->line_no = @1.first_line; 
+                                                        }
         ;
 
 stmt_list:
