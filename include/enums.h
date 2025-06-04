@@ -55,4 +55,8 @@ typedef enum {
     SCOPE_LOCAL
 } scope_t;
 
+typedef enum {
+    SYM_VAR, 
+    SYM_FUNC
+} symbol_t;
 #endif

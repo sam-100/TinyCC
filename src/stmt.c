@@ -259,14 +259,12 @@ void stmt_resolve(statement *stmt, symtab_stack *st) {
 
 
 void var_decl_stmt_resolve(var_decl_stmt *vd_stmt, symtab_stack *st) {
-    // var_decl_resolve(vd_stmt->vd, st);
-    // vd_stmt->sym = vd_stmt->vd->sym;
     if(scope_lookup_current(vd_stmt->name, st) != NULL) {
         fprintf(f_error, "Symbol %s at declared again at line no. %d.\n", vd_stmt->name, vd_stmt->line_no);
         exit(1);
     }
 
-    vd_stmt->sym = create_symbol(vd_stmt->name, scope_type(st), vd_stmt->type, -1, vd_stmt->initialized);
+    vd_stmt->sym = create_symbol(vd_stmt->name, SYM_VAR, scope_type(st), vd_stmt->type, -1, vd_stmt->initialized);
     scope_bind(vd_stmt->name, vd_stmt->sym, st);
 }
 

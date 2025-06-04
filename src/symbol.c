@@ -5,13 +5,14 @@
 #include "utils.h"
 
 
-symbol *create_symbol(char *name, scope_t scope, type_t type, int which, bool init) {
+symbol *create_symbol(char *name, symbol_t sym_type, scope_t scope, type_t type, int which, bool init) {
     symbol *sym = (symbol*)malloc(sizeof(symbol));
     sym->name = name;
     sym->scope=scope;
     sym->type=type;
     sym->which=which;
     sym->init = init;
+    sym->sym_type = sym_type;
     return sym;
 }
 
