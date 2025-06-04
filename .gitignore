@@ -6,6 +6,7 @@ src/scanner.c
 input/*
 output/*
 tinycc
+todo
 
 !bin/.gitkeep
 !input/.gitkeep
