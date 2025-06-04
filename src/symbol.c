@@ -2,6 +2,8 @@
 #include <stdlib.h>
 #include "decl.h"
 #include "string.h"
+#include "utils.h"
+
 
 symbol *create_symbol(char *name, scope_t scope, type_t type, int which) {
     symbol *sym = (symbol*)malloc(sizeof(symbol));
@@ -56,3 +58,12 @@ symbol *create_symbol_from_return_stmt(return_stmt *ret_stmt, symtab_stack *st) 
     return NULL;
 }
 
+void print_symbol(symbol *sym) {
+    fprintf(f_symtab, "{\n");
+    fprintf(f_symtab, "\tname: %s;\n", sym->name);
+    fprintf(f_symtab, "\ttype: %s;\n", get_type_name(sym->type));
+    fprintf(f_symtab, "\tscope: %s;\n", get_scope_name(sym->scope));
+    fprintf(f_symtab, "\tinit: %s;\n", btoa(sym->init));
+    fprintf(f_symtab, "\twhich: %d;\n", sym->which);
+    fprintf(f_symtab, "}\n");
+}

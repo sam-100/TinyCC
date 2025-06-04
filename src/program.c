@@ -15,7 +15,7 @@ void print_program(program *p) {
 }
 
 void program_resolve(program *p) {
-    symtab_stack *st = (symtab_stack*)malloc(sizeof(symtab_stack));
+    symtab_stack *st = create_symtab_stack();
 
     scope_enter(st);
     decl_resolve(p->decl_list, st);
@@ -24,6 +24,12 @@ void program_resolve(program *p) {
     free(st);
 
     return;
+}
+
+void program_print_symtab(program *p) {
+    fprintf(f_symtab, "Global Symbol Table: \n");
+    print_symtab(p->sym_tab);
+    decl_print_symtab(p->decl_list);
 }
 
 void program_typecheck(program *p) {

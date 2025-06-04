@@ -27,6 +27,9 @@ int main(int argc, char **argv) {
     // name resolution
     program_resolve(root);
 
+    // print symbol tables
+    program_print_symtab(root);
+
     // type checking
     // program_typecheck(root);
 

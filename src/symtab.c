@@ -43,3 +43,11 @@ void remove_symbol(char *name, symtab *table) {
 
     table->size--;
 }
+
+void print_symtab(symtab *stab) {
+    for(int i=0; i<stab->size; i++) {
+        fprintf(f_symtab, "name: %s\n", stab->names[i]);
+        print_symbol(stab->symbols[i]);
+    }
+    fprintf(f_symtab, "\n");
+}

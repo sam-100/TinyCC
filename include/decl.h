@@ -57,4 +57,7 @@ void func_decl_resolve(func_decl *fd, symtab_stack *st);
 void decl_typecheck(decl *d, symtab_stack *st);
 void func_decl_typecheck(func_decl *fd, symtab_stack *st);
 
+void decl_print_symtab(decl *d);
+void func_decl_print_symtab(func_decl *fd);
+
 #endif

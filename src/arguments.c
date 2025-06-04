@@ -5,7 +5,7 @@
 #include <fcntl.h>
 #include "utils.h"
 
-FILE *f_input, *f_tokens, *f_ast, *f_nowhere, *f_error;
+FILE *f_input, *f_tokens, *f_ast, *f_nowhere, *f_error, *f_symtab;
 char *input_name;
 extern FILE *yyin;
 
@@ -22,6 +22,9 @@ void process_arguments(int argc, char **argv) {
     f_nowhere = fopen("/dev/null", "rw");
     f_tokens = f_nowhere;
     f_ast = f_nowhere;
+    f_error = stderr;
+    f_symtab = f_nowhere;
+    
     
 
     // processing the arguments
@@ -34,6 +37,11 @@ void process_arguments(int argc, char **argv) {
         }
         if(strcmp(argv[i], "--show-ast") == 0) {
             f_ast = fopen("output/ast.txt", "w");
+            i++;
+            continue;
+        }
+        if(strcmp(argv[i], "--show-symtab") == 0) {
+            f_symtab = fopen("output/symtab.txt", "w");
             i++;
             continue;
         }

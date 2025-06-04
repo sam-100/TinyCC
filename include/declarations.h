@@ -28,6 +28,6 @@ typedef struct symbol symbol;
 typedef struct symtab symtab;
 typedef struct symtab_stack symtab_stack;
 
-extern FILE *f_input, *f_tokens, *f_ast, *f_nowhere, *f_error;
+extern FILE *f_input, *f_tokens, *f_ast, *f_nowhere, *f_error, *f_symtab;
 
 #endif

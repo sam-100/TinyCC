@@ -105,3 +105,14 @@ char *get_literal_value(value val, type_t type) {
             break;
     }
 }
+
+char *get_scope_name(scope_t scope) {
+    switch(scope)
+    {
+        case SCOPE_GLOBAL:
+            return "GLOBAL";
+        case SCOPE_LOCAL:
+            return "LOCAL";
+    }
+    return "UNKNOWN SCOPE";
+}

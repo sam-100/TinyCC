@@ -144,6 +144,21 @@ void func_decl_resolve(func_decl *fd, symtab_stack *st) {
     return;
 }
 
+void decl_print_symtab(decl *d) {
+    if(d == NULL)
+        return;
+    if(d->kind == DECL_FUNC)
+        func_decl_print_symtab(d->fd);
+    decl_print_symtab(d->next);
+}
+
+void func_decl_print_symtab(func_decl *fd) {
+    if(fd->body == NULL)
+        return;
+    fprintf(f_symtab, "function %s() symtab: \n", fd->name);
+    print_symtab(fd->symtab);
+}
+
 void decl_typecheck(decl *d, symtab_stack *st) {
     if(d == NULL)
         return;
