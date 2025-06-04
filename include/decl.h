@@ -8,6 +8,7 @@
 typedef struct var_decl {
     char *name;
     type_t type;
+    int line_no;
     exprn *rhs;
     bool initialized;
     union {
@@ -20,6 +21,7 @@ typedef struct var_decl {
 typedef struct func_decl {
     char *name;
     type_t type;
+    int line_no;
     struct parameter *param_list;
     struct func_body *body;
 } func_decl;

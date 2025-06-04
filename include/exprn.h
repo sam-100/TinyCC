@@ -8,6 +8,7 @@ typedef struct exprn {
     char *name;
     type_t type;
     exprn_t kind;
+    int line_no;
     operator_t op;
     struct exprn *left, *right;
     value value;

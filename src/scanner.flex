@@ -4,11 +4,18 @@
     #include <stdbool.h>
     #include "parser.h"
 
+
     extern void yyerror(const char *msg);
     extern FILE *f_tokens;
+    extern YYLTYPE yylloc;
 
     int line_no = 1;
+
+    #define YY_USER_ACTION yylloc.first_line = yylloc.last_line = line_no;
 %}
+
+%option yylineno
+
 
 digit   [0-9]
 letter  [a-zA-Z]

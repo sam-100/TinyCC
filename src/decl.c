@@ -77,6 +77,7 @@ void print_var_decl(var_decl *vd) {
     fprintf(f_ast, "VAR DECLARATION {\n");
     fprintf(f_ast, "\tname=%s;\n", vd->name);
     fprintf(f_ast, "\ttype=%s;\n", get_type_name(vd->type));
+    fprintf(f_ast, "\tline_no=%d;\n", vd->line_no);
     
     // fprintf(f_ast, "\t name=%s, type=%s, initialized=%s\n", vd->name, get_type_name(vd->type), btoa(vd->initialized));
     fprintf(f_ast, "}\n");
@@ -86,6 +87,7 @@ void print_func_decl(func_decl *fd) {
     fprintf(f_ast, "FUNC DECLARATION {\n");
     fprintf(f_ast, "\tname: %s;\n", fd->name);
     fprintf(f_ast, "\ttype: %s;\n", get_type_name(fd->type));
+    fprintf(f_ast, "\tline_no: %d;\n", fd->line_no);
     fprintf(f_ast, "\tparameters: ");
     print_param(fd->param_list);
     fprintf(f_ast, ";\n");

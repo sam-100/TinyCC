@@ -6,30 +6,36 @@
 
 typedef struct print_stmt {
     exprn *arg;
+    int line_no;
 } print_stmt;
 
 typedef struct read_stmt {
     char *arg;
+    int line_no;
 } read_stmt;
 
 typedef struct var_decl_stmt {
     var_decl *vd;
+    int line_no;
 } var_decl_stmt;
 
 typedef struct func_call_stmt {
     char *name;
     type_t type;
     argument *args;
+    int line_no;
 } func_call_stmt;
 
 typedef struct return_stmt {
     exprn *ret_expr;
+    int line_no;
 } return_stmt;
 
 typedef struct assign_stmt {
     char *name;
     assign_t kind;
     type_t type;
+    int line_no;
     union {
         exprn *e;
         struct func_call *fc;
@@ -38,6 +44,7 @@ typedef struct assign_stmt {
 
 typedef struct statement {
     stmt_t kind;
+    int line_no;
     union {
         print_stmt *p_stmt;
         read_stmt *r_stmt;

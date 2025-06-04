@@ -11,6 +11,7 @@ statement *create_stmt_from_var_decl(var_decl_stmt *vd) {
     statement *stmt = (statement*)malloc(sizeof(statement));
     stmt->kind = STMT_VAR_DECL;
     stmt->vd_stmt = vd;
+    stmt->line_no = vd->line_no;
     stmt->next = NULL;
     return stmt;
 }
@@ -18,6 +19,7 @@ statement *create_stmt_from_assign(assign_stmt *as) {
     statement *stmt = (statement*)malloc(sizeof(statement));
     stmt->kind = STMT_ASSIGN;
     stmt->as_stmt = as;
+    stmt->line_no = as->line_no;
     stmt->next = NULL;
     return stmt;
 }
@@ -25,6 +27,7 @@ statement *create_stmt_from_return(return_stmt *rs) {
     statement *stmt = (statement*)malloc(sizeof(statement));
     stmt->kind = STMT_RETURN;
     stmt->ret_stmt = rs;
+    stmt->line_no = rs->line_no;
     stmt->next = NULL;
     return stmt;
 }
@@ -32,6 +35,7 @@ statement *create_stmt_from_print(print_stmt *ps) {
     statement *stmt = (statement*)malloc(sizeof(statement));
     stmt->kind = STMT_PRINT;
     stmt->p_stmt = ps;
+    stmt->line_no = ps->line_no;
     stmt->next = NULL;
     return stmt;
 }
@@ -39,6 +43,7 @@ statement *create_stmt_from_read(read_stmt *rs) {
     statement *stmt = (statement*)malloc(sizeof(statement));
     stmt->kind = STMT_READ;
     stmt->r_stmt = rs;
+    stmt->line_no = rs->line_no;
     stmt->next = NULL;
     return stmt;
 }
@@ -46,6 +51,7 @@ statement *create_stmt_from_func_call(func_call_stmt *fs) {
     statement *stmt = (statement*)malloc(sizeof(statement));
     stmt->kind = STMT_FUNC_CALL;
     stmt->fc_stmt = fs;
+    stmt->line_no = fs->line_no;
     stmt->next = NULL;
     return stmt;
 }
@@ -142,11 +148,13 @@ void print_stmt_var_decl(var_decl_stmt *vd_stmt, char *tabs) {
     fprintf(f_ast, "%svar_decl_stmt {\n", tabs);
     fprintf(f_ast, "%s\tname: %s;\n", tabs, vd_stmt->vd->name);
     fprintf(f_ast, "%s\ttype: %s;\n", tabs, get_type_name(vd_stmt->vd->type));
+    fprintf(f_ast, "%s\tline_no: %d;\n", tabs, vd_stmt->line_no);
     fprintf(f_ast, "%s}\n", tabs);
 }
 
 void print_stmt_assignment(assign_stmt *asstmt, char *tabs) {
     fprintf(f_ast, "%sassign_stmt {\n", tabs);
+    fprintf(f_ast, "%s\tline_no: %d;\n", tabs, asstmt->line_no);
     fprintf(f_ast, "%s\tlhs: %s;\n", tabs, asstmt->name);
     fprintf(f_ast, "%s\trhs: \n", tabs);
     switch(asstmt->kind)
@@ -170,6 +178,7 @@ void print_stmt_func_call(func_call_stmt *fc_stmt, char *tabs) {
     fprintf(f_ast, "%sfunc_call_stmt {\n", tabs);
     strcat(tabs, "\t");
     fprintf(f_ast, "%sname: %s;\n", tabs, fc_stmt->name);
+    fprintf(f_ast, "%s\tline_no: %d;\n", tabs, fc_stmt->line_no);
     // fprintf(f_ast, "%stype: %s;\n", tabs, get_type_name(fc_stmt->type));
     fprintf(f_ast, "%sarguments: \n", tabs);
     print_arg(fc_stmt->args, strcat(tabs, "\t"));
@@ -180,6 +189,7 @@ void print_stmt_func_call(func_call_stmt *fc_stmt, char *tabs) {
 
 void print_stmt_print(print_stmt *p_stmt, char *tabs) {
     fprintf(f_ast, "%sprint_stmt {\n", tabs);
+    fprintf(f_ast, "%s\tline_no: %d;\n", tabs, p_stmt->line_no);
     fprintf(f_ast, "%s\targuments: \n", tabs);
     print_exprn(p_stmt->arg, strcat(tabs, "\t\t"));
     tabs[strlen(tabs)-2]='\0';
@@ -188,12 +198,14 @@ void print_stmt_print(print_stmt *p_stmt, char *tabs) {
 
 void print_stmt_read(read_stmt *r_stmt, char *tabs) {
     fprintf(f_ast, "%sread_stmt {\n", tabs);
+    fprintf(f_ast, "%s\tline_no: %d;\n", tabs, r_stmt->line_no);
     fprintf(f_ast, "%s\targument: %s\n", tabs, r_stmt->arg);
     fprintf(f_ast, "%s}\n", tabs);
 }
 
 void print_stmt_return(return_stmt *ret_stmt, char *tabs) {
     fprintf(f_ast, "%sreturn_stmt {\n", tabs);
+    fprintf(f_ast, "%s\tline_no: %d;\n", tabs, ret_stmt->line_no);
     fprintf(f_ast, "%s\targuments: \n", tabs);
     print_exprn(ret_stmt->ret_expr, strcat(tabs, "\t\t"));
     tabs[strlen(tabs)-2]='\0';

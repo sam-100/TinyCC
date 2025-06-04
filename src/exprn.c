@@ -54,6 +54,7 @@ exprn *create_exprn_bool(bool val) {
 
 void print_exprn(exprn *e, char *tabs) {
     fprintf(f_ast, "%sexprn \n", tabs);
+    fprintf(f_ast, "%sline_no: %d;\n", tabs, e->line_no);
     fprintf(f_ast, "%s{\n", tabs);
     
     tabs = strcat(tabs, "\t");

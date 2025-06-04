@@ -55,6 +55,7 @@ extern program *root;
 %type <c_val> CHAR_LITERAL
 
 
+%locations
 
 %union {
         struct program *p;
@@ -96,13 +97,25 @@ global_decl_list:
 
 
 var_decl:
-        IDENTIFIER COLON type SEMICOLON                 { $$ = create_var_decl($1, $3, NULL); }
-        | IDENTIFIER COLON type ASSIGN exprn SEMICOLON  { $$ = create_var_decl($1, $3, $5); }
+        IDENTIFIER COLON type SEMICOLON                 { 
+                                                                $$ = create_var_decl($1, $3, NULL); 
+                                                                $$->line_no = @1.first_line;
+                                                        }
+        | IDENTIFIER COLON type ASSIGN exprn SEMICOLON  { 
+                                                                $$ = create_var_decl($1, $3, $5); 
+                                                                $$->line_no = @1.first_line;
+                                                        }
         ;
 
 func_decl:
-        IDENTIFIER COLON FUNCTION type OPEN_BRACKET param_list CLOSED_BRACKET SEMICOLON                 { $$ = create_func_decl($1, $4, $6, NULL); }
-        | IDENTIFIER COLON FUNCTION type OPEN_BRACKET param_list CLOSED_BRACKET func_body               { $$ = create_func_decl($1, $4, $6, $8); }
+        IDENTIFIER COLON FUNCTION type OPEN_BRACKET param_list CLOSED_BRACKET SEMICOLON         { 
+                                                                                                        $$ = create_func_decl($1, $4, $6, NULL); 
+                                                                                                        $$->line_no = @1.first_line;
+                                                                                                }
+        | IDENTIFIER COLON FUNCTION type OPEN_BRACKET param_list CLOSED_BRACKET func_body       { 
+                                                                                                        $$ = create_func_decl($1, $4, $6, $8); 
+                                                                                                        $$->line_no = @1.first_line;
+                                                                                                }
         ;
 
 type:   INTEGER                                 { $$ = get_type($1); }
@@ -112,14 +125,36 @@ type:   INTEGER                                 { $$ = get_type($1); }
         ;
 
 exprn:  
-        OPEN_BRACKET exprn CLOSED_BRACKET       { $$ = $2; }
-        | exprn PLUS exprn                      { $$ = create_exprn($1, OP_PLUS, $3); }
-        | exprn MINUS exprn                     { $$ = create_exprn($1, OP_MINUS, $3); }
-        | exprn MULTIPLY exprn                  { $$ = create_exprn($1, OP_MUL, $3); }
-        | exprn DIVIDE exprn                    { $$ = create_exprn($1, OP_DIV, $3); }
-        | MINUS exprn %prec UMINUS              { $$ = negate_exprn($2); }
-        | IDENTIFIER                            { $$ = create_exprn_id($1); }
-        | literal                               { $$ = $1; }
+        OPEN_BRACKET exprn CLOSED_BRACKET       { 
+                                                        $$ = $2; 
+                                                }
+        | exprn PLUS exprn                      { 
+                                                        $$ = create_exprn($1, OP_PLUS, $3); 
+                                                        $$->line_no = @2.first_line;
+                                                }
+        | exprn MINUS exprn                     { 
+                                                        $$ = create_exprn($1, OP_MINUS, $3); 
+                                                        $$->line_no = @2.first_line;
+                                                }
+        | exprn MULTIPLY exprn                  { 
+                                                        $$ = create_exprn($1, OP_MUL, $3); 
+                                                        $$->line_no = @2.first_line;
+                                                }
+        | exprn DIVIDE exprn                    { 
+                                                        $$ = create_exprn($1, OP_DIV, $3); 
+                                                        $$->line_no = @2.first_line;
+                                                }
+        | MINUS exprn %prec UMINUS              { 
+                                                        $$ = negate_exprn($2); 
+                                                        $$->line_no = @1.first_line;
+                                                }
+        | IDENTIFIER                            { 
+                                                        $$ = create_exprn_id($1); 
+                                                        $$->line_no = @1.first_line;
+                                                }
+        | literal                               { 
+                                                        $$ = $1; 
+                                                }
         ;
 
 param_list:     
@@ -153,37 +188,70 @@ statement:
         ;
 
 var_decl_stmt:
-        var_decl                                { $$ = create_var_decl_stmt($1); }
+        var_decl                                { 
+                                                        $$ = create_var_decl_stmt($1);
+                                                        $$->line_no = @1.first_line; 
+                                                }
         ;
 
 print_stmt:
-        PRINT exprn SEMICOLON                   { $$ = create_print_stmt($2); }
+        PRINT exprn SEMICOLON                   { 
+                                                        $$ = create_print_stmt($2); 
+                                                        $$->line_no = @1.first_line;
+                                                }
         ;
 
 read_stmt:
-        READ IDENTIFIER SEMICOLON               { $$ = create_read_stmt($2); }
+        READ IDENTIFIER SEMICOLON               { 
+                                                        $$ = create_read_stmt($2); 
+                                                        $$->line_no = @1.first_line;
+                                                }
         ;
 
 func_call_stmt: 
-        IDENTIFIER OPEN_BRACKET arg_list CLOSED_BRACKET SEMICOLON               { $$ = create_func_call_stmt($1, $3); }
+        IDENTIFIER OPEN_BRACKET arg_list CLOSED_BRACKET SEMICOLON               { 
+                                                                                        $$ = create_func_call_stmt($1, $3); 
+                                                                                        $$->line_no = @1.first_line;
+                                                                                }
         ;
 
-literal: INTEGER_LITERAL                        { $$ = create_exprn_int($1); }
-        | BOOLEAN_LITERAL                       { $$ = create_exprn_bool($1); }
-        | CHAR_LITERAL                          { $$ = create_exprn_char($1); }
+literal: INTEGER_LITERAL                        { 
+                                                        $$ = create_exprn_int($1); 
+                                                        $$->line_no = @1.first_line;
+                                                }
+        | BOOLEAN_LITERAL                       { 
+                                                        $$ = create_exprn_bool($1); 
+                                                        $$->line_no = @1.first_line;
+                                                }
+        | CHAR_LITERAL                          { 
+                                                        $$ = create_exprn_char($1); 
+                                                        $$->line_no = @1.first_line;
+                                                }
         ;
 
 assign_stmt:
-        IDENTIFIER ASSIGN exprn SEMICOLON       { $$ = create_assign_stmt_from_exprn($1, $3); }
-        | IDENTIFIER ASSIGN func_call SEMICOLON { $$ = create_assign_stmt_from_func_call($1, $3); }
+        IDENTIFIER ASSIGN exprn SEMICOLON       { 
+                                                        $$ = create_assign_stmt_from_exprn($1, $3); 
+                                                        $$->line_no=@1.first_line;
+                                                }
+        | IDENTIFIER ASSIGN func_call SEMICOLON { 
+                                                        $$ = create_assign_stmt_from_func_call($1, $3); 
+                                                        $$->line_no=@1.first_line;
+                                                }
         ;
 
 return_stmt:
-        RETURN exprn SEMICOLON                  { $$ = create_ret_stmt($2); }
+        RETURN exprn SEMICOLON                  { 
+                                                        $$ = create_ret_stmt($2); 
+                                                        $$->line_no = @1.first_line; 
+                                                }
         ;
 
 func_call: 
-        IDENTIFIER OPEN_BRACKET arg_list CLOSED_BRACKET         { $$ = create_func_call($1, $3); }
+        IDENTIFIER OPEN_BRACKET arg_list CLOSED_BRACKET         { 
+                                                                        $$ = create_func_call($1, $3); 
+                                                                        $$->line_no = @1.first_line;
+                                                                }
         ;
 
 arg_list:

@@ -20,6 +20,7 @@ typedef struct argument {
 typedef struct func_call {
     char *name;
     argument *arg_list;
+    int line_no;
 } func_call;
 
 // function body:- 
