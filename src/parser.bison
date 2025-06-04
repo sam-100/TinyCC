@@ -39,7 +39,7 @@ extern program *root;
 %type <stmt> stmt_list statement
 %type <e> exprn literal
 %type <param> param_list param_declaration
-%type <arg> arg_list
+%type <arg> arg_list argument
 %type <fb> func_body
 %type <as_stmt> assign_stmt
 %type <vd_stmt> var_decl_stmt
@@ -169,7 +169,7 @@ func_body:
 
 
 param_declaration:
-        IDENTIFIER COLON type                           { $$ = create_param($1, $3); }
+        IDENTIFIER COLON type                           { $$ = create_param($1, $3); $$->line_no = @1.first_line; }
         ;
     
 stmt_list:
@@ -255,9 +255,19 @@ func_call:
         ;
 
 arg_list:
-        arg_list COMMA exprn                    { $$ = append_arg($1, create_arg($3)); }
-        | exprn                                 { $$ = create_arg($1); }
-        |                                       { $$ = create_arg(NULL); }
+        arg_list COMMA argument                 { 
+                                                        $$ = append_arg($1, $3); 
+                                                        $$->line_no = @2.first_line;
+                                                }
+        | argument                              { $$ = $1; }
+        |                                       { $$ = NULL; }
+        ;
+
+argument:
+        exprn                                   { 
+                                                        $$ = create_arg($1); 
+                                                        $$->line_no = $1->line_no; 
+                                                }
         ;
 
 %%

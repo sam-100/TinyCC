@@ -4,6 +4,7 @@
 #include <stdlib.h>
 #include "utils.h"
 #include <string.h>
+#include "symtab_stack.h"
 
 // Create arguments and parameters
 argument *create_arg(exprn *e) {
@@ -58,12 +59,14 @@ func_call *create_func_call(char *name, argument *arg_list) {
     func_call *fc = (func_call*)malloc(sizeof(func_call));
     fc->name = name;
     fc->arg_list = arg_list;
+    fc->sym = NULL;
     return fc;
 }
 
 func_body *create_func_body(statement *stmt_list) {
     func_body *fb = (func_body*)malloc(sizeof(func_body));
     fb->stmt_list = stmt_list;
+    fb->symtab = NULL;
     return fb;
 }
 
@@ -96,3 +99,44 @@ void print_func_body(func_body *fb) {
 }
 
 
+void func_call_resolve(func_call *fc, symtab_stack *st) {
+    if(scope_lookup(fc->name, st) == false) {
+        fprintf(f_error, "Error: undeclared function '%s' called at line no. %d\n", fc->name, fc->line_no);
+        exit(1);
+    }
+
+    fc->sym = scope_lookup(fc->name, st);
+    
+    arg_resolve(fc->arg_list, st);
+}
+
+void func_body_resolve(func_body *fb, symtab_stack *st) {
+    // scope_enter(st);
+    stmt_resolve(fb->stmt_list, st);
+    // scope_exit(st);
+}
+
+void parameter_resolve(parameter *par, symtab_stack *st) {
+    if(par == NULL)
+        return;
+
+    if(scope_lookup_current(par->name, st)) {
+        fprintf(f_error, "Parameter %s declared again at line no. %d\n", par->name, par->line_no);
+        return;
+    }
+
+    par->sym = create_symbol_from_parameter(par, st);
+    scope_bind(par->name, par->sym, st);
+
+    parameter_resolve(par->next, st);
+}
+
+void arg_resolve(argument *arg, symtab_stack *st) {
+    if(arg == NULL)
+        return;
+    
+    exprn_resolve(arg->e, st);
+    arg->sym = arg->e->sym;
+
+    arg_resolve(arg->next, st);
+}

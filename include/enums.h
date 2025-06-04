@@ -51,9 +51,8 @@ typedef union {
 } value;
 
 typedef enum {
-    GLOBAL, 
-    PARAMETER, 
-    LOCAL
-} symbol_t;
+    SCOPE_GLOBAL, 
+    SCOPE_LOCAL
+} scope_t;
 
 #endif

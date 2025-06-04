@@ -25,7 +25,7 @@ int main(int argc, char **argv) {
     printf("Program parsed successfully!\n");
     
     // name resolution
-    // program_resolve(root);
+    program_resolve(root);
 
     // type checking
 

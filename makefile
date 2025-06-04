@@ -1,5 +1,5 @@
 CC=gcc
-BIN= bin/scanner.o bin/main.o bin/parser.o bin/arguments.o bin/utils.o bin/exprn.o bin/stmt.o bin/decl.o bin/func.o bin/program.o
+BIN= bin/scanner.o bin/main.o bin/parser.o bin/arguments.o bin/utils.o bin/exprn.o bin/stmt.o bin/decl.o bin/func.o bin/program.o bin/symbol.o bin/symtab.o bin/symtab_stack.o
 CFLAGS= -I include
 
 # Target compiler rules
@@ -30,6 +30,12 @@ bin/program.o: src/program.c include/program.h
 	$(CC) -c -o $@ ${CFLAGS} src/program.c
 bin/func.o: src/func.c include/func.h
 	$(CC) -c -o $@ ${CFLAGS} src/func.c
+bin/symbol.o: src/symbol.c include/symbol.h
+	$(CC) -c -o $@ ${CFLAGS} src/symbol.c
+bin/symtab.o: src/symtab.c include/symtab.h
+	$(CC) -c -o $@ ${CFLAGS} src/symtab.c
+bin/symtab_stack.o: src/symtab_stack.c include/symtab_stack.h
+	$(CC) -c -o $@ ${CFLAGS} src/symtab_stack.c
 
 # Scanner and parser
 src/scanner.c: src/scanner.flex

@@ -6,6 +6,7 @@
         "print-ast.h": "c",
         "exprn.h": "c",
         "enums.h": "c",
-        "program.h": "c"
+        "program.h": "c",
+        "declarations.h": "c"
     }
 }

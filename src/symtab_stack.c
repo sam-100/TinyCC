@@ -16,8 +16,14 @@ void scope_exit(symtab_stack *st) {
     st->top--;
 }
 
-void scope_level(symtab_stack *st) {
-    return st->top;
+int scope_level(symtab_stack *st) {
+    return st->top+1;
+}
+
+scope_t scope_type(symtab_stack *st) {
+    if(scope_level(st) == 1)
+        return SCOPE_GLOBAL;
+    return SCOPE_LOCAL;
 }
 
 void scope_bind(char *name, symbol *sym, symtab_stack *st) {
@@ -27,7 +33,7 @@ void scope_bind(char *name, symbol *sym, symtab_stack *st) {
 
 symbol *scope_lookup(char *name, symtab_stack *st) {
     for(int i=st->top; i>=0; i--) {
-        symbol *sym = lookup_symbol(name, st->arr[st->top]);
+        symbol *sym = lookup_symbol(name, st->arr[i]);
         if(sym)
             return sym;
     }
@@ -36,4 +42,10 @@ symbol *scope_lookup(char *name, symtab_stack *st) {
 
 symbol *scope_lookup_current(char *name, symtab_stack *st) {
     return lookup_symbol(name, st->arr[st->top]);
+}
+
+symtab *scope_get_current(symtab_stack *st) {
+    if(st->top == -1)
+        return NULL;
+    return st->arr[st->top];
 }

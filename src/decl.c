@@ -3,6 +3,7 @@
 #include "utils.h"
 #include "enums.h"
 #include "func.h"
+#include <stdio.h>
 
 
 decl *create_decl_from_var(var_decl *vd) {
@@ -98,3 +99,47 @@ void print_func_decl(func_decl *fd) {
     fprintf(f_ast, "}\n");
 }
 
+void decl_resolve(decl *d, symtab_stack *st) {
+    if(d == NULL)
+        return;
+    
+    switch(d->kind)
+    {
+        case DECL_VAR:
+            var_decl_resolve(d->vd, st);
+            break;
+        case DECL_FUNC:
+            func_decl_resolve(d->fd, st);
+            break;
+    }
+    decl_resolve(d->next, st);
+}
+
+void var_decl_resolve(var_decl *vd, symtab_stack *st) {
+    if(scope_lookup_current(vd->name, st)) {
+        fprintf(stderr, "Error: redeclaration of symbol %s at line %d\n", vd->name, vd->line_no);
+        return;
+    }
+    
+    vd->sym = create_symbol_from_var_decl(vd, st);
+    scope_bind(vd->name, vd->sym, st);
+}
+
+void func_decl_resolve(func_decl *fd, symtab_stack *st) {
+    if(scope_lookup_current(fd->name, st)) {
+        fprintf(stderr, "Error: redeclaration of symbol %s at line %d\n", fd->name, fd->line_no);
+        return;
+    }
+
+    fd->sym = create_symbol_from_func_decl(fd, st);
+    scope_bind(fd->name, fd->sym, st);
+
+    scope_enter(st);        // enter function scope
+    parameter_resolve(fd->param_list, st);
+    fd->symtab = scope_get_current(st);       // save function scope
+
+    if(fd->body)
+        func_body_resolve(fd->body, st);
+    scope_exit(st);         // exit function scope
+    return;
+}

@@ -12,11 +12,13 @@ typedef struct print_stmt {
 typedef struct read_stmt {
     char *arg;
     int line_no;
+    symbol *sym;
 } read_stmt;
 
 typedef struct var_decl_stmt {
     var_decl *vd;
     int line_no;
+    symbol *sym;
 } var_decl_stmt;
 
 typedef struct func_call_stmt {
@@ -24,11 +26,13 @@ typedef struct func_call_stmt {
     type_t type;
     argument *args;
     int line_no;
+    symbol *sym;
 } func_call_stmt;
 
 typedef struct return_stmt {
     exprn *ret_expr;
     int line_no;
+    symbol *sym;
 } return_stmt;
 
 typedef struct assign_stmt {
@@ -36,6 +40,7 @@ typedef struct assign_stmt {
     assign_t kind;
     type_t type;
     int line_no;
+    symbol *sym;
     union {
         exprn *e;
         struct func_call *fc;
@@ -56,7 +61,7 @@ typedef struct statement {
     struct statement *next;
 } statement;
 
-
+/* functions to create statement from various sub-statements */
 statement *create_stmt_from_var_decl(var_decl_stmt *vd);
 statement *create_stmt_from_assign(assign_stmt *as);
 statement *create_stmt_from_return(return_stmt *rt);
@@ -66,6 +71,7 @@ statement *create_stmt_from_func_call(func_call_stmt *fs);
 statement *append_stmt(statement *stmt, statement *next_stmt);
 void print_statement(statement *stmt, char *tabs);
 
+/* functions to create statements of various type */
 var_decl_stmt *create_var_decl_stmt(var_decl *vd);
 assign_stmt *create_assign_stmt_from_func_call(char *name, func_call *fc);
 assign_stmt *create_assign_stmt_from_exprn(char *name, exprn *e);
@@ -74,11 +80,22 @@ print_stmt *create_print_stmt(exprn *e);
 read_stmt *create_read_stmt(char *name);
 func_call_stmt *create_func_call_stmt(char *name, argument *arg_list);
 
+/* methods to print statements of various types*/
 void print_stmt_var_decl(var_decl_stmt *vdstmt, char *tabs);
 void print_stmt_assignment(assign_stmt *asstmt, char *tabs);
 void print_stmt_func_call(func_call_stmt *fc_stmt, char *tab);
 void print_stmt_print(print_stmt *p, char *tab);
 void print_stmt_read(read_stmt *r_stmt, char *tabs);
 void print_stmt_return(return_stmt *ret_stmt, char *tabs);
+
+/* methods to construct and resolve symbols for each statement */
+void stmt_resolve(statement *stmt, symtab_stack *st);
+void var_decl_stmt_resolve(var_decl_stmt *vd_stmt, symtab_stack *st);
+void assign_stmt_resolve(assign_stmt *as_stmt, symtab_stack *st);
+void func_call_stmt_resolve(func_call_stmt *fc_stmt, symtab_stack *st);
+void print_stmt_resolve(print_stmt *p_stmt, symtab_stack *st);
+void read_stmt_resolve(read_stmt *r_stmt, symtab_stack *st);
+void ret_stmt_resolve(return_stmt *ret_stmt, symtab_stack *st);
+
 
 #endif

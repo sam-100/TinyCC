@@ -81,3 +81,21 @@ void print_exprn(exprn *e, char *tabs) {
     tabs[strlen(tabs)-1] = '\0';
     fprintf(f_ast, "%s}\n", tabs);
 }
+
+
+void exprn_resolve(exprn *e, symtab_stack *st) {
+    if(e->kind == BINARY_EXPRN) {
+        exprn_resolve(e->left, st);
+        exprn_resolve(e->right, st);
+        return;
+    }
+
+    if(e->kind == IDENTIFIER_EXPRN) {
+        if(scope_lookup(e->name, st) == false) {
+            fprintf(f_error, "Error: Symbol %s at line no. %d not declared before.\n", e->name, e->line_no);
+            exit(1);
+        }
+        e->sym = scope_lookup(e->name, st);
+        return;
+    }
+}

@@ -212,3 +212,87 @@ void print_stmt_return(return_stmt *ret_stmt, char *tabs) {
     fprintf(f_ast, "%s}\n", tabs);
 
 }
+
+
+void stmt_resolve(statement *stmt, symtab_stack *st) {
+    if(stmt == NULL)
+        return;
+    
+    switch(stmt->kind)
+    {
+        case STMT_VAR_DECL:
+            var_decl_stmt_resolve(stmt->vd_stmt, st);
+            break;
+        case STMT_ASSIGN:
+            assign_stmt_resolve(stmt->as_stmt, st);
+            break;
+        case STMT_FUNC_CALL:
+            func_call_stmt_resolve(stmt->fc_stmt, st);
+            break;
+        case STMT_PRINT:
+            break;
+        case STMT_READ:
+            break;
+        case STMT_RETURN:
+            break;
+        
+    }
+
+    stmt_resolve(stmt->next, st);
+}
+
+
+void var_decl_stmt_resolve(var_decl_stmt *vd_stmt, symtab_stack *st) {
+    var_decl_resolve(vd_stmt->vd, st);
+    vd_stmt->sym = vd_stmt->vd->sym;
+}
+
+void assign_stmt_resolve(assign_stmt *as_stmt, symtab_stack *st) {
+    if(scope_lookup(as_stmt->name, st) == false) {
+        fprintf(f_error, "Symbol %s at line no. %d is not defined before\n", as_stmt->name, as_stmt->line_no);
+        return;
+    }
+
+    as_stmt->sym = scope_lookup(as_stmt->name, st);
+
+    // resolving rhs 
+    switch(as_stmt->kind)
+    {
+        case ASSIGN_EXPRN:
+            exprn_resolve(as_stmt->e, st);
+            break;
+        case ASSIGN_FUNC_CALL:
+            func_call_resolve(as_stmt->fc, st);
+            break;
+    }
+    return;
+}
+
+void func_call_stmt_resolve(func_call_stmt *fc_stmt, symtab_stack *st) {
+    if(scope_lookup(fc_stmt->name, st) == false) {
+        fprintf(f_error, "Error: undeclared function '%s' called at line no. %d\n", fc_stmt->name, fc_stmt->line_no);
+        exit(1);
+    }
+
+    fc_stmt->sym = scope_lookup(fc_stmt->name, st);
+
+    arg_resolve(fc_stmt->args, st);
+}
+
+void print_stmt_resolve(print_stmt *p_stmt, symtab_stack *st) {
+    exprn_resolve(p_stmt->arg, st);
+}
+
+void read_stmt_resolve(read_stmt *r_stmt, symtab_stack *st) {
+    if(scope_lookup(r_stmt->arg, st) == false) {
+        fprintf(f_error, "Reading into undeclared symbol '%s' at line_no: %d\n", r_stmt->arg, r_stmt->line_no);
+        exit(1);
+    }
+    r_stmt->sym = scope_lookup(r_stmt->arg, st);
+}
+
+void ret_stmt_resolve(return_stmt *ret_stmt, symtab_stack *st) {
+    exprn_resolve(ret_stmt->ret_expr, st);
+    ret_stmt->sym = ret_stmt->ret_expr->sym;
+    return;
+}

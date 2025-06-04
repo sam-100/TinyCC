@@ -3,6 +3,8 @@
 
 #include "enums.h"
 #include <stdbool.h>
+#include "decl.h"
+#include "symtab_stack.h"
 
 typedef struct exprn {
     char *name;
@@ -10,6 +12,7 @@ typedef struct exprn {
     exprn_t kind;
     int line_no;
     operator_t op;
+    symbol *sym;
     struct exprn *left, *right;
     value value;
 } exprn;
@@ -22,5 +25,7 @@ exprn *create_exprn_int(int val);
 exprn *create_exprn_char(char val);
 exprn *create_exprn_bool(bool val);
 void print_exprn(exprn *e, char *tabs);
+
+void exprn_resolve(exprn *e, symtab_stack *st);
 
 #endif

@@ -5,7 +5,7 @@
 #include <fcntl.h>
 #include "utils.h"
 
-FILE *f_input, *f_tokens, *f_ast, *f_nowhere;
+FILE *f_input, *f_tokens, *f_ast, *f_nowhere, *f_error;
 char *input_name;
 extern FILE *yyin;
 

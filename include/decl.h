@@ -4,6 +4,7 @@
 #include "enums.h"
 #include "exprn.h"
 #include "func.h"
+#include "symtab_stack.h"
 
 typedef struct var_decl {
     char *name;
@@ -11,6 +12,7 @@ typedef struct var_decl {
     int line_no;
     exprn *rhs;
     bool initialized;
+    symbol *sym;
     union {
         int i_val;
         bool b_val;
@@ -22,6 +24,8 @@ typedef struct func_decl {
     char *name;
     type_t type;
     int line_no;
+    symbol *sym;
+    symtab *symtab;
     struct parameter *param_list;
     struct func_body *body;
 } func_decl;
@@ -46,5 +50,7 @@ void print_decl(decl *d);
 void print_var_decl(var_decl *vd);
 void print_func_decl(func_decl *fd);
 
-
+void decl_resolve(decl *d, symtab_stack *st);
+void var_decl_resolve(var_decl *vd, symtab_stack *st);
+void func_decl_resolve(func_decl *fd, symtab_stack *st);
 #endif
