@@ -20,6 +20,7 @@ typedef struct argument {
     exprn *e;
     int line_no;
     symbol *sym;
+    int which;
     struct argument *next;
 } argument;
 

@@ -263,10 +263,7 @@ func_call:
         ;
 
 arg_list:
-        arg_list COMMA argument                 { 
-                                                        $$ = append_arg($1, $3); 
-                                                        $$->line_no = @2.first_line;
-                                                }
+        arg_list COMMA argument                 { $$ = append_arg($1, $3); }
         | argument                              { $$ = $1; }
         |                                       { $$ = NULL; }
         ;

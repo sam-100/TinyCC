@@ -101,5 +101,5 @@ void exprn_resolve(exprn *e, symtab_stack *st) {
 }
 
 void exprn_typecheck(exprn *e, symtab_stack *st) {
-    
+
 }

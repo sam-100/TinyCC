@@ -26,6 +26,7 @@ int main(int argc, char **argv) {
     
     // name resolution
     program_resolve(root);
+    printf("Symbol table constructed and resolved.\n");
 
     // print symbol tables
     program_print_symtab(root);

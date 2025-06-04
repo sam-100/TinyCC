@@ -11,6 +11,7 @@ argument *create_arg(exprn *e) {
     argument *a = (argument*)malloc(sizeof(argument));
     a->e = e;
     a->next = NULL;
+    a->which = 1;
     return a;
 }
 
@@ -19,13 +20,18 @@ argument *append_arg(argument *a, argument *na) {
     while(ptr->next)
         ptr=ptr->next;
     ptr->next = na;
+    na->which = ptr->which+1;
+    // printf("argument %s(%d) appended to argument %s(%d).\n", na->e->name, na->which, ptr->e->name, ptr->which);
     return a;
 }
 
 void print_arg(argument *arg, char *tabs) {
     for(argument *ptr=arg; ptr != NULL; ptr=ptr->next) {
+        fprintf(f_ast, "%sargument {\n", tabs);
+        fprintf(f_ast, "%s\twhich: %d;\n", tabs, arg->which);
         print_exprn(ptr->e, strcat(tabs, "\t"));
         tabs[strlen(tabs)-1]='\0';
+        fprintf(f_ast, "%s}\n", tabs);
     }
 }
 
@@ -39,6 +45,7 @@ parameter *create_param(char *name, type_t type) {
     p->offset = 0;
     return p;
 }
+
 parameter *append_param(parameter *p, parameter *np) {
     parameter *ptr = p;
     while(ptr->next)
@@ -81,8 +88,8 @@ void print_func_call(func_call *fc, char *tabs) {
     strcat(tabs, "\t");
     fprintf(f_ast, "%sname: %s;\n", tabs, fc->name);
     fprintf(f_ast, "%sarguments: \n", tabs);
-    print_arg(fc->arg_list, tabs);
-    tabs[strlen(tabs)-1]='\0';
+    print_arg(fc->arg_list, strcat(tabs, "\t"));
+    tabs[strlen(tabs)-2]='\0';
 
     fprintf(f_ast, "\n");
     fprintf(f_ast, "%s}\n", tabs);
@@ -142,6 +149,7 @@ void arg_resolve(argument *arg, symtab_stack *st) {
         return;
     
     exprn_resolve(arg->e, st);
+    // arg->sym = create_symbol(arg->e->name, SYM_VAR, scope_type(st), arg->e->type, arg->which, -1, false);
     arg->sym = arg->e->sym;
 
     arg_resolve(arg->next, st);
