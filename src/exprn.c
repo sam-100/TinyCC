@@ -99,3 +99,7 @@ void exprn_resolve(exprn *e, symtab_stack *st) {
         return;
     }
 }
+
+void exprn_typecheck(exprn *e, symtab_stack *st) {
+    
+}

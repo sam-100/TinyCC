@@ -52,6 +52,7 @@ typedef union {
 
 typedef enum {
     SCOPE_GLOBAL, 
+    SCOPE_PARAMETER, 
     SCOPE_LOCAL
 } scope_t;
 

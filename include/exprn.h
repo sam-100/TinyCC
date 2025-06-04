@@ -28,4 +28,6 @@ void print_exprn(exprn *e, char *tabs);
 
 void exprn_resolve(exprn *e, symtab_stack *st);
 
+void exprn_typecheck(exprn *e, symtab_stack *st);
+
 #endif

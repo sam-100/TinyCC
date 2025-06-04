@@ -113,6 +113,8 @@ char *get_scope_name(scope_t scope) {
             return "GLOBAL";
         case SCOPE_LOCAL:
             return "LOCAL";
+        case SCOPE_PARAMETER:
+            return "PARAMETER";
     }
     return "UNKNOWN SCOPE";
 }

@@ -156,7 +156,7 @@ void decl_print_symtab(decl *d) {
 void func_decl_print_symtab(func_decl *fd) {
     if(fd->body == NULL)
         return;
-    fprintf(f_symtab, "function %s() symtab: \n", fd->name);
+    fprintf(f_symtab, "Function %s() symtab: \n", fd->name);
     print_symtab(fd->symtab);
 }
 
@@ -176,7 +176,7 @@ void decl_typecheck(decl *d, symtab_stack *st) {
     decl_typecheck(d->next, st);
 }
 
-void func_decl_typecheck(func_decl *fd, symtab_stack *st) {    
+void func_decl_typecheck(func_decl *fd, symtab_stack *st) {
     func_body_typecheck(fd->body, st);
 }
 
@@ -184,7 +184,7 @@ void var_decl_typecheck(var_decl *vd, symtab_stack *st) {
     if(vd->initialized == false)
         return;
     
-    // exprn_typecheck(vd->rhs, st);
+    exprn_typecheck(vd->rhs, st);
     if(vd->type != vd->rhs->type) {
         fprintf(f_error, "Variable %s of type %s assigned incompatable exprn of type %s at line no: %d", vd->name, get_type_name(vd->type), get_type_name(vd->rhs->type), vd->line_no);
         exit(2);

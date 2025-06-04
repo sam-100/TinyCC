@@ -125,10 +125,11 @@ void parameter_resolve(parameter *par, symtab_stack *st) {
         return;
     }
 
-    par->sym = create_symbol(par->name, SYM_VAR, scope_type(st), par->type, -1, false);
+    par->sym = create_symbol(par->name, SYM_VAR, SCOPE_PARAMETER, par->type, -1, false);
     scope_bind(par->name, par->sym, st);
 
     parameter_resolve(par->next, st);
+    printf("Parameter %s resolved at line no: %d\n", par->name, par->line_no);
 }
 
 void arg_resolve(argument *arg, symtab_stack *st) {
