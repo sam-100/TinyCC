@@ -16,9 +16,18 @@ typedef struct read_stmt {
 } read_stmt;
 
 typedef struct var_decl_stmt {
-    var_decl *vd;
+    // var_decl *vd;
+    char *name;
+    type_t type;
     int line_no;
+    exprn *rhs;
+    bool initialized;
     symbol *sym;
+    union {
+        int i_val;
+        bool b_val;
+        char c_val;
+    } value;
 } var_decl_stmt;
 
 typedef struct func_call_stmt {
@@ -72,7 +81,7 @@ statement *append_stmt(statement *stmt, statement *next_stmt);
 void print_statement(statement *stmt, char *tabs);
 
 /* functions to create statements of various type */
-var_decl_stmt *create_var_decl_stmt(var_decl *vd);
+var_decl_stmt *create_var_decl_stmt(char *name, type_t type, exprn *e);
 assign_stmt *create_assign_stmt_from_func_call(char *name, func_call *fc);
 assign_stmt *create_assign_stmt_from_exprn(char *name, exprn *e);
 return_stmt *create_ret_stmt(exprn *e);

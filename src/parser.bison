@@ -188,11 +188,16 @@ statement:
         ;
 
 var_decl_stmt:
-        var_decl                                { 
-                                                        $$ = create_var_decl_stmt($1);
-                                                        $$->line_no = @1.first_line; 
-                                                }
+        IDENTIFIER COLON type SEMICOLON                 { 
+                                                                $$ = create_var_decl_stmt($1, $3, NULL); 
+                                                                $$->line_no = @1.first_line;
+                                                        }
+        | IDENTIFIER COLON type ASSIGN exprn SEMICOLON  { 
+                                                                $$ = create_var_decl_stmt($1, $3, $5); 
+                                                                $$->line_no = @1.first_line;
+                                                        }
         ;
+
 
 print_stmt:
         PRINT exprn SEMICOLON                   { 

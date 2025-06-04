@@ -96,9 +96,21 @@ void print_statement(statement *stmt, char *tabs) {
 
 
 // Creating sub_stmts
-var_decl_stmt *create_var_decl_stmt(var_decl *vd) {
+var_decl_stmt *create_var_decl_stmt(char *name, type_t type, exprn *e) {
     var_decl_stmt *stmt = (var_decl_stmt*)malloc(sizeof(var_decl_stmt));
-    stmt->vd = vd;
+    stmt->name = name;
+    stmt->type = type;
+    if(e != NULL) {
+        stmt->initialized = true;
+        stmt->rhs = e;
+        if(e->kind == LITERAL_EXPRN) {
+            stmt->value.b_val = e->value.b_val;
+            stmt->value.c_val = e->value.c_val;
+            stmt->value.i_val = e->value.i_val;
+        }
+    } else {
+        stmt->initialized = false;
+    }
     return stmt;
 }
 
@@ -146,9 +158,10 @@ func_call_stmt *create_func_call_stmt(char *name, argument *arg_list) {
 
 void print_stmt_var_decl(var_decl_stmt *vd_stmt, char *tabs) {
     fprintf(f_ast, "%svar_decl_stmt {\n", tabs);
-    fprintf(f_ast, "%s\tname: %s;\n", tabs, vd_stmt->vd->name);
-    fprintf(f_ast, "%s\ttype: %s;\n", tabs, get_type_name(vd_stmt->vd->type));
+    fprintf(f_ast, "%s\tname: %s;\n", tabs, vd_stmt->name);
+    fprintf(f_ast, "%s\ttype: %s;\n", tabs, get_type_name(vd_stmt->type));
     fprintf(f_ast, "%s\tline_no: %d;\n", tabs, vd_stmt->line_no);
+    fprintf(f_ast, "%s\tinit: %s;\n", tabs, btoa(vd_stmt->initialized));
     fprintf(f_ast, "%s}\n", tabs);
 }
 
@@ -246,14 +259,21 @@ void stmt_resolve(statement *stmt, symtab_stack *st) {
 
 
 void var_decl_stmt_resolve(var_decl_stmt *vd_stmt, symtab_stack *st) {
-    var_decl_resolve(vd_stmt->vd, st);
-    vd_stmt->sym = vd_stmt->vd->sym;
+    // var_decl_resolve(vd_stmt->vd, st);
+    // vd_stmt->sym = vd_stmt->vd->sym;
+    if(scope_lookup_current(vd_stmt->name, st) != NULL) {
+        fprintf(f_error, "Symbol %s at declared again at line no. %d.\n", vd_stmt->name, vd_stmt->line_no);
+        exit(1);
+    }
+
+    vd_stmt->sym = create_symbol(vd_stmt->name, scope_type(st), vd_stmt->type, -1, vd_stmt->initialized);
+    scope_bind(vd_stmt->name, vd_stmt->sym, st);
 }
 
 void assign_stmt_resolve(assign_stmt *as_stmt, symtab_stack *st) {
     if(scope_lookup(as_stmt->name, st) == false) {
         fprintf(f_error, "Symbol %s at line no. %d is not defined before\n", as_stmt->name, as_stmt->line_no);
-        return;
+        exit(1);
     }
 
     as_stmt->sym = scope_lookup(as_stmt->name, st);

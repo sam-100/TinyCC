@@ -125,7 +125,7 @@ void parameter_resolve(parameter *par, symtab_stack *st) {
         return;
     }
 
-    par->sym = create_symbol_from_parameter(par, st);
+    par->sym = create_symbol(par->name, scope_type(st), par->type, -1, false);
     scope_bind(par->name, par->sym, st);
 
     parameter_resolve(par->next, st);
