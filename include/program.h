@@ -12,5 +12,6 @@ typedef struct program {
 program *create_program(decl *d);
 void print_program(program *p);
 void program_resolve(program *p);
+void program_typecheck(program *p);
 
 #endif

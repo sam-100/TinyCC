@@ -28,6 +28,7 @@ int main(int argc, char **argv) {
     program_resolve(root);
 
     // type checking
+    // program_typecheck(root);
 
 
     return 0;

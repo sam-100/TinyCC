@@ -21,4 +21,7 @@ symbol *scope_lookup(char *name, symtab_stack *st);
 symbol *scope_lookup_current(char *name, symtab_stack *st);
 symtab *scope_get_current(symtab_stack *st);
 
+void scope_push(symtab *stab, symtab_stack *st);
+void scope_pop(symtab_stack *st);
+
 #endif

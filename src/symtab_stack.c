@@ -49,3 +49,11 @@ symtab *scope_get_current(symtab_stack *st) {
         return NULL;
     return st->arr[st->top];
 }
+
+void scope_push(symtab *stab, symtab_stack *st) {
+    st->arr[++st->top] = stab;
+}
+
+void scope_pop(symtab_stack *st) {
+    st->top--;
+}

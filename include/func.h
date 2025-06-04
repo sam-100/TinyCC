@@ -54,4 +54,7 @@ void func_body_resolve(func_body *fb, symtab_stack *st);
 void parameter_resolve(parameter *par, symtab_stack *st);
 void arg_resolve(argument *arg, symtab_stack *st);
 
+void func_body_typecheck(func_body *fb, symtab_stack *st);
+
+
 #endif

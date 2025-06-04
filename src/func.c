@@ -140,3 +140,13 @@ void arg_resolve(argument *arg, symtab_stack *st) {
 
     arg_resolve(arg->next, st);
 }
+
+
+void func_body_typecheck(func_body *fb, symtab_stack *st) {
+    if(fb == NULL)
+        return;
+    
+    scope_push(fb->symtab, st);
+    stmt_typecheck(fb->stmt_list, st);
+    scope_pop(st);
+}

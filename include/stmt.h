@@ -97,5 +97,7 @@ void print_stmt_resolve(print_stmt *p_stmt, symtab_stack *st);
 void read_stmt_resolve(read_stmt *r_stmt, symtab_stack *st);
 void ret_stmt_resolve(return_stmt *ret_stmt, symtab_stack *st);
 
+void stmt_typecheck(statement *stmt, symtab_stack *st);
+
 
 #endif

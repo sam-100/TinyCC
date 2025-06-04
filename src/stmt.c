@@ -230,10 +230,13 @@ void stmt_resolve(statement *stmt, symtab_stack *st) {
             func_call_stmt_resolve(stmt->fc_stmt, st);
             break;
         case STMT_PRINT:
+            print_stmt_resolve(stmt->p_stmt, st);
             break;
         case STMT_READ:
+            read_stmt_resolve(stmt->r_stmt, st);
             break;
         case STMT_RETURN:
+            ret_stmt_resolve(stmt->ret_stmt, st);
             break;
         
     }
@@ -295,4 +298,27 @@ void ret_stmt_resolve(return_stmt *ret_stmt, symtab_stack *st) {
     exprn_resolve(ret_stmt->ret_expr, st);
     ret_stmt->sym = ret_stmt->ret_expr->sym;
     return;
+}
+
+void stmt_typecheck(statement *stmt, symtab_stack *st) {
+    if(stmt == NULL)
+        return;
+
+    switch(stmt->kind)
+    {
+        case STMT_VAR_DECL:
+            break;
+        case STMT_ASSIGN:
+            break;
+        case STMT_FUNC_CALL:
+            break;
+        case STMT_PRINT:
+            break;
+        case STMT_READ:
+            break;
+        case STMT_RETURN:
+            break;
+    }
+
+    stmt_typecheck(stmt->next, st);
 }

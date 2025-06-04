@@ -21,6 +21,18 @@ void program_resolve(program *p) {
     decl_resolve(p->decl_list, st);
     p->sym_tab = scope_get_current(st);
     scope_exit(st);
+    free(st);
+
+    return;
+}
+
+void program_typecheck(program *p) {
+    symtab_stack *st = create_symtab_stack();
+
+    scope_push(p->sym_tab, st);
+    decl_typecheck(p->decl_list, st);
+    scope_pop(st);
     
+    free(st);
     return;
 }

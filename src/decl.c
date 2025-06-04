@@ -143,3 +143,23 @@ void func_decl_resolve(func_decl *fd, symtab_stack *st) {
     scope_exit(st);         // exit function scope
     return;
 }
+
+void decl_typecheck(decl *d, symtab_stack *st) {
+    if(d == NULL)
+        return;
+    
+    switch(d->kind)
+    {
+        case DECL_VAR:
+            // todo: 
+            break;
+        case DECL_FUNC:
+            func_decl_typecheck(d->fd, st);
+            break;
+    }
+    decl_typecheck(d->next, st);
+}
+
+void func_decl_typecheck(func_decl *fd, symtab_stack *st) {    
+    func_body_typecheck(fd->body, st);
+}
