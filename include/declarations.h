@@ -24,6 +24,7 @@ typedef struct argument argument;
 typedef struct func_call func_call;
 typedef struct func_body func_body;
 
+/* symbol table constructs */
 typedef struct symbol symbol;
 typedef struct symtab symtab;
 typedef struct symtab_stack symtab_stack;

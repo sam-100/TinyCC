@@ -1,6 +1,6 @@
 CC=gcc
 BIN= bin/scanner.o bin/main.o bin/parser.o bin/arguments.o bin/utils.o bin/exprn.o bin/stmt.o bin/decl.o bin/func.o bin/program.o bin/symbol.o bin/symtab.o bin/symtab_stack.o
-CFLAGS= -I include
+CFLAGS= -I include -I include/ast -I include/symbol_table
 
 # Target compiler rules
 tinycc: ${BIN}
@@ -20,22 +20,24 @@ bin/arguments.o: src/arguments.c include/arguments.h
 	$(CC) -c -o $@ ${CFLAGS} src/arguments.c
 bin/utils.o: src/utils.c include/utils.h
 	$(CC) -c -o $@ ${CFLAGS} src/utils.c
-bin/exprn.o: src/exprn.c include/exprn.h
-	$(CC) -c -o $@ ${CFLAGS} src/exprn.c
-bin/stmt.o: src/stmt.c include/stmt.h
-	$(CC) -c -o $@ ${CFLAGS} src/stmt.c
-bin/decl.o: src/decl.c include/decl.h
-	$(CC) -c -o $@ ${CFLAGS} src/decl.c
-bin/program.o: src/program.c include/program.h
-	$(CC) -c -o $@ ${CFLAGS} src/program.c
-bin/func.o: src/func.c include/func.h
-	$(CC) -c -o $@ ${CFLAGS} src/func.c
-bin/symbol.o: src/symbol.c include/symbol.h
-	$(CC) -c -o $@ ${CFLAGS} src/symbol.c
-bin/symtab.o: src/symtab.c include/symtab.h
-	$(CC) -c -o $@ ${CFLAGS} src/symtab.c
-bin/symtab_stack.o: src/symtab_stack.c include/symtab_stack.h
-	$(CC) -c -o $@ ${CFLAGS} src/symtab_stack.c
+
+bin/exprn.o: src/ast/exprn.c include/ast/exprn.h
+	$(CC) -c -o $@ ${CFLAGS} src/ast/exprn.c
+bin/stmt.o: src/ast/stmt.c include/ast/stmt.h
+	$(CC) -c -o $@ ${CFLAGS} src/ast/stmt.c
+bin/decl.o: src/ast/decl.c include/ast/decl.h
+	$(CC) -c -o $@ ${CFLAGS} src/ast/decl.c
+bin/program.o: src/ast/program.c include/ast/program.h
+	$(CC) -c -o $@ ${CFLAGS} src/ast/program.c
+bin/func.o: src/ast/func.c include/ast/func.h
+	$(CC) -c -o $@ ${CFLAGS} src/ast/func.c
+
+bin/symbol.o: src/symbol_table/symbol.c include/symbol_table/symbol.h
+	$(CC) -c -o $@ ${CFLAGS} src/symbol_table/symbol.c
+bin/symtab.o: src/symbol_table/symtab.c include/symbol_table/symtab.h
+	$(CC) -c -o $@ ${CFLAGS} src/symbol_table/symtab.c
+bin/symtab_stack.o: src/symbol_table/symtab_stack.c include/symbol_table/symtab_stack.h
+	$(CC) -c -o $@ ${CFLAGS} src/symbol_table/symtab_stack.c
 
 # Scanner and parser
 src/scanner.c: src/scanner.flex
