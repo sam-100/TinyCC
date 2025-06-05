@@ -28,7 +28,7 @@ argument *append_arg(argument *a, argument *na) {
 void print_arg(argument *arg, char *tabs) {
     for(argument *ptr=arg; ptr != NULL; ptr=ptr->next) {
         fprintf(f_ast, "%sargument {\n", tabs);
-        fprintf(f_ast, "%s\twhich: %d;\n", tabs, arg->which);
+        fprintf(f_ast, "%s\twhich: %d;\n", tabs, ptr->which);
         print_exprn(ptr->e, strcat(tabs, "\t"));
         tabs[strlen(tabs)-1]='\0';
         fprintf(f_ast, "%s}\n", tabs);
