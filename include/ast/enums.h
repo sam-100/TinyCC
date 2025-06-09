@@ -58,6 +58,7 @@ typedef enum {
 
 typedef enum {
     SYM_VAR, 
+    SYM_PARAM, 
     SYM_FUNC
 } symbol_t;
 #endif

@@ -12,7 +12,6 @@ extern int yyparse(void);
 program *root;
 
 
-
 int yywrap(void);
 void yyerror(const char *msg);
 

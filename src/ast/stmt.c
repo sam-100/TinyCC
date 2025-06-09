@@ -251,7 +251,6 @@ void stmt_resolve(statement *stmt, symtab_stack *st) {
         case STMT_RETURN:
             ret_stmt_resolve(stmt->ret_stmt, st);
             break;
-        
     }
 
     stmt_resolve(stmt->next, st);
@@ -264,11 +263,13 @@ void var_decl_stmt_resolve(var_decl_stmt *vd_stmt, symtab_stack *st) {
         exit(1);
     }
 
-    vd_stmt->sym = create_symbol(vd_stmt->name, SYM_VAR, scope_type(st), vd_stmt->type, -1, -1, vd_stmt->initialized);
+    // vd_stmt->sym = create_symbol(vd_stmt->name, SYM_VAR, scope_type(st), vd_stmt->type, -1, -1, vd_stmt->initialized);
+    vd_stmt->sym = create_symbol_var_local(vd_stmt->name, vd_stmt->type, -1, -1);
     scope_bind(vd_stmt->name, vd_stmt->sym, st);
 }
 
 void assign_stmt_resolve(assign_stmt *as_stmt, symtab_stack *st) {
+    // check for previous definition of lhs
     if(scope_lookup(as_stmt->name, st) == false) {
         fprintf(f_error, "Symbol %s at line no. %d is not defined before\n", as_stmt->name, as_stmt->line_no);
         exit(1);
@@ -290,6 +291,7 @@ void assign_stmt_resolve(assign_stmt *as_stmt, symtab_stack *st) {
 }
 
 void func_call_stmt_resolve(func_call_stmt *fc_stmt, symtab_stack *st) {
+    // check if function is defined before
     if(scope_lookup(fc_stmt->name, st) == false) {
         fprintf(f_error, "Error: undeclared function '%s' called at line no. %d\n", fc_stmt->name, fc_stmt->line_no);
         exit(1);
@@ -303,6 +305,7 @@ void func_call_stmt_resolve(func_call_stmt *fc_stmt, symtab_stack *st) {
 void print_stmt_resolve(print_stmt *p_stmt, symtab_stack *st) {
     exprn_resolve(p_stmt->arg, st);
 }
+
 
 void read_stmt_resolve(read_stmt *r_stmt, symtab_stack *st) {
     if(scope_lookup(r_stmt->arg, st) == false) {

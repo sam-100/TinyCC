@@ -16,7 +16,7 @@ void print_program(program *p) {
 
 void program_resolve(program *p) {
     symtab_stack *st = create_symtab_stack();
-
+    
     scope_enter(st);
     decl_resolve(p->decl_list, st);
     p->sym_tab = scope_get_current(st);

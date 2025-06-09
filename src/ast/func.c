@@ -123,25 +123,30 @@ void func_call_resolve(func_call *fc, symtab_stack *st) {
 }
 
 void func_body_resolve(func_body *fb, symtab_stack *st) {
-    // scope_enter(st);
     stmt_resolve(fb->stmt_list, st);
-    // scope_exit(st);
 }
 
-void parameter_resolve(parameter *par, symtab_stack *st) {
+/* Task:
+    - resolve the parameter passed and its next parameters
+    - add symbol to par->sym
+    - add symbol to symbol-table
+    - 
+*/
+symbol *parameter_resolve(parameter *par, symtab_stack *st) {
     if(par == NULL)
-        return;
+        return NULL;
 
     if(scope_lookup_current(par->name, st)) {
         fprintf(f_error, "Parameter %s declared again at line no. %d\n", par->name, par->line_no);
-        return;
+        return NULL;
     }
 
-    par->sym = create_symbol(par->name, SYM_VAR, SCOPE_PARAMETER, par->type, par->which, par->offset, false);
-    scope_bind(par->name, par->sym, st);
-
-    parameter_resolve(par->next, st);
-
+    symbol *sym = create_symbol_param(par->name, par->type, NULL);
+    scope_bind(par->name, sym, st);
+    sym->next_param = parameter_resolve(par->next, st);
+    
+    par->sym = sym; 
+    return sym;
 }
 
 void arg_resolve(argument *arg, symtab_stack *st) {

@@ -17,6 +17,7 @@ char *get_op_name(operator_t op);
 char *btoa(bool val);
 char *get_literal_value(value val, type_t type);
 char *get_scope_name(scope_t scope);
+char *get_symbol_kind_name(symbol_t kind);
 
 
 #endif

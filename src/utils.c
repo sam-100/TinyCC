@@ -131,3 +131,13 @@ char *get_scope_name(scope_t scope) {
     }
     return "UNKNOWN SCOPE";
 }
+
+char *get_symbol_kind_name(symbol_t kind) {
+    if(kind == SYM_VAR)
+        return "VARIABLE";
+    if(kind == SYM_PARAM)
+        return "PARAMETER";
+    if(kind == SYM_FUNC)
+        return "FUNCTION";
+    return "UNKNOWN TYPE";
+}

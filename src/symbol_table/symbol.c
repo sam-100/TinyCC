@@ -5,15 +5,59 @@
 #include "utils.h"
 
 
-symbol *create_symbol(char *name, symbol_t sym_type, scope_t scope, type_t type, int which, int offset, bool init) {
+symbol *create_symbol(char *name, type_t type, scope_t scope, symbol_t kind, int which, int offset, symbol *param_list) {
     symbol *sym = (symbol*)malloc(sizeof(symbol));
     sym->name = name;
-    sym->scope=scope;
-    sym->type=type;
-    sym->which=which;
-    sym->init = init;
-    sym->sym_type = sym_type;
+    sym->type = type;
+    sym->scope = scope;
+    sym->kind = kind;
+    sym->which = which;
     sym->offset = offset;
+    sym->next_param = param_list;
+    return sym;
+}
+
+symbol *create_symbol_var_local(char *name, type_t type, int which, int offset) {
+    symbol *sym = (symbol*)malloc(sizeof(symbol));
+    sym->name=name;
+    sym->type=type;
+    sym->scope=SCOPE_LOCAL;
+    sym->kind=SYM_VAR;
+    sym->which=which;
+    sym->offset=offset;
+    sym->next_param=NULL;
+    return sym;
+}
+
+symbol *create_symbol_var_global(char *name, type_t type, int which, int offset) {
+    symbol *sym = (symbol*)malloc(sizeof(symbol));
+    sym->name=name;
+    sym->type=type;
+    sym->scope=SCOPE_GLOBAL;
+    sym->kind=SYM_VAR;
+    sym->which=which;
+    sym->offset=offset;
+    sym->next_param=NULL;
+    return sym;
+}
+
+symbol *create_symbol_param(char *name, type_t type, symbol *next_param) {
+    symbol *sym = (symbol*)malloc(sizeof(symbol));
+    sym->name=name;
+    sym->type=type;
+    sym->scope=SCOPE_PARAMETER;
+    sym->kind=SYM_PARAM;
+    sym->next_param = next_param;
+    return sym;
+}
+
+symbol *create_symbol_func(char *name, type_t type, symbol *param_list) {
+    symbol *sym = (symbol*)malloc(sizeof(symbol));
+    sym->name=name;
+    sym->type=type;
+    sym->scope=SCOPE_GLOBAL;
+    sym->kind=SYM_FUNC;
+    sym->next_param=param_list;
     return sym;
 }
 
@@ -22,9 +66,28 @@ void print_symbol(symbol *sym) {
     fprintf(f_symtab, "{\n");
     fprintf(f_symtab, "\tname: %s;\n", sym->name);
     fprintf(f_symtab, "\ttype: %s;\n", get_type_name(sym->type));
+    fprintf(f_symtab, "\tkind: %s;\n", get_symbol_kind_name(sym->kind));
     fprintf(f_symtab, "\tscope: %s;\n", get_scope_name(sym->scope));
-    fprintf(f_symtab, "\tinit: %s;\n", btoa(sym->init));
-    fprintf(f_symtab, "\twhich: %d;\n", sym->which);
-    fprintf(f_symtab, "\toffset: %d;\n", sym->offset);
+
+    switch(sym->kind)
+    {
+        case SYM_VAR:
+            fprintf(f_symtab, "\twhich: %d;\n", sym->which);
+            fprintf(f_symtab, "\toffset: %d;\n", sym->offset);
+        
+        case SYM_FUNC:
+            fprintf(f_symtab, "\tparameters: \n");
+            for(symbol *ptr=sym->next_param; ptr != NULL; ptr=ptr->next_param) {
+                fprintf(f_symtab, "\t\tparameter %d: %s: %s\n", ptr->which, ptr->name, get_type_name(ptr->type));
+            }
+            break;
+        case SYM_PARAM:
+            fprintf(f_symtab, "\twhich: %d;\n", sym->which);
+            fprintf(f_symtab, "\toffset: %d;\n", sym->offset);
+            break;            
+        default:
+            fprintf(f_symtab, "Unknown kind of symbol\n");
+            break;
+    }
     fprintf(f_symtab, "}\n");
 }
