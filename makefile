@@ -9,7 +9,7 @@ tinycc: ${BIN}
 gdb: CFLAGS += -g
 gdb: tinycc
 
-# Object files in the bin directory
+# Compiling src/
 bin/main.o: src/main.c include/arguments.h
 	$(CC) -c -o $@ ${CFLAGS} src/main.c
 bin/scanner.o: src/scanner.c include/parser.h
@@ -21,6 +21,7 @@ bin/arguments.o: src/arguments.c include/arguments.h
 bin/utils.o: src/utils.c include/utils.h
 	$(CC) -c -o $@ ${CFLAGS} src/utils.c
 
+# Compiling src/ast/
 bin/exprn.o: src/ast/exprn.c include/ast/exprn.h
 	$(CC) -c -o $@ ${CFLAGS} src/ast/exprn.c
 bin/stmt.o: src/ast/stmt.c include/ast/stmt.h
@@ -32,6 +33,7 @@ bin/program.o: src/ast/program.c include/ast/program.h
 bin/func.o: src/ast/func.c include/ast/func.h
 	$(CC) -c -o $@ ${CFLAGS} src/ast/func.c
 
+# Compiling src/symbol_table/
 bin/symbol.o: src/symbol_table/symbol.c include/symbol_table/symbol.h
 	$(CC) -c -o $@ ${CFLAGS} src/symbol_table/symbol.c
 bin/symtab.o: src/symbol_table/symtab.c include/symbol_table/symtab.h
