@@ -23,9 +23,13 @@ int main(int argc, char **argv) {
     print_program(root);
     printf("Program parsed successfully!\n");
     
+    // Symbol table construction
+    program_construct_symtab(root);
+    printf("Symbol table constructed.\n");
+
     // name resolution
     program_resolve(root);
-    printf("Symbol table constructed and resolved.\n");
+    printf("Symbol table resolved.\n");
 
     // print symbol tables
     program_print_symtab(root);

@@ -226,6 +226,34 @@ void print_stmt_return(return_stmt *ret_stmt, char *tabs) {
 
 }
 
+void stmt_construct_symtab(statement *stmt, symtab_stack *st) {
+    if(stmt == NULL)
+        return;
+    
+    switch(stmt->kind)
+    {
+        case STMT_VAR_DECL:
+            var_decl_stmt_construct_symtab(stmt->vd_stmt, st);
+            break;
+        case STMT_ASSIGN:
+            // assign_stmt_construct_symtab(stmt->as_stmt, st);
+            break;
+        case STMT_FUNC_CALL:
+            // func_call_stmt_construct_symtab(stmt->fc_stmt, st);
+            break;
+        case STMT_PRINT:
+            // print_stmt_construct_symtab(stmt->p_stmt, st);
+            break;
+        case STMT_READ:
+            // read_stmt_construct_symtab(stmt->r_stmt, st);
+            break;
+        case STMT_RETURN:
+            // ret_stmt_construct_symtab(stmt->ret_stmt, st);
+            break;
+    }
+
+    stmt_construct_symtab(stmt->next, st);
+}
 
 void stmt_resolve(statement *stmt, symtab_stack *st) {
     if(stmt == NULL)
@@ -256,16 +284,19 @@ void stmt_resolve(statement *stmt, symtab_stack *st) {
     stmt_resolve(stmt->next, st);
 }
 
-
-void var_decl_stmt_resolve(var_decl_stmt *vd_stmt, symtab_stack *st) {
+void var_decl_stmt_construct_symtab(var_decl_stmt *vd_stmt, symtab_stack *st) {
     if(scope_lookup_current(vd_stmt->name, st) != NULL) {
         fprintf(f_error, "Symbol %s at declared again at line no. %d.\n", vd_stmt->name, vd_stmt->line_no);
         exit(1);
     }
 
-    // vd_stmt->sym = create_symbol(vd_stmt->name, SYM_VAR, scope_type(st), vd_stmt->type, -1, -1, vd_stmt->initialized);
     vd_stmt->sym = create_symbol_var_local(vd_stmt->name, vd_stmt->type, -1, -1);
     scope_bind(vd_stmt->name, vd_stmt->sym, st);
+}
+
+void var_decl_stmt_resolve(var_decl_stmt *vd_stmt, symtab_stack *st) {
+    if(vd_stmt->initialized)
+        exprn_resolve(vd_stmt->rhs, st);
 }
 
 void assign_stmt_resolve(assign_stmt *as_stmt, symtab_stack *st) {
@@ -274,7 +305,6 @@ void assign_stmt_resolve(assign_stmt *as_stmt, symtab_stack *st) {
         fprintf(f_error, "Symbol %s at line no. %d is not defined before\n", as_stmt->name, as_stmt->line_no);
         exit(1);
     }
-
     as_stmt->sym = scope_lookup(as_stmt->name, st);
 
     // resolving rhs 
@@ -296,7 +326,6 @@ void func_call_stmt_resolve(func_call_stmt *fc_stmt, symtab_stack *st) {
         fprintf(f_error, "Error: undeclared function '%s' called at line no. %d\n", fc_stmt->name, fc_stmt->line_no);
         exit(1);
     }
-
     fc_stmt->sym = scope_lookup(fc_stmt->name, st);
 
     arg_resolve(fc_stmt->args, st);
@@ -312,12 +341,12 @@ void read_stmt_resolve(read_stmt *r_stmt, symtab_stack *st) {
         fprintf(f_error, "Reading into undeclared symbol '%s' at line_no: %d\n", r_stmt->arg, r_stmt->line_no);
         exit(1);
     }
-    r_stmt->sym = scope_lookup(r_stmt->arg, st);
+    // r_stmt->sym = scope_lookup(r_stmt->arg, st);
 }
 
 void ret_stmt_resolve(return_stmt *ret_stmt, symtab_stack *st) {
     exprn_resolve(ret_stmt->ret_expr, st);
-    ret_stmt->sym = ret_stmt->ret_expr->sym;
+    // ret_stmt->sym = ret_stmt->ret_expr->sym;
     return;
 }
 

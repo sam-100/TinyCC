@@ -116,11 +116,14 @@ void func_call_resolve(func_call *fc, symtab_stack *st) {
         fprintf(f_error, "Error: undeclared function '%s' called at line no. %d\n", fc->name, fc->line_no);
         exit(1);
     }
-
     fc->sym = scope_lookup(fc->name, st);
-    
     arg_resolve(fc->arg_list, st);
 }
+
+void func_body_construct_symtab(func_body *body, symtab_stack *st) {
+    stmt_construct_symtab(body->stmt_list, st);
+}
+
 
 void func_body_resolve(func_body *fb, symtab_stack *st) {
     stmt_resolve(fb->stmt_list, st);
@@ -132,7 +135,7 @@ void func_body_resolve(func_body *fb, symtab_stack *st) {
     - add symbol to symbol-table
     - 
 */
-symbol *parameter_resolve(parameter *par, symtab_stack *st) {
+symbol *parameter_construct_symtab(parameter *par, symtab_stack *st) {
     if(par == NULL)
         return NULL;
 
@@ -143,7 +146,7 @@ symbol *parameter_resolve(parameter *par, symtab_stack *st) {
 
     symbol *sym = create_symbol_param(par->name, par->type, NULL);
     scope_bind(par->name, sym, st);
-    sym->next_param = parameter_resolve(par->next, st);
+    sym->next_param = parameter_construct_symtab(par->next, st);
     
     par->sym = sym; 
     return sym;
@@ -154,8 +157,7 @@ void arg_resolve(argument *arg, symtab_stack *st) {
         return;
     
     exprn_resolve(arg->e, st);
-    // arg->sym = create_symbol(arg->e->name, SYM_VAR, scope_type(st), arg->e->type, arg->which, -1, false);
-    arg->sym = arg->e->sym;
+    // arg->sym = arg->e->sym;
 
     arg_resolve(arg->next, st);
 }

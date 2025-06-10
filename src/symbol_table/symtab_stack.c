@@ -8,6 +8,10 @@ symtab_stack *create_symtab_stack() {
     return st;
 }
 
+void destroy_symtab_stack(symtab_stack *st) {
+    free(st);
+}
+
 void scope_enter(symtab_stack *st) {
     st->arr[++(st->top)] = create_symtab();
 }

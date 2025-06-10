@@ -22,6 +22,7 @@ decl *create_decl_from_func(func_decl *fd) {
     return d;
 }
 
+
 decl *append_decl(decl *d, decl *nd) {
     decl *ptr = d;
     while(ptr->next)
@@ -79,8 +80,6 @@ void print_var_decl(var_decl *vd) {
     fprintf(f_ast, "\tname=%s;\n", vd->name);
     fprintf(f_ast, "\ttype=%s;\n", get_type_name(vd->type));
     fprintf(f_ast, "\tline_no=%d;\n", vd->line_no);
-    
-    // fprintf(f_ast, "\t name=%s, type=%s, initialized=%s\n", vd->name, get_type_name(vd->type), btoa(vd->initialized));
     fprintf(f_ast, "}\n");
 }
 
@@ -99,6 +98,22 @@ void print_func_decl(func_decl *fd) {
     fprintf(f_ast, "}\n");
 }
 
+void decl_construct_symtab(decl *d, symtab_stack *st) {
+    if(d == NULL)
+        return;
+    
+    switch(d->kind)
+    {
+        case DECL_VAR:
+            var_decl_construct_symtab(d->vd, st);
+            break;
+        case DECL_FUNC:
+            func_decl_construct_symtab(d->fd, st);
+            break;
+    }
+    decl_construct_symtab(d->next, st);
+}
+
 void decl_resolve(decl *d, symtab_stack *st) {
     if(d == NULL)
         return;
@@ -115,36 +130,41 @@ void decl_resolve(decl *d, symtab_stack *st) {
     decl_resolve(d->next, st);
 }
 
-void var_decl_resolve(var_decl *vd, symtab_stack *st) {
+void var_decl_construct_symtab(var_decl *vd, symtab_stack *st) {
     if(scope_lookup_current(vd->name, st)) {
         fprintf(stderr, "Error: redeclaration of symbol %s at line %d\n", vd->name, vd->line_no);
         return;
     }
-    
-    // vd->sym = create_symbol(vd->name, SYM_VAR, scope_type(st), vd->type, -1, -1, vd->initialized);
     vd->sym = create_symbol_var_global(vd->name, vd->type, -1, -1);
     scope_bind(vd->name, vd->sym, st);
 }
 
-void func_decl_resolve(func_decl *fd, symtab_stack *st) {
+void var_decl_resolve(var_decl *vd, symtab_stack *st) {    
+    if(vd->initialized)
+        exprn_resolve(vd->rhs, st);
+}
+
+void func_decl_construct_symtab(func_decl *fd, symtab_stack *st) {
+    // Create a symbol for function name
     if(scope_lookup_current(fd->name, st)) {
         fprintf(stderr, "Error: redeclaration of symbol %s at line %d\n", fd->name, fd->line_no);
         return;
     }
-
-    // fd->sym = create_symbol_from_func_decl(fd, st);
-    // create and bind a new symbol for function in global symbol table
-    // fd->sym = create_symbol(fd->name, SYM_FUNC, scope_type(st), fd->type, -1, -1, fd->body != 0);
     fd->sym = create_symbol_func(fd->name, fd->type, NULL);
     scope_bind(fd->name, fd->sym, st);
 
-    scope_enter(st);        // enter function scope
-    fd->sym->next_param = parameter_resolve(fd->param_list, st);
+    scope_enter(st);                        // enter function scope
+    parameter_construct_symtab(fd->param_list, st);
+    func_body_construct_symtab(fd->body, st);
     fd->symtab = scope_get_current(st);       // save function scope
+    scope_exit(st);
+}
 
-    if(fd->body)
+void func_decl_resolve(func_decl *fd, symtab_stack *st) {
+    scope_push(fd->symtab, st);        // enter function scope
+    if(fd->body)    
         func_body_resolve(fd->body, st);
-    scope_exit(st);         // exit function scope
+    scope_pop(st);         // exit function scope
     return;
 }
 

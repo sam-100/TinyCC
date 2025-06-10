@@ -97,6 +97,15 @@ void print_stmt_print(print_stmt *p, char *tab);
 void print_stmt_read(read_stmt *r_stmt, char *tabs);
 void print_stmt_return(return_stmt *ret_stmt, char *tabs);
 
+void stmt_construct_symtab(statement *stmt, symtab_stack *st);
+void var_decl_stmt_construct_symtab(var_decl_stmt *vd_stmt, symtab_stack *st);
+// void assign_stmt_construct_symtab(assign_stmt *as_stmt, symtab_stack *st);
+// void func_call_stmt_construct_symtab(func_call_stmt *fc_stmt, symtab_stack *st);
+// void print_stmt_construct_symtab(print_stmt *p_stmt, symtab_stack *st);
+// void read_stmt_construct_symtab(read_stmt *r_stmt, symtab_stack *st);
+// void ret_stmt_construct_symtab(return_stmt *ret_stmt, symtab_stack *st);
+
+
 /* methods to construct and resolve symbols for each statement */
 void stmt_resolve(statement *stmt, symtab_stack *st);
 void var_decl_stmt_resolve(var_decl_stmt *vd_stmt, symtab_stack *st);

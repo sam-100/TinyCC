@@ -50,6 +50,10 @@ void print_decl(decl *d);
 void print_var_decl(var_decl *vd);
 void print_func_decl(func_decl *fd);
 
+void decl_construct_symtab(decl *d, symtab_stack *st);
+void var_decl_construct_symtab(var_decl *vd, symtab_stack *st);
+void func_decl_construct_symtab(func_decl *fd, symtab_stack *st);
+
 void decl_resolve(decl *d, symtab_stack *st);
 void var_decl_resolve(var_decl *vd, symtab_stack *st);
 void func_decl_resolve(func_decl *fd, symtab_stack *st);

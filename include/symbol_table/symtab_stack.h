@@ -12,6 +12,7 @@ typedef struct symtab_stack {
 
 
 symtab_stack *create_symtab_stack();
+void destroy_symtab_stack(symtab_stack *st);
 void scope_enter(symtab_stack *st);
 void scope_exit(symtab_stack *st);
 int scope_level(symtab_stack *st);

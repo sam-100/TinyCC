@@ -14,16 +14,23 @@ void print_program(program *p) {
     print_decl(p->decl_list);
 }
 
+void program_construct_symtab(program *p) {
+    symtab_stack *st = create_symtab_stack();
+    scope_enter(st);
+    decl_construct_symtab(p->decl_list, st);
+    p->sym_tab = scope_get_current(st);
+    scope_exit(st);
+    destroy_symtab_stack(st);
+}
+
 void program_resolve(program *p) {
     symtab_stack *st = create_symtab_stack();
     
-    scope_enter(st);
+    scope_push(p->sym_tab, st);
     decl_resolve(p->decl_list, st);
-    p->sym_tab = scope_get_current(st);
     scope_exit(st);
-    free(st);
 
-    return;
+    destroy_symtab_stack(st);
 }
 
 void program_print_symtab(program *p) {

@@ -98,6 +98,10 @@ void exprn_resolve(exprn *e, symtab_stack *st) {
         e->sym = scope_lookup(e->name, st);
         return;
     }
+
+    if(e->kind == LITERAL_EXPRN) {
+        // todo: handle literal expressions here
+    }
 }
 
 void exprn_typecheck(exprn *e, symtab_stack *st) {
