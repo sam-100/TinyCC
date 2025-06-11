@@ -35,8 +35,7 @@ int main(int argc, char **argv) {
     program_print_symtab(root);
 
     // type checking
-    // program_typecheck(root);
-
+    program_typecheck(root);
 
     return 0;
 }

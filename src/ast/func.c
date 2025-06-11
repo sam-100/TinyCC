@@ -116,9 +116,38 @@ void func_call_resolve(func_call *fc, symtab_stack *st) {
         fprintf(f_error, "Error: undeclared function '%s' called at line no. %d\n", fc->name, fc->line_no);
         exit(1);
     }
+    
     fc->sym = scope_lookup(fc->name, st);
     arg_resolve(fc->arg_list, st);
 }
+
+void func_call_typecheck(func_call *fc, symtab_stack *st) {
+    fc->type = fc->sym->type;
+
+    argument *arg = fc->arg_list;
+    symbol *param = fc->sym->next_param;
+
+    while(arg != NULL && param != NULL) {
+        exprn_typecheck(arg->e, st);
+        if(arg->e->type != param->type) {
+            fprintf(f_error, "Error (line_no %d): parameter '%s' of type %s can't be initialized with argument of type %s.\n", fc->line_no, param->name, get_type_name(param->type), get_type_name(arg->e->type));
+            exit(2);
+        }
+
+        arg = arg->next;
+        param = param->next_param;
+    }
+
+    if(arg != NULL) {
+        fprintf(f_error, "Error (line_no %d): too many arguments to function %s.\n", fc->line_no, fc->name);
+        exit(2);
+    }
+    if(param != NULL) {
+        fprintf(f_error, "Error (line_no %d): too few arguments to function call %s.\n", fc->line_no, fc->name);
+    }
+
+}
+
 
 void func_body_construct_symtab(func_body *body, symtab_stack *st) {
     stmt_construct_symtab(body->stmt_list, st);
@@ -127,6 +156,7 @@ void func_body_construct_symtab(func_body *body, symtab_stack *st) {
 
 void func_body_resolve(func_body *fb, symtab_stack *st) {
     stmt_resolve(fb->stmt_list, st);
+    fb->symtab = scope_get_current(st);
 }
 
 /* Task:
@@ -144,7 +174,7 @@ symbol *parameter_construct_symtab(parameter *par, symtab_stack *st) {
         return NULL;
     }
 
-    symbol *sym = create_symbol_param(par->name, par->type, NULL);
+    symbol *sym = create_symbol(par->name, par->type, SCOPE_PARAMETER, SYM_PARAM, -1, -1, NULL);
     scope_bind(par->name, sym, st);
     sym->next_param = parameter_construct_symtab(par->next, st);
     
@@ -157,7 +187,7 @@ void arg_resolve(argument *arg, symtab_stack *st) {
         return;
     
     exprn_resolve(arg->e, st);
-    // arg->sym = arg->e->sym;
+    arg->sym = arg->e->sym;
 
     arg_resolve(arg->next, st);
 }
@@ -171,3 +201,4 @@ void func_body_typecheck(func_body *fb, symtab_stack *st) {
     stmt_typecheck(fb->stmt_list, st);
     scope_pop(st);
 }
+

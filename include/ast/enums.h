@@ -44,6 +44,11 @@ typedef enum {
     OP_DIV, 
 } operator_t;
 
+typedef enum {
+    OP_ARITHMETIC, 
+    OP_BOOLEAN, 
+} operation_t;
+
 typedef union {
         int i_val;
         bool b_val;

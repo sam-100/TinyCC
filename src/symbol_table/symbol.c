@@ -41,13 +41,16 @@ symbol *create_symbol_var_global(char *name, type_t type, int which, int offset)
     return sym;
 }
 
-symbol *create_symbol_param(char *name, type_t type, symbol *next_param) {
+symbol *create_symbol_param(parameter *param) {
+    if(param == NULL)
+        return NULL;
+    
     symbol *sym = (symbol*)malloc(sizeof(symbol));
-    sym->name=name;
-    sym->type=type;
+    sym->name=param->name;
+    sym->type=param->type;
     sym->scope=SCOPE_PARAMETER;
     sym->kind=SYM_PARAM;
-    sym->next_param = next_param;
+    sym->next_param = create_symbol_param(param->next);
     return sym;
 }
 

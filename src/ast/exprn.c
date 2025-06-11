@@ -105,5 +105,25 @@ void exprn_resolve(exprn *e, symtab_stack *st) {
 }
 
 void exprn_typecheck(exprn *e, symtab_stack *st) {
+    if(e->kind == BINARY_EXPRN) {
+        exprn_typecheck(e->left, st);
+        exprn_typecheck(e->right, st);
 
+        if(e->left->type != e->right->type) {
+            fprintf(f_error, "Error (line_no %d): binary operands of different types (lhs %s, rhs %s)for operator %s.\n", e->line_no, get_type_name(e->left->type), get_type_name(e->right->type), get_op_name(e->op));
+            exit(2);
+        } 
+        type_t type = e->left->type;
+        if(get_op_type(e->op) == OP_ARITHMETIC && type != TYPE_INTEGER) {
+            fprintf(f_error, "Error (line_no %d): Operanand operator type mismatch. [ lhs %s, rhs %s]\n", e->line_no, get_type_name(e->left->type), get_type_name(e->right->type));
+        }
+        e->type = type;
+        return;
+    }
+
+    if(e->kind == IDENTIFIER_EXPRN) {
+        symbol *sym = scope_lookup(e->name, st);
+        e->type = sym->type;
+        return;
+    }
 }

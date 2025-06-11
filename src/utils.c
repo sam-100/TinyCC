@@ -26,6 +26,12 @@ type_t get_type(int t) {
     }
 }
 
+operation_t get_op_type(operator_t op) {
+    if(op == OP_PLUS || op == OP_MINUS || op == OP_MUL || op == OP_DIV)
+        return OP_ARITHMETIC;
+    return -1;        
+}
+
 char *itoa(int num) {
     char *str = malloc(10);
     int i=0;

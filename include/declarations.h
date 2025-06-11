@@ -29,6 +29,8 @@ typedef struct symbol symbol;
 typedef struct symtab symtab;
 typedef struct symtab_stack symtab_stack;
 
+/* Global variables */
 extern FILE *f_input, *f_tokens, *f_ast, *f_nowhere, *f_error, *f_symtab;
+extern program *root;
 
 #endif

@@ -161,6 +161,8 @@ void func_decl_construct_symtab(func_decl *fd, symtab_stack *st) {
 }
 
 void func_decl_resolve(func_decl *fd, symtab_stack *st) {
+    fd->sym->next_param = create_symbol_param(fd->param_list);
+
     scope_push(fd->symtab, st);        // enter function scope
     if(fd->body)    
         func_body_resolve(fd->body, st);
@@ -209,7 +211,7 @@ void var_decl_typecheck(var_decl *vd, symtab_stack *st) {
     
     exprn_typecheck(vd->rhs, st);
     if(vd->type != vd->rhs->type) {
-        fprintf(f_error, "Variable %s of type %s assigned incompatable exprn of type %s at line no: %d", vd->name, get_type_name(vd->type), get_type_name(vd->rhs->type), vd->line_no);
+        fprintf(f_error, "Error: Variable %s of type %s assigned incompatable exprn of type %s at line no: %d", vd->name, get_type_name(vd->type), get_type_name(vd->rhs->type), vd->line_no);
         exit(2);
     }
 }

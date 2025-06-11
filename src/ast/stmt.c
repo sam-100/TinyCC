@@ -4,7 +4,8 @@
 #include <string.h>
 #include "decl.h"
 #include "utils.h"
-
+#include "declarations.h"
+#include "program.h"
 
 // Creating statements from sub_stmts
 statement *create_stmt_from_var_decl(var_decl_stmt *vd) {
@@ -357,18 +358,92 @@ void stmt_typecheck(statement *stmt, symtab_stack *st) {
     switch(stmt->kind)
     {
         case STMT_VAR_DECL:
+            var_decl_stmt_typecheck(stmt->vd_stmt, st);
             break;
         case STMT_ASSIGN:
+            assign_stmt_typecheck(stmt->as_stmt, st);
             break;
         case STMT_FUNC_CALL:
+            func_call_stmt_typecheck(stmt->fc_stmt, st);
             break;
         case STMT_PRINT:
+            print_stmt_typecheck(stmt->p_stmt, st);
             break;
         case STMT_READ:
+            read_stmt_typecheck(stmt->r_stmt, st);
             break;
         case STMT_RETURN:
+            ret_stmt_typecheck(stmt->ret_stmt, st);
             break;
     }
 
     stmt_typecheck(stmt->next, st);
+}
+
+void var_decl_stmt_typecheck(var_decl_stmt *vd_stmt, symtab_stack *st) {
+    if(vd_stmt->initialized == false)
+        return;
+    
+    exprn_typecheck(vd_stmt->rhs, st);
+    if(vd_stmt->type != vd_stmt->rhs->type) {
+        fprintf(f_error, "Error: Varialbe of type %s initialized with expression of type %s.\n", get_type_name(vd_stmt->type), get_type_name(vd_stmt->rhs->type));
+        exit(2);
+    }
+}
+
+void assign_stmt_typecheck(assign_stmt *as_stmt, symtab_stack *st) {
+    type_t type = scope_lookup(as_stmt->name, st)->type;
+    switch(as_stmt->kind)
+    {
+        case ASSIGN_EXPRN:
+            exprn_typecheck(as_stmt->e, st);
+            if(type != as_stmt->e->type) {
+                fprintf(f_error, "Error (line_no %d): Varialbe of type %s assigned with expression of type %s.\n", as_stmt->line_no, get_type_name(as_stmt->type), get_type_name(as_stmt->e->type));
+                exit(2);
+            }
+            break;
+        case ASSIGN_FUNC_CALL:
+            func_call_typecheck(as_stmt->fc, st);
+            if(type != as_stmt->fc->sym->type) {
+                fprintf(f_error, "Error (line_no %d): Varialbe of type %s assigned with function call with return type %s.\n", as_stmt->line_no, get_type_name(as_stmt->type), get_type_name(as_stmt->fc->sym->type));
+                exit(2);
+            }
+            break;
+
+    }
+}
+
+void func_call_stmt_typecheck(func_call_stmt *fc_stmt, symtab_stack *st) {
+    symbol *func_decl_symbol = lookup_symbol(fc_stmt->name, root->sym_tab);
+    argument *arg = fc_stmt->args;
+    symbol *param = func_decl_symbol->next_param;
+
+    while(arg != NULL && param != NULL) {
+        if(arg->e->type != param->type) {
+            fprintf(f_error, "Error (line_no %d): parameter '%s' of type %s can't be initialized with argument of type %s.\n", fc_stmt->line_no, param->name, get_type_name(param->type), get_type_name(fc_stmt->type));
+            exit(2);
+        }
+        arg = arg->next;
+        param = param->next_param;
+    }
+
+    if(arg != NULL) {
+        fprintf(f_error, "Error (line_no %d): too many arguments to function %s.\n", fc_stmt->line_no, fc_stmt->name);
+        exit(2);
+    }
+    if(param != NULL) {
+        fprintf(f_error, "Error (line_no %d): too few arguments to function call %s.\n", fc_stmt->line_no, fc_stmt->name);
+    }
+}
+
+void print_stmt_typecheck(print_stmt *p_stmt, symtab_stack *st) {
+    exprn_typecheck(p_stmt->arg, st);
+}
+
+void read_stmt_typecheck(read_stmt *r_stmt, symtab_stack *st) {
+    // todo: 
+}
+void ret_stmt_typecheck(return_stmt *ret_stmt, symtab_stack *st) {
+    exprn_typecheck(ret_stmt->ret_expr, st);
+    // todo: 
 }

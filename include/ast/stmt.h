@@ -115,7 +115,14 @@ void print_stmt_resolve(print_stmt *p_stmt, symtab_stack *st);
 void read_stmt_resolve(read_stmt *r_stmt, symtab_stack *st);
 void ret_stmt_resolve(return_stmt *ret_stmt, symtab_stack *st);
 
+
 void stmt_typecheck(statement *stmt, symtab_stack *st);
+void var_decl_stmt_typecheck(var_decl_stmt *vd_stmt, symtab_stack *st);
+void assign_stmt_typecheck(assign_stmt *as_stmt, symtab_stack *st);
+void func_call_stmt_typecheck(func_call_stmt *fc_stmt, symtab_stack *st);
+void print_stmt_typecheck(print_stmt *p_stmt, symtab_stack *st);
+void read_stmt_typecheck(read_stmt *r_stmt, symtab_stack *st);
+void ret_stmt_typecheck(return_stmt *ret_stmt, symtab_stack *st);
 
 
 #endif
