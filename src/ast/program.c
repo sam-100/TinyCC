@@ -14,36 +14,36 @@ void print_program(program *p) {
     print_decl(p->decl_list);
 }
 
-void program_construct_symtab(program *p) {
+void construct_symtab_program(program *p) {
     symtab_stack *st = create_symtab_stack();
     scope_enter(st);
-    decl_construct_symtab(p->decl_list, st);
+    construct_symtab_decl(p->decl_list, st);
     p->sym_tab = scope_get_current(st);
     scope_exit(st);
     destroy_symtab_stack(st);
 }
 
-void program_resolve(program *p) {
+void resolve_program(program *p) {
     symtab_stack *st = create_symtab_stack();
     
     scope_push(p->sym_tab, st);
-    decl_resolve(p->decl_list, st);
+    resolve_decl(p->decl_list, st);
     scope_exit(st);
 
     destroy_symtab_stack(st);
 }
 
-void program_print_symtab(program *p) {
+void print_symtab_program(program *p) {
     fprintf(f_symtab, "Global Symbol Table: \n");
     print_symtab(p->sym_tab);
-    decl_print_symtab(p->decl_list);
+    print_symtab_decl(p->decl_list);
 }
 
-void program_typecheck(program *p) {
+void typecheck_program(program *p) {
     symtab_stack *st = create_symtab_stack();
 
     scope_push(p->sym_tab, st);
-    decl_typecheck(p->decl_list, st);
+    typecheck_decl(p->decl_list, st);
     scope_pop(st);
     
     free(st);

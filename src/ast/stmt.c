@@ -227,14 +227,14 @@ void print_stmt_return(return_stmt *ret_stmt, char *tabs) {
 
 }
 
-void stmt_construct_symtab(statement *stmt, symtab_stack *st) {
+void construct_symtab_stmt(statement *stmt, symtab_stack *st) {
     if(stmt == NULL)
         return;
     
     switch(stmt->kind)
     {
         case STMT_VAR_DECL:
-            var_decl_stmt_construct_symtab(stmt->vd_stmt, st);
+            construct_symtab_var_decl_stmt(stmt->vd_stmt, st);
             break;
         case STMT_ASSIGN:
             // assign_stmt_construct_symtab(stmt->as_stmt, st);
@@ -253,39 +253,39 @@ void stmt_construct_symtab(statement *stmt, symtab_stack *st) {
             break;
     }
 
-    stmt_construct_symtab(stmt->next, st);
+    construct_symtab_stmt(stmt->next, st);
 }
 
-void stmt_resolve(statement *stmt, symtab_stack *st) {
+void resolve_stmt(statement *stmt, symtab_stack *st) {
     if(stmt == NULL)
         return;
     
     switch(stmt->kind)
     {
         case STMT_VAR_DECL:
-            var_decl_stmt_resolve(stmt->vd_stmt, st);
+            resolve_var_decl_stmt(stmt->vd_stmt, st);
             break;
         case STMT_ASSIGN:
-            assign_stmt_resolve(stmt->as_stmt, st);
+            resolve_assign_stmt(stmt->as_stmt, st);
             break;
         case STMT_FUNC_CALL:
-            func_call_stmt_resolve(stmt->fc_stmt, st);
+            resolve_func_call_stmt(stmt->fc_stmt, st);
             break;
         case STMT_PRINT:
-            print_stmt_resolve(stmt->p_stmt, st);
+            resolve_print_stmt(stmt->p_stmt, st);
             break;
         case STMT_READ:
-            read_stmt_resolve(stmt->r_stmt, st);
+            resolve_read_stmt(stmt->r_stmt, st);
             break;
         case STMT_RETURN:
-            ret_stmt_resolve(stmt->ret_stmt, st);
+            resolve_ret_stmt(stmt->ret_stmt, st);
             break;
     }
 
-    stmt_resolve(stmt->next, st);
+    resolve_stmt(stmt->next, st);
 }
 
-void var_decl_stmt_construct_symtab(var_decl_stmt *vd_stmt, symtab_stack *st) {
+void construct_symtab_var_decl_stmt(var_decl_stmt *vd_stmt, symtab_stack *st) {
     if(scope_lookup_current(vd_stmt->name, st) != NULL) {
         fprintf(f_error, "Symbol %s at declared again at line no. %d.\n", vd_stmt->name, vd_stmt->line_no);
         exit(1);
@@ -295,12 +295,12 @@ void var_decl_stmt_construct_symtab(var_decl_stmt *vd_stmt, symtab_stack *st) {
     scope_bind(vd_stmt->name, vd_stmt->sym, st);
 }
 
-void var_decl_stmt_resolve(var_decl_stmt *vd_stmt, symtab_stack *st) {
+void resolve_var_decl_stmt(var_decl_stmt *vd_stmt, symtab_stack *st) {
     if(vd_stmt->initialized)
-        exprn_resolve(vd_stmt->rhs, st);
+        resolve_exprn(vd_stmt->rhs, st);
 }
 
-void assign_stmt_resolve(assign_stmt *as_stmt, symtab_stack *st) {
+void resolve_assign_stmt(assign_stmt *as_stmt, symtab_stack *st) {
     // check for previous definition of lhs
     if(scope_lookup(as_stmt->name, st) == false) {
         fprintf(f_error, "Symbol %s at line no. %d is not defined before\n", as_stmt->name, as_stmt->line_no);
@@ -312,16 +312,16 @@ void assign_stmt_resolve(assign_stmt *as_stmt, symtab_stack *st) {
     switch(as_stmt->kind)
     {
         case ASSIGN_EXPRN:
-            exprn_resolve(as_stmt->e, st);
+            resolve_exprn(as_stmt->e, st);
             break;
         case ASSIGN_FUNC_CALL:
-            func_call_resolve(as_stmt->fc, st);
+            resolve_func_call(as_stmt->fc, st);
             break;
     }
     return;
 }
 
-void func_call_stmt_resolve(func_call_stmt *fc_stmt, symtab_stack *st) {
+void resolve_func_call_stmt(func_call_stmt *fc_stmt, symtab_stack *st) {
     // check if function is defined before
     if(scope_lookup(fc_stmt->name, st) == false) {
         fprintf(f_error, "Error: undeclared function '%s' called at line no. %d\n", fc_stmt->name, fc_stmt->line_no);
@@ -329,15 +329,15 @@ void func_call_stmt_resolve(func_call_stmt *fc_stmt, symtab_stack *st) {
     }
     fc_stmt->sym = scope_lookup(fc_stmt->name, st);
 
-    arg_resolve(fc_stmt->args, st);
+    resolve_arg(fc_stmt->args, st);
 }
 
-void print_stmt_resolve(print_stmt *p_stmt, symtab_stack *st) {
-    exprn_resolve(p_stmt->arg, st);
+void resolve_print_stmt(print_stmt *p_stmt, symtab_stack *st) {
+    resolve_exprn(p_stmt->arg, st);
 }
 
 
-void read_stmt_resolve(read_stmt *r_stmt, symtab_stack *st) {
+void resolve_read_stmt(read_stmt *r_stmt, symtab_stack *st) {
     if(scope_lookup(r_stmt->arg, st) == false) {
         fprintf(f_error, "Reading into undeclared symbol '%s' at line_no: %d\n", r_stmt->arg, r_stmt->line_no);
         exit(1);
@@ -345,67 +345,67 @@ void read_stmt_resolve(read_stmt *r_stmt, symtab_stack *st) {
     // r_stmt->sym = scope_lookup(r_stmt->arg, st);
 }
 
-void ret_stmt_resolve(return_stmt *ret_stmt, symtab_stack *st) {
-    exprn_resolve(ret_stmt->ret_expr, st);
+void resolve_ret_stmt(return_stmt *ret_stmt, symtab_stack *st) {
+    resolve_exprn(ret_stmt->ret_expr, st);
     if(ret_stmt->ret_expr)
         ret_stmt->sym = ret_stmt->ret_expr->sym;
     ret_stmt->fd = scope_get_curr_func(st);
     return;
 }
 
-void stmt_typecheck(statement *stmt, symtab_stack *st) {
+void typecheck_stmt(statement *stmt, symtab_stack *st) {
     if(stmt == NULL)
         return;
 
     switch(stmt->kind)
     {
         case STMT_VAR_DECL:
-            var_decl_stmt_typecheck(stmt->vd_stmt, st);
+            typecheck_var_decl_stmt(stmt->vd_stmt, st);
             break;
         case STMT_ASSIGN:
-            assign_stmt_typecheck(stmt->as_stmt, st);
+            typecheck_assign_stmt(stmt->as_stmt, st);
             break;
         case STMT_FUNC_CALL:
-            func_call_stmt_typecheck(stmt->fc_stmt, st);
+            typecheck_func_call_stmt(stmt->fc_stmt, st);
             break;
         case STMT_PRINT:
-            print_stmt_typecheck(stmt->p_stmt, st);
+            typecheck_print_stmt(stmt->p_stmt, st);
             break;
         case STMT_READ:
-            read_stmt_typecheck(stmt->r_stmt, st);
+            typecheck_read_stmt(stmt->r_stmt, st);
             break;
         case STMT_RETURN:
-            ret_stmt_typecheck(stmt->ret_stmt, st);
+            typecheck_ret_stmt(stmt->ret_stmt, st);
             break;
     }
 
-    stmt_typecheck(stmt->next, st);
+    typecheck_stmt(stmt->next, st);
 }
 
-void var_decl_stmt_typecheck(var_decl_stmt *vd_stmt, symtab_stack *st) {
+void typecheck_var_decl_stmt(var_decl_stmt *vd_stmt, symtab_stack *st) {
     if(vd_stmt->initialized == false)
         return;
     
-    exprn_typecheck(vd_stmt->rhs, st);
+    typecheck_exprn(vd_stmt->rhs, st);
     if(vd_stmt->type != vd_stmt->rhs->type) {
         fprintf(f_error, "Error: Varialbe of type %s initialized with expression of type %s.\n", get_type_name(vd_stmt->type), get_type_name(vd_stmt->rhs->type));
         exit(2);
     }
 }
 
-void assign_stmt_typecheck(assign_stmt *as_stmt, symtab_stack *st) {
+void typecheck_assign_stmt(assign_stmt *as_stmt, symtab_stack *st) {
     type_t type = scope_lookup(as_stmt->name, st)->type;
     switch(as_stmt->kind)
     {
         case ASSIGN_EXPRN:
-            exprn_typecheck(as_stmt->e, st);
+            typecheck_exprn(as_stmt->e, st);
             if(type != as_stmt->e->type) {
                 fprintf(f_error, "Error (line_no %d): Varialbe of type %s assigned with expression of type %s.\n", as_stmt->line_no, get_type_name(as_stmt->type), get_type_name(as_stmt->e->type));
                 exit(2);
             }
             break;
         case ASSIGN_FUNC_CALL:
-            func_call_typecheck(as_stmt->fc, st);
+            typecheck_func_call(as_stmt->fc, st);
             if(type != as_stmt->fc->sym->type) {
                 fprintf(f_error, "Error (line_no %d): Varialbe of type %s assigned with function call with return type %s.\n", as_stmt->line_no, get_type_name(as_stmt->type), get_type_name(as_stmt->fc->sym->type));
                 exit(2);
@@ -415,7 +415,7 @@ void assign_stmt_typecheck(assign_stmt *as_stmt, symtab_stack *st) {
     }
 }
 
-void func_call_stmt_typecheck(func_call_stmt *fc_stmt, symtab_stack *st) {
+void typecheck_func_call_stmt(func_call_stmt *fc_stmt, symtab_stack *st) {
     symbol *func_decl_symbol = lookup_symbol(fc_stmt->name, root->sym_tab);
     argument *arg = fc_stmt->args;
     symbol *param = func_decl_symbol->next_param;
@@ -438,18 +438,18 @@ void func_call_stmt_typecheck(func_call_stmt *fc_stmt, symtab_stack *st) {
     }
 }
 
-void print_stmt_typecheck(print_stmt *p_stmt, symtab_stack *st) {
-    exprn_typecheck(p_stmt->arg, st);
+void typecheck_print_stmt(print_stmt *p_stmt, symtab_stack *st) {
+    typecheck_exprn(p_stmt->arg, st);
 }
 
-void read_stmt_typecheck(read_stmt *r_stmt, symtab_stack *st) {
+void typecheck_read_stmt(read_stmt *r_stmt, symtab_stack *st) {
     // todo: 
     if(scope_lookup(r_stmt->arg, st) == NULL) {
         fprintf(f_error, "Error (line_no %d): symbol %s not declared before.\n", r_stmt->line_no, r_stmt->arg);
         exit(2);
     }
 }
-void ret_stmt_typecheck(return_stmt *ret_stmt, symtab_stack *st) {
+void typecheck_ret_stmt(return_stmt *ret_stmt, symtab_stack *st) {
     if(ret_stmt->fd->type == TYPE_VOID && ret_stmt->ret_expr == NULL)
         return;
     
@@ -462,7 +462,7 @@ void ret_stmt_typecheck(return_stmt *ret_stmt, symtab_stack *st) {
         exit(2);
     }
     
-    exprn_typecheck(ret_stmt->ret_expr, st);
+    typecheck_exprn(ret_stmt->ret_expr, st);
     if(ret_stmt->fd->type != ret_stmt->ret_expr->type) {
         fprintf(f_error, "Error (line_no %d): Cannot return an expression of type '%s' from function of type '%s'.\n", 
             ret_stmt->line_no, 

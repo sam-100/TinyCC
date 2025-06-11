@@ -26,8 +26,8 @@ exprn *create_exprn_char(char val);
 exprn *create_exprn_bool(bool val);
 void print_exprn(exprn *e, char *tabs);
 
-void exprn_resolve(exprn *e, symtab_stack *st);
+void resolve_exprn(exprn *e, symtab_stack *st);
 
-void exprn_typecheck(exprn *e, symtab_stack *st);
+void typecheck_exprn(exprn *e, symtab_stack *st);
 
 #endif

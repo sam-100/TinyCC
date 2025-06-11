@@ -24,18 +24,19 @@ int main(int argc, char **argv) {
     printf("Program parsed successfully!\n");
     
     // Symbol table construction
-    program_construct_symtab(root);
+    construct_symtab_program(root);
     printf("Symbol table constructed.\n");
 
     // name resolution
-    program_resolve(root);
+    resolve_program(root);
     printf("Symbol table resolved.\n");
 
     // print symbol tables
-    program_print_symtab(root);
+    print_symtab_program(root);
 
     // type checking
-    program_typecheck(root);
+    typecheck_program(root);
+    printf("Typechecking done.\n");
 
     return 0;
 }

@@ -50,19 +50,19 @@ void print_decl(decl *d);
 void print_var_decl(var_decl *vd);
 void print_func_decl(func_decl *fd);
 
-void decl_construct_symtab(decl *d, symtab_stack *st);
-void var_decl_construct_symtab(var_decl *vd, symtab_stack *st);
-void func_decl_construct_symtab(func_decl *fd, symtab_stack *st);
+void construct_symtab_decl(decl *d, symtab_stack *st);
+void construct_symtab_var_decl(var_decl *vd, symtab_stack *st);
+void construct_symtab_func_decl(func_decl *fd, symtab_stack *st);
 
-void decl_resolve(decl *d, symtab_stack *st);
-void var_decl_resolve(var_decl *vd, symtab_stack *st);
-void func_decl_resolve(func_decl *fd, symtab_stack *st);
+void resolve_decl(decl *d, symtab_stack *st);
+void resolve_var_decl(var_decl *vd, symtab_stack *st);
+void resolve_func_decl(func_decl *fd, symtab_stack *st);
 
-void decl_typecheck(decl *d, symtab_stack *st);
-void var_decl_typecheck(var_decl *vd, symtab_stack *st);
-void func_decl_typecheck(func_decl *fd, symtab_stack *st);
+void typecheck_decl(decl *d, symtab_stack *st);
+void typecheck_var_decl(var_decl *vd, symtab_stack *st);
+void typecheck_func_decl(func_decl *fd, symtab_stack *st);
 
-void decl_print_symtab(decl *d);
-void func_decl_print_symtab(func_decl *fd);
+void print_symtab_decl(decl *d);
+void print_symtab_func_decl(func_decl *fd);
 
 #endif

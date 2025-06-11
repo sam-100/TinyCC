@@ -98,8 +98,8 @@ void print_stmt_print(print_stmt *p, char *tab);
 void print_stmt_read(read_stmt *r_stmt, char *tabs);
 void print_stmt_return(return_stmt *ret_stmt, char *tabs);
 
-void stmt_construct_symtab(statement *stmt, symtab_stack *st);
-void var_decl_stmt_construct_symtab(var_decl_stmt *vd_stmt, symtab_stack *st);
+void construct_symtab_stmt(statement *stmt, symtab_stack *st);
+void construct_symtab_var_decl_stmt(var_decl_stmt *vd_stmt, symtab_stack *st);
 // void assign_stmt_construct_symtab(assign_stmt *as_stmt, symtab_stack *st);
 // void func_call_stmt_construct_symtab(func_call_stmt *fc_stmt, symtab_stack *st);
 // void print_stmt_construct_symtab(print_stmt *p_stmt, symtab_stack *st);
@@ -108,22 +108,22 @@ void var_decl_stmt_construct_symtab(var_decl_stmt *vd_stmt, symtab_stack *st);
 
 
 /* methods to construct and resolve symbols for each statement */
-void stmt_resolve(statement *stmt, symtab_stack *st);
-void var_decl_stmt_resolve(var_decl_stmt *vd_stmt, symtab_stack *st);
-void assign_stmt_resolve(assign_stmt *as_stmt, symtab_stack *st);
-void func_call_stmt_resolve(func_call_stmt *fc_stmt, symtab_stack *st);
-void print_stmt_resolve(print_stmt *p_stmt, symtab_stack *st);
-void read_stmt_resolve(read_stmt *r_stmt, symtab_stack *st);
-void ret_stmt_resolve(return_stmt *ret_stmt, symtab_stack *st);
+void resolve_stmt(statement *stmt, symtab_stack *st);
+void resolve_var_decl_stmt(var_decl_stmt *vd_stmt, symtab_stack *st);
+void resolve_assign_stmt(assign_stmt *as_stmt, symtab_stack *st);
+void resolve_func_call_stmt(func_call_stmt *fc_stmt, symtab_stack *st);
+void resolve_print_stmt(print_stmt *p_stmt, symtab_stack *st);
+void resolve_read_stmt(read_stmt *r_stmt, symtab_stack *st);
+void resolve_ret_stmt(return_stmt *ret_stmt, symtab_stack *st);
 
 
-void stmt_typecheck(statement *stmt, symtab_stack *st);
-void var_decl_stmt_typecheck(var_decl_stmt *vd_stmt, symtab_stack *st);
-void assign_stmt_typecheck(assign_stmt *as_stmt, symtab_stack *st);
-void func_call_stmt_typecheck(func_call_stmt *fc_stmt, symtab_stack *st);
-void print_stmt_typecheck(print_stmt *p_stmt, symtab_stack *st);
-void read_stmt_typecheck(read_stmt *r_stmt, symtab_stack *st);
-void ret_stmt_typecheck(return_stmt *ret_stmt, symtab_stack *st);
+void typecheck_stmt(statement *stmt, symtab_stack *st);
+void typecheck_var_decl_stmt(var_decl_stmt *vd_stmt, symtab_stack *st);
+void typecheck_assign_stmt(assign_stmt *as_stmt, symtab_stack *st);
+void typecheck_func_call_stmt(func_call_stmt *fc_stmt, symtab_stack *st);
+void typecheck_print_stmt(print_stmt *p_stmt, symtab_stack *st);
+void typecheck_read_stmt(read_stmt *r_stmt, symtab_stack *st);
+void typecheck_ret_stmt(return_stmt *ret_stmt, symtab_stack *st);
 
 
 #endif

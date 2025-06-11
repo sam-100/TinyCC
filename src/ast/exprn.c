@@ -86,13 +86,13 @@ void print_exprn(exprn *e, char *tabs) {
 }
 
 
-void exprn_resolve(exprn *e, symtab_stack *st) {
+void resolve_exprn(exprn *e, symtab_stack *st) {
     if(e == NULL)
         return;
     
     if(e->kind == BINARY_EXPRN) {
-        exprn_resolve(e->left, st);
-        exprn_resolve(e->right, st);
+        resolve_exprn(e->left, st);
+        resolve_exprn(e->right, st);
         return;
     }
 
@@ -110,10 +110,10 @@ void exprn_resolve(exprn *e, symtab_stack *st) {
     }
 }
 
-void exprn_typecheck(exprn *e, symtab_stack *st) {
+void typecheck_exprn(exprn *e, symtab_stack *st) {
     if(e->kind == BINARY_EXPRN) {
-        exprn_typecheck(e->left, st);
-        exprn_typecheck(e->right, st);
+        typecheck_exprn(e->left, st);
+        typecheck_exprn(e->right, st);
 
         if(e->left->type != e->right->type) {
             fprintf(f_error, "Error (line_no %d): binary operands of different types (lhs %s, rhs %s)for operator %s.\n", e->line_no, get_type_name(e->left->type), get_type_name(e->right->type), get_op_name(e->op));

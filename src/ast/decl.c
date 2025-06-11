@@ -98,39 +98,39 @@ void print_func_decl(func_decl *fd) {
     fprintf(f_ast, "}\n");
 }
 
-void decl_construct_symtab(decl *d, symtab_stack *st) {
+void construct_symtab_decl(decl *d, symtab_stack *st) {
     if(d == NULL)
         return;
     
     switch(d->kind)
     {
         case DECL_VAR:
-            var_decl_construct_symtab(d->vd, st);
+            construct_symtab_var_decl(d->vd, st);
             break;
         case DECL_FUNC:
-            func_decl_construct_symtab(d->fd, st);
+            construct_symtab_func_decl(d->fd, st);
             break;
     }
-    decl_construct_symtab(d->next, st);
+    construct_symtab_decl(d->next, st);
 }
 
-void decl_resolve(decl *d, symtab_stack *st) {
+void resolve_decl(decl *d, symtab_stack *st) {
     if(d == NULL)
         return;
     
     switch(d->kind)
     {
         case DECL_VAR:
-            var_decl_resolve(d->vd, st);
+            resolve_var_decl(d->vd, st);
             break;
         case DECL_FUNC:
-            func_decl_resolve(d->fd, st);
+            resolve_func_decl(d->fd, st);
             break;
     }
-    decl_resolve(d->next, st);
+    resolve_decl(d->next, st);
 }
 
-void var_decl_construct_symtab(var_decl *vd, symtab_stack *st) {
+void construct_symtab_var_decl(var_decl *vd, symtab_stack *st) {
     if(scope_lookup_current(vd->name, st)) {
         fprintf(stderr, "Error: redeclaration of symbol %s at line %d\n", vd->name, vd->line_no);
         return;
@@ -139,12 +139,12 @@ void var_decl_construct_symtab(var_decl *vd, symtab_stack *st) {
     scope_bind(vd->name, vd->sym, st);
 }
 
-void var_decl_resolve(var_decl *vd, symtab_stack *st) {    
+void resolve_var_decl(var_decl *vd, symtab_stack *st) {    
     if(vd->initialized)
-        exprn_resolve(vd->rhs, st);
+        resolve_exprn(vd->rhs, st);
 }
 
-void func_decl_construct_symtab(func_decl *fd, symtab_stack *st) {
+void construct_symtab_func_decl(func_decl *fd, symtab_stack *st) {
     // Create a symbol for function name
     if(scope_lookup_current(fd->name, st)) {
         fprintf(stderr, "Error: redeclaration of symbol %s at line %d\n", fd->name, fd->line_no);
@@ -155,62 +155,62 @@ void func_decl_construct_symtab(func_decl *fd, symtab_stack *st) {
 
     // scope_enter(st);                        // enter function scope
     scope_enter_func(fd, st);
-    parameter_construct_symtab(fd->param_list, st);
-    func_body_construct_symtab(fd->body, st);
+    construct_symtab_parameter(fd->param_list, st);
+    construct_symtab_func_body(fd->body, st);
     fd->symtab = scope_get_current(st);       // save function scope
     scope_exit(st);
 }
 
-void func_decl_resolve(func_decl *fd, symtab_stack *st) {
+void resolve_func_decl(func_decl *fd, symtab_stack *st) {
     fd->sym->next_param = create_symbol_param(fd->param_list);
 
     scope_push(fd->symtab, st);        // enter function scope
     if(fd->body)    
-        func_body_resolve(fd->body, st);
+        resolve_func_body(fd->body, st);
     scope_pop(st);         // exit function scope
     return;
 }
 
-void decl_print_symtab(decl *d) {
+void print_symtab_decl(decl *d) {
     if(d == NULL)
         return;
     if(d->kind == DECL_FUNC)
-        func_decl_print_symtab(d->fd);
-    decl_print_symtab(d->next);
+        print_symtab_func_decl(d->fd);
+    print_symtab_decl(d->next);
 }
 
-void func_decl_print_symtab(func_decl *fd) {
+void print_symtab_func_decl(func_decl *fd) {
     if(fd->body == NULL)
         return;
     fprintf(f_symtab, "Function %s() symtab: \n", fd->name);
     print_symtab(fd->symtab);
 }
 
-void decl_typecheck(decl *d, symtab_stack *st) {
+void typecheck_decl(decl *d, symtab_stack *st) {
     if(d == NULL)
         return;
     
     switch(d->kind)
     {
         case DECL_VAR:
-            var_decl_typecheck(d->vd, st);
+            typecheck_var_decl(d->vd, st);
             break;
         case DECL_FUNC:
-            func_decl_typecheck(d->fd, st);
+            typecheck_func_decl(d->fd, st);
             break;
     }
-    decl_typecheck(d->next, st);
+    typecheck_decl(d->next, st);
 }
 
-void func_decl_typecheck(func_decl *fd, symtab_stack *st) {
-    func_body_typecheck(fd->body, st);
+void typecheck_func_decl(func_decl *fd, symtab_stack *st) {
+    typecheck_func_body(fd->body, st);
 }
 
-void var_decl_typecheck(var_decl *vd, symtab_stack *st) {
+void typecheck_var_decl(var_decl *vd, symtab_stack *st) {
     if(vd->initialized == false)
         return;
     
-    exprn_typecheck(vd->rhs, st);
+    typecheck_exprn(vd->rhs, st);
     if(vd->type != vd->rhs->type) {
         fprintf(f_error, "Error: Variable %s of type %s assigned incompatable exprn of type %s at line no: %d", vd->name, get_type_name(vd->type), get_type_name(vd->rhs->type), vd->line_no);
         exit(2);
