@@ -3,14 +3,16 @@
 #include <stdlib.h>
 #include "parser.h"
 #include <string.h>
+#include "declarations.h"
 
 void initialize() {
 
 }
 
 void error(const char *msg, int status) {
-    fprintf(stderr, "%s\n", msg);
-    exit(status);
+    fprintf(f_error, "%s\n", msg);
+    if(status)
+        exit(status);
 }
 
 type_t get_type(int t) {
