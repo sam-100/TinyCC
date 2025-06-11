@@ -153,7 +153,8 @@ void func_decl_construct_symtab(func_decl *fd, symtab_stack *st) {
     fd->sym = create_symbol_func(fd->name, fd->type, NULL);
     scope_bind(fd->name, fd->sym, st);
 
-    scope_enter(st);                        // enter function scope
+    // scope_enter(st);                        // enter function scope
+    scope_enter_func(fd, st);
     parameter_construct_symtab(fd->param_list, st);
     func_body_construct_symtab(fd->body, st);
     fd->symtab = scope_get_current(st);       // save function scope

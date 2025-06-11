@@ -347,7 +347,8 @@ void read_stmt_resolve(read_stmt *r_stmt, symtab_stack *st) {
 
 void ret_stmt_resolve(return_stmt *ret_stmt, symtab_stack *st) {
     exprn_resolve(ret_stmt->ret_expr, st);
-    // ret_stmt->sym = ret_stmt->ret_expr->sym;
+    ret_stmt->sym = ret_stmt->ret_expr->sym;
+    ret_stmt->fd = scope_get_curr_func(st);
     return;
 }
 
@@ -442,8 +443,24 @@ void print_stmt_typecheck(print_stmt *p_stmt, symtab_stack *st) {
 
 void read_stmt_typecheck(read_stmt *r_stmt, symtab_stack *st) {
     // todo: 
+    if(scope_lookup(r_stmt->arg, st) == NULL) {
+        fprintf(f_error, "Error (line_no %d): symbol %s not declared before.\n", r_stmt->line_no, r_stmt->arg);
+        exit(2);
+    }
 }
 void ret_stmt_typecheck(return_stmt *ret_stmt, symtab_stack *st) {
     exprn_typecheck(ret_stmt->ret_expr, st);
+    if(ret_stmt->fd->type == TYPE_VOID && ret_stmt->ret_expr != NULL) {
+        fprintf(f_error, "Error (line_no %d): Cannot return any expression from a function of void type.\n", ret_stmt->line_no);
+        exit(2);
+    }
+
+    if(ret_stmt->fd->type != ret_stmt->ret_expr->type) {
+        fprintf(f_error, "Error (line_no %d): Cannot return an expression of type '%s' from function of type '%s'.\n", 
+            ret_stmt->line_no, 
+            get_type_name(ret_stmt->ret_expr->type), 
+            get_type_name(ret_stmt->fd->type));
+        exit(2);
+    }
     // todo: 
 }

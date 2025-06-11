@@ -42,6 +42,7 @@ typedef struct return_stmt {
     exprn *ret_expr;
     int line_no;
     symbol *sym;
+    func_decl *fd;
 } return_stmt;
 
 typedef struct assign_stmt {

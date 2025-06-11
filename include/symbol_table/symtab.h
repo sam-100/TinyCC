@@ -10,6 +10,7 @@ typedef struct symtab {
     char *names[MAX_SYMBOLS];
     symbol *symbols[MAX_SYMBOLS];
     int size;
+    func_decl *fd;
 } symtab;
 
 

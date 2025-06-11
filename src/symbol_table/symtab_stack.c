@@ -16,6 +16,10 @@ void scope_enter(symtab_stack *st) {
     st->arr[++(st->top)] = create_symtab();
 }
 
+void scope_enter_func(func_decl *fd, symtab_stack *st) {
+    scope_enter(st);
+    scope_get_current(st)->fd = fd;
+}
 void scope_exit(symtab_stack *st) {
     st->top--;
 }
@@ -52,6 +56,14 @@ symtab *scope_get_current(symtab_stack *st) {
     if(st->top == -1)
         return NULL;
     return st->arr[st->top];
+}
+
+func_decl *scope_get_curr_func(symtab_stack *st) {
+    for(int i=st->top; i >= 0; i--) {
+        if(st->arr[st->top]->fd != NULL)
+            return st->arr[st->top]->fd;
+    }
+    return NULL;
 }
 
 void scope_push(symtab *stab, symtab_stack *st) {

@@ -5,6 +5,7 @@
 symtab *create_symtab() {
     symtab *s = (symtab*)malloc(sizeof(symtab));
     s->size = 0;
+    s->fd = NULL;
     return s;
 }
 
