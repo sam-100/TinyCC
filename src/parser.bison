@@ -253,6 +253,10 @@ return_stmt:
                                                         $$ = create_ret_stmt($2); 
                                                         $$->line_no = @1.first_line; 
                                                 }
+        | RETURN SEMICOLON                      {
+                                                        $$ = create_ret_stmt(NULL);
+                                                        $$->line_no = @1.first_line;
+                                                }
         ;
 
 func_call: 

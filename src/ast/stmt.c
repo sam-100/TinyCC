@@ -347,7 +347,8 @@ void read_stmt_resolve(read_stmt *r_stmt, symtab_stack *st) {
 
 void ret_stmt_resolve(return_stmt *ret_stmt, symtab_stack *st) {
     exprn_resolve(ret_stmt->ret_expr, st);
-    ret_stmt->sym = ret_stmt->ret_expr->sym;
+    if(ret_stmt->ret_expr)
+        ret_stmt->sym = ret_stmt->ret_expr->sym;
     ret_stmt->fd = scope_get_curr_func(st);
     return;
 }
@@ -449,12 +450,19 @@ void read_stmt_typecheck(read_stmt *r_stmt, symtab_stack *st) {
     }
 }
 void ret_stmt_typecheck(return_stmt *ret_stmt, symtab_stack *st) {
-    exprn_typecheck(ret_stmt->ret_expr, st);
+    if(ret_stmt->fd->type == TYPE_VOID && ret_stmt->ret_expr == NULL)
+        return;
+    
+    if(ret_stmt->ret_expr == NULL) {
+        fprintf(f_error, "Error (line_no %d): Cannot return with no expression from a function of type %s.\n", ret_stmt->line_no, get_type_name(ret_stmt->fd->type));
+        exit(2);
+    }
     if(ret_stmt->fd->type == TYPE_VOID && ret_stmt->ret_expr != NULL) {
         fprintf(f_error, "Error (line_no %d): Cannot return any expression from a function of void type.\n", ret_stmt->line_no);
         exit(2);
     }
-
+    
+    exprn_typecheck(ret_stmt->ret_expr, st);
     if(ret_stmt->fd->type != ret_stmt->ret_expr->type) {
         fprintf(f_error, "Error (line_no %d): Cannot return an expression of type '%s' from function of type '%s'.\n", 
             ret_stmt->line_no, 

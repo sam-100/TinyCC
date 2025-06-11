@@ -53,6 +53,9 @@ exprn *create_exprn_bool(bool val) {
 }
 
 void print_exprn(exprn *e, char *tabs) {
+    if(e == NULL)
+        return;
+    
     fprintf(f_ast, "%sexprn \n", tabs);
     fprintf(f_ast, "%sline_no: %d;\n", tabs, e->line_no);
     fprintf(f_ast, "%s{\n", tabs);
@@ -84,6 +87,9 @@ void print_exprn(exprn *e, char *tabs) {
 
 
 void exprn_resolve(exprn *e, symtab_stack *st) {
+    if(e == NULL)
+        return;
+    
     if(e->kind == BINARY_EXPRN) {
         exprn_resolve(e->left, st);
         exprn_resolve(e->right, st);
