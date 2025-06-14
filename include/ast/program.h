@@ -1,7 +1,7 @@
 #ifndef PROGRAM_H
 #define PROGRAM_H
 
-#include "decl.h"
+#include "ast/decl.h"
 
 typedef struct program {
     decl *decl_list;

@@ -1,11 +1,11 @@
-#include "stmt.h"
+#include "ast/stmt.h"
 #include <unistd.h>
 #include <stdlib.h>
 #include <string.h>
-#include "decl.h"
+#include "ast/decl.h"
 #include "utils.h"
 #include "declarations.h"
-#include "program.h"
+#include "ast/program.h"
 
 // Creating statements from sub_stmts
 statement *create_stmt_from_var_decl(var_decl_stmt *vd) {

@@ -2,9 +2,9 @@
 #define FUNC_H
 
 #include "enums.h"
-#include "exprn.h"
-#include "stmt.h"
-#include "symtab_stack.h"
+#include "ast/exprn.h"
+#include "ast/stmt.h"
+#include "symbol_table/symtab_stack.h"
 
 typedef struct parameter {
     char *name;

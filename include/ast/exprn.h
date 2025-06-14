@@ -3,8 +3,8 @@
 
 #include "enums.h"
 #include <stdbool.h>
-#include "decl.h"
-#include "symtab_stack.h"
+#include "ast/decl.h"
+#include "symbol_table/symtab_stack.h"
 
 typedef struct exprn {
     char *name;

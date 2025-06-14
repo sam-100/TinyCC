@@ -1,7 +1,7 @@
 #ifndef SYMBOL_H
 #define SYMBOL_H
 
-#include "enums.h"
+#include "ast/enums.h"
 #include "declarations.h"
 
 typedef struct symbol {

@@ -1,4 +1,4 @@
-#include "symtab_stack.h"
+#include "symbol_table/symtab_stack.h"
 #include <stdlib.h>
 
 

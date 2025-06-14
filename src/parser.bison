@@ -1,11 +1,11 @@
 %{
 #include <stdio.h>
 #include <stdbool.h>
-#include "decl.h"
-#include "stmt.h"
-#include "exprn.h"
-#include "func.h"
-#include "program.h"
+#include "ast/decl.h"
+#include "ast/stmt.h"
+#include "ast/exprn.h"
+#include "ast/func.h"
+#include "ast/program.h"
 #include "utils.h"
 
 extern int yylex(void);

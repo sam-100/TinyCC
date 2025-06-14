@@ -1,6 +1,6 @@
 CC=gcc
 BIN= bin/scanner.o bin/main.o bin/parser.o bin/arguments.o bin/utils.o bin/exprn.o bin/stmt.o bin/decl.o bin/func.o bin/program.o bin/symbol.o bin/symtab.o bin/symtab_stack.o
-CFLAGS= -I include -I include/ast -I include/symbol_table -Werror
+CFLAGS= -I include -Werror
 
 # Target compiler rules
 tinycc: ${BIN}

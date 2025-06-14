@@ -4,7 +4,7 @@
 #include "enums.h"
 #include "exprn.h"
 #include "func.h"
-#include "symtab_stack.h"
+#include "symbol_table/symtab_stack.h"
 
 typedef struct var_decl {
     char *name;

@@ -2,7 +2,7 @@
 #include <unistd.h>
 #include <stdlib.h>
 #include "arguments.h"
-#include "program.h"
+#include "ast/program.h"
 #include "utils.h"
 #include "declarations.h"
 

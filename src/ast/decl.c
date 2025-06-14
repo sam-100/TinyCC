@@ -1,9 +1,9 @@
-#include "decl.h"
 #include <stdlib.h>
-#include "utils.h"
-#include "enums.h"
-#include "func.h"
 #include <stdio.h>
+#include "ast/enums.h"
+#include "ast/func.h"
+#include "ast/decl.h"
+#include "utils.h"
 
 
 decl *create_decl_from_var(var_decl *vd) {

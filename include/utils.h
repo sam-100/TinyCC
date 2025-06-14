@@ -1,6 +1,6 @@
 #ifndef UTILS_H
 #define UTILS_H
-#include "enums.h"
+#include "ast/enums.h"
 #include <stdbool.h>
 
 void error(const char *msg, int status);

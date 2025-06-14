@@ -1,6 +1,6 @@
-#include "symbol.h"
+#include "symbol_table/symbol.h"
 #include <stdlib.h>
-#include "decl.h"
+#include "ast/decl.h"
 #include "string.h"
 #include "utils.h"
 

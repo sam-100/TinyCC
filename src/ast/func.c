@@ -1,10 +1,10 @@
-#include "func.h"
-#include "stmt.h"
+#include "ast/func.h"
+#include "ast/stmt.h"
 #include <unistd.h>
 #include <stdlib.h>
 #include "utils.h"
 #include <string.h>
-#include "symtab_stack.h"
+#include "symbol_table/symtab_stack.h"
 
 // Create arguments and parameters
 argument *create_arg(exprn *e) {

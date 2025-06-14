@@ -1,9 +1,9 @@
-#include "exprn.h"
+#include "ast/exprn.h"
 #include <stdlib.h>
 #include "utils.h"
 #include "declarations.h"
 #include <string.h>
-#include "enums.h"
+#include "ast/enums.h"
 
 exprn *create_exprn(exprn *lhs, operator_t op, exprn *rhs) {
     exprn *e = (exprn*)malloc(sizeof(exprn));
