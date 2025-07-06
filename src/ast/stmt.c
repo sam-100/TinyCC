@@ -472,3 +472,18 @@ void typecheck_ret_stmt(return_stmt *ret_stmt, symtab_stack *st) {
     }
     // todo: 
 }
+
+int memory_layout_stmt_list(statement *stmt_list) {
+    int index, offset;
+    index=1;
+    offset=0;
+    for(statement *stmt=stmt_list; stmt != NULL; stmt=stmt->next) {
+        if(stmt->kind == STMT_VAR_DECL) {
+            stmt->vd_stmt->sym->which=index;
+            stmt->vd_stmt->sym->offset=offset;
+            index++;
+            offset += get_size_of_type(stmt->vd_stmt->type);
+        }
+    }
+    return offset;
+}

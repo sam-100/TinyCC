@@ -124,6 +124,6 @@ void typecheck_func_call_stmt(func_call_stmt *fc_stmt, symtab_stack *st);
 void typecheck_print_stmt(print_stmt *p_stmt, symtab_stack *st);
 void typecheck_read_stmt(read_stmt *r_stmt, symtab_stack *st);
 void typecheck_ret_stmt(return_stmt *ret_stmt, symtab_stack *st);
-
+int memory_layout_stmt_list(statement *stmt_list);
 
 #endif

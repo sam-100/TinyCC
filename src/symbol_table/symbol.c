@@ -51,6 +51,7 @@ symbol *create_symbol_param(parameter *param) {
     sym->scope=SCOPE_PARAMETER;
     sym->kind=SYM_PARAM;
     sym->next_param = create_symbol_param(param->next);
+    param->sym=sym;
     return sym;
 }
 
@@ -71,6 +72,7 @@ void print_symbol(symbol *sym) {
     fprintf(f_symtab, "\ttype: %s;\n", get_type_name(sym->type));
     fprintf(f_symtab, "\tkind: %s;\n", get_symbol_kind_name(sym->kind));
     fprintf(f_symtab, "\tscope: %s;\n", get_scope_name(sym->scope));
+    // fprintf(f_symtab, "\taddress: %p;\n", sym);
 
     switch(sym->kind)
     {
@@ -81,7 +83,7 @@ void print_symbol(symbol *sym) {
         case SYM_FUNC:
             fprintf(f_symtab, "\tparameters: \n");
             for(symbol *ptr=sym->next_param; ptr != NULL; ptr=ptr->next_param) {
-                fprintf(f_symtab, "\t\tparameter %d: %s: %s\n", ptr->which, ptr->name, get_type_name(ptr->type));
+                fprintf(f_symtab, "\t\tparameter %d [%d]: %s: %s\n", ptr->which, ptr->offset, ptr->name, get_type_name(ptr->type));
             }
             break;
         case SYM_PARAM:
@@ -93,4 +95,8 @@ void print_symbol(symbol *sym) {
             break;
     }
     fprintf(f_symtab, "}\n");
+}
+
+const char *codegen_symbol(symbol *sym) {
+    // TODO: 
 }

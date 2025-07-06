@@ -16,5 +16,7 @@ void construct_symtab_program(program *p);
 void resolve_program(program *p);
 void print_symtab_program(program *p);
 void typecheck_program(program *p);
+void memory_layout_program(program *p);
+
 
 #endif

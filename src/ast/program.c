@@ -36,6 +36,8 @@ void resolve_program(program *p) {
 void print_symtab_program(program *p) {
     fprintf(f_symtab, "Global Symbol Table: \n");
     print_symtab(p->sym_tab);
+
+    // print symbol table of each function
     print_symtab_decl(p->decl_list);
 }
 
@@ -48,4 +50,12 @@ void typecheck_program(program *p) {
     
     free(st);
     return;
+}
+
+void memory_layout_program(program *p) {
+    for(decl *d=p->decl_list; d != NULL; d=d->next) {
+        if(d->kind == DECL_VAR)
+            continue;
+        memory_layout_func_decl(d->fd);
+    }
 }

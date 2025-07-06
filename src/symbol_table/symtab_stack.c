@@ -45,6 +45,8 @@ symbol *scope_lookup(char *name, symtab_stack *st) {
         if(sym)
             return sym;
     }
+
+    fprintf(f_error, "symbol %s not found!\n", name);
     return NULL;
 }
 

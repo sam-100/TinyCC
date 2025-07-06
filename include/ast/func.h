@@ -37,6 +37,7 @@ typedef struct func_call {
 typedef struct func_body {
     statement *stmt_list;
     symtab *symtab;
+    int local_len;
 } func_body;
 
 
@@ -60,7 +61,7 @@ void print_func_body(func_body *fb);
 void construct_symtab_func_body(func_body *body, symtab_stack *st);
 void resolve_func_body(func_body *fb, symtab_stack *st);
 void typecheck_func_body(func_body *fb, symtab_stack *st);
-
+void memory_layout_func_body(func_body *fb);
 
 
 

@@ -31,13 +31,16 @@ int main(int argc, char **argv) {
     resolve_program(root);
     printf("Symbol table resolved.\n");
 
-    // print symbol tables
-    print_symtab_program(root);
-
+    
     // type checking
     typecheck_program(root);
     printf("Typechecking done.\n");
-
+    
+    // memory layout stage
+    memory_layout_program(root);
+    printf("Offsets set for parameters and local variables.\n");
+    
+    print_symtab_program(root);
     return 0;
 }
 

@@ -162,9 +162,15 @@ void construct_symtab_func_decl(func_decl *fd, symtab_stack *st) {
 }
 
 void resolve_func_decl(func_decl *fd, symtab_stack *st) {
-    fd->sym->next_param = create_symbol_param(fd->param_list);
-
+    // fd->sym->next_param = create_symbol_param(fd->param_list);
+    
     scope_push(fd->symtab, st);        // enter function scope
+    for(parameter *p=fd->param_list; p != NULL; p=p->next) {
+        p->sym = scope_lookup(p->name, st);
+    }
+    if(fd->param_list)
+        fd->sym->next_param = scope_lookup(fd->param_list->name, st);
+
     if(fd->body)    
         resolve_func_body(fd->body, st);
     scope_pop(st);         // exit function scope
@@ -183,6 +189,7 @@ void print_symtab_func_decl(func_decl *fd) {
     if(fd->body == NULL)
         return;
     fprintf(f_symtab, "Function %s() symtab: \n", fd->name);
+    fprintf(f_symtab, "{local_len: %d}\n", fd->body->local_len);
     print_symtab(fd->symtab);
 }
 
@@ -215,4 +222,17 @@ void typecheck_var_decl(var_decl *vd, symtab_stack *st) {
         fprintf(f_error, "Error: Variable %s of type %s assigned incompatable exprn of type %s at line no: %d", vd->name, get_type_name(vd->type), get_type_name(vd->rhs->type), vd->line_no);
         exit(2);
     }
+}
+
+void memory_layout_func_decl(func_decl *fd) {
+    int index = 1, offset = 16;
+    for(parameter *p=fd->param_list; p != NULL; p=p->next) {
+        p->sym->which = index;
+        p->sym->offset = offset;
+        index++;
+        offset += get_size_of_type(p->sym->type);
+    }
+
+    // todo: local variables
+    memory_layout_func_body(fd->body);
 }

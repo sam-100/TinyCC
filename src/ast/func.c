@@ -202,3 +202,6 @@ void typecheck_func_body(func_body *fb, symtab_stack *st) {
     scope_pop(st);
 }
 
+void memory_layout_func_body(func_body *fb) {
+    fb->local_len = memory_layout_stmt_list(fb->stmt_list);
+}

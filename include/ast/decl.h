@@ -65,4 +65,6 @@ void typecheck_func_decl(func_decl *fd, symtab_stack *st);
 void print_symtab_decl(decl *d);
 void print_symtab_func_decl(func_decl *fd);
 
+void memory_layout_func_decl(func_decl *fd);
+
 #endif
