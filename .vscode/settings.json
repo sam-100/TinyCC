@@ -7,6 +7,7 @@
         "exprn.h": "c",
         "enums.h": "c",
         "program.h": "c",
-        "declarations.h": "c"
+        "declarations.h": "c",
+        "tac.h": "c"
     }
 }

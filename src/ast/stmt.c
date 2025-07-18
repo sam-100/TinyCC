@@ -470,20 +470,20 @@ void typecheck_ret_stmt(return_stmt *ret_stmt, symtab_stack *st) {
             get_type_name(ret_stmt->fd->type));
         exit(2);
     }
-    // todo: 
+
 }
 
 int memory_layout_stmt_list(statement *stmt_list) {
     int index, offset;
-    index=1;
+    index=0;
     offset=0;
     for(statement *stmt=stmt_list; stmt != NULL; stmt=stmt->next) {
         if(stmt->kind == STMT_VAR_DECL) {
+            index++;
+            offset -= get_size_of_type(stmt->vd_stmt->type);
             stmt->vd_stmt->sym->which=index;
             stmt->vd_stmt->sym->offset=offset;
-            index++;
-            offset += get_size_of_type(stmt->vd_stmt->type);
         }
     }
-    return offset;
+    return -offset;
 }

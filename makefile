@@ -1,5 +1,19 @@
 CC=gcc
-BIN= bin/scanner.o bin/main.o bin/parser.o bin/arguments.o bin/utils.o bin/exprn.o bin/stmt.o bin/decl.o bin/func.o bin/program.o bin/symbol.o bin/symtab.o bin/symtab_stack.o
+BIN= bin/scanner.o \
+	bin/main.o \
+	bin/parser.o \
+	bin/arguments.o \
+	bin/utils.o \
+	bin/exprn.o \
+	bin/stmt.o \
+	bin/decl.o \
+	bin/func.o \
+	bin/program.o \
+	bin/symbol.o \
+	bin/symtab.o \
+	bin/symtab_stack.o \
+	bin/tac.o
+
 CFLAGS= -I include -Werror
 
 # Target compiler rules
@@ -40,6 +54,10 @@ bin/symtab.o: src/symbol_table/symtab.c include/symbol_table/symtab.h
 	$(CC) -c -o $@ ${CFLAGS} src/symbol_table/symtab.c
 bin/symtab_stack.o: src/symbol_table/symtab_stack.c include/symbol_table/symtab_stack.h
 	$(CC) -c -o $@ ${CFLAGS} src/symbol_table/symtab_stack.c
+
+# Compiling src/tac/
+bin/tac.o: src/tac/tac.c include/tac/tac.h
+	$(CC) -c -o $@ ${CFLAGS} src/tac/tac.c
 
 # Scanner and parser
 src/scanner.c: src/scanner.flex
