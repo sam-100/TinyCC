@@ -39,7 +39,7 @@ void scope_bind(char *name, symbol *sym, symtab_stack *st) {
     add_symbol(name, sym, tab);
 }
 
-symbol *scope_lookup(char *name, symtab_stack *st) {
+symbol *scope_lookup(const char *name, symtab_stack *st) {
     for(int i=st->top; i>=0; i--) {
         symbol *sym = lookup_symbol(name, st->arr[i]);
         if(sym)
@@ -50,7 +50,7 @@ symbol *scope_lookup(char *name, symtab_stack *st) {
     return NULL;
 }
 
-symbol *scope_lookup_current(char *name, symtab_stack *st) {
+symbol *scope_lookup_current(const char *name, symtab_stack *st) {
     return lookup_symbol(name, st->arr[st->top]);
 }
 

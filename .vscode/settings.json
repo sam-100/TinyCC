@@ -8,6 +8,15 @@
         "enums.h": "c",
         "program.h": "c",
         "declarations.h": "c",
-        "tac.h": "c"
+        "tac.h": "c",
+        "decl.h": "c",
+        "func.h": "c",
+        "stmt.h": "c",
+        "symtab_stack.h": "c",
+        "symtab.h": "c",
+        "symbol.h": "c",
+        "arguments.h": "c",
+        "tac_stmt.h": "c",
+        "tac_operand.h": "c"
     }
 }

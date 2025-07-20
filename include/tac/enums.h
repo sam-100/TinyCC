@@ -2,13 +2,12 @@
 #define TAC_ENUMS
 
 typedef enum {
-    TAC_VARIABLE, 
-    TAC_TEMP, 
-    TAC_LITERAL_INT, 
-    TAC_LITERAL_BOOL, 
-    TAC_LITERAL_CHAR, 
-    TAC_ARGUMENT, 
-    TAC_FUNC_CALL, 
+    TAC_OP_VARIABLE, 
+    TAC_OP_TEMP, 
+    TAC_OP_LITERAL_INT, 
+    TAC_OP_LITERAL_BOOL, 
+    TAC_OP_LITERAL_CHAR, 
+    TAC_OP_FUNC_CALL, 
 } tac_operand_t;
 
 typedef enum {
@@ -16,7 +15,9 @@ typedef enum {
     TAC_READ_STMT, 
     TAC_RETURN_STMT, 
     TAC_ASSIGN_STMT, 
-    TAC_FUNC_CALL, 
+    TAC_FUNC_CALL_STMT, 
+    TAC_COPY_STMT, 
+    TAC_ARGUMENT_STMT, 
 } tac_stmt_t;
 
 #endif

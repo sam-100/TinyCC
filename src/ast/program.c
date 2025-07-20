@@ -59,3 +59,18 @@ void memory_layout_program(program *p) {
         memory_layout_func_decl(d->fd);
     }
 }
+
+void generate_tac_for_program(program *p) {
+    symtab_stack *st = create_symtab_stack();
+    scope_push(p->sym_tab, st);
+    for(decl *d = p->decl_list; d != NULL; d=d->next) {
+        if(d->kind == DECL_VAR)
+            continue;
+        generate_tac_for_function(d->fd, st);
+    }
+    scope_pop(st);
+}
+
+void print_tac_of_program(program *p) {
+    // todo: 
+}

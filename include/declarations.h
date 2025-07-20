@@ -29,6 +29,10 @@ typedef struct symbol symbol;
 typedef struct symtab symtab;
 typedef struct symtab_stack symtab_stack;
 
+/* three address code constructs */
+typedef struct tac_stmt tac_stmt;
+typedef struct tac_operand tac_operand;
+
 /* Global variables */
 extern FILE *f_input, *f_tokens, *f_ast, *f_nowhere, *f_error, *f_symtab;
 extern program *root;

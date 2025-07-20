@@ -6,7 +6,6 @@
 #include "utils.h"
 #include "declarations.h"
 
-
 extern int yylex(void);
 extern int yyparse(void);
 program *root;
@@ -39,6 +38,11 @@ int main(int argc, char **argv) {
     // memory layout stage
     memory_layout_program(root);
     printf("Offsets set for parameters and local variables.\n");
+    
+    
+    // generate three address code
+    generate_tac_for_program(root);
+    print_tac_of_program(root);
     
     print_symtab_program(root);
     return 0;

@@ -5,6 +5,7 @@
 #include <stdbool.h>
 #include "ast/decl.h"
 #include "symbol_table/symtab_stack.h"
+#include "tac/tac_stmt.h"
 
 typedef struct exprn {
     char *name;
@@ -29,5 +30,7 @@ void print_exprn(exprn *e, char *tabs);
 void resolve_exprn(exprn *e, symtab_stack *st);
 
 void typecheck_exprn(exprn *e, symtab_stack *st);
+
+tac_operand *generate_tac_operand_for_exprn(exprn *e, symtab_stack *st, tac_stmt *code);
 
 #endif

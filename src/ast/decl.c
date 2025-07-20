@@ -236,3 +236,13 @@ void memory_layout_func_decl(func_decl *fd) {
     // todo: local variables
     memory_layout_func_body(fd->body);
 }
+
+void generate_tac_for_function(func_decl *fd, symtab_stack *st) {
+    fd->code = create_tac_stmt();       // dummy head node
+
+    scope_push(fd->symtab, st);
+    for(statement *stmt = fd->body->stmt_list; stmt != NULL; stmt = stmt->next) {
+        generate_tac_for_statement(stmt, st, fd->code);
+    }
+    scope_pop(st);
+}

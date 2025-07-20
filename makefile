@@ -12,7 +12,8 @@ BIN= bin/scanner.o \
 	bin/symbol.o \
 	bin/symtab.o \
 	bin/symtab_stack.o \
-	bin/tac.o
+	bin/tac_stmt.o \
+	bin/tac_operand.o
 
 CFLAGS= -I include -Werror
 
@@ -56,8 +57,10 @@ bin/symtab_stack.o: src/symbol_table/symtab_stack.c include/symbol_table/symtab_
 	$(CC) -c -o $@ ${CFLAGS} src/symbol_table/symtab_stack.c
 
 # Compiling src/tac/
-bin/tac.o: src/tac/tac.c include/tac/tac.h
-	$(CC) -c -o $@ ${CFLAGS} src/tac/tac.c
+bin/tac_operand.o: src/tac/tac_operand.c include/tac/tac_operand.h
+	$(CC) -c -o $@ ${CFLAGS} src/tac/tac_operand.c
+bin/tac_stmt.o: src/tac/tac_stmt.c include/tac/tac_stmt.h
+	$(CC) -c -o $@ ${CFLAGS} src/tac/tac_stmt.c
 
 # Scanner and parser
 src/scanner.c: src/scanner.flex
@@ -73,3 +76,7 @@ clean:
 		output/* \
 		tinycc
 
+
+
+run: tinycc
+	./tinycc input/main.b --show-tokens --show-ast --show-symtab --show-tac

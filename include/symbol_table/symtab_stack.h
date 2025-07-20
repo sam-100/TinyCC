@@ -19,8 +19,8 @@ void scope_exit(symtab_stack *st);
 int scope_level(symtab_stack *st);
 scope_t scope_type(symtab_stack *st);
 void scope_bind(char *name, symbol *sym, symtab_stack *st);
-symbol *scope_lookup(char *name, symtab_stack *st);
-symbol *scope_lookup_current(char *name, symtab_stack *st);
+symbol *scope_lookup(const char *name, symtab_stack *st);
+symbol *scope_lookup_current(const char *name, symtab_stack *st);
 symtab *scope_get_current(symtab_stack *st);
 func_decl *scope_get_curr_func(symtab_stack *st);
 

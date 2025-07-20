@@ -4,9 +4,11 @@
 #include "parser.h"
 #include <string.h>
 #include "declarations.h"
+#include "tac/tac_stmt.h"
 
 void initialize() {
-
+    for(int i=0; i<MAX_TEMP; i++)
+        temp_store[i] = 0;
 }
 
 void error(const char *msg, int status) {

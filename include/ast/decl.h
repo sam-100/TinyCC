@@ -28,6 +28,7 @@ typedef struct func_decl {
     symtab *symtab;
     struct parameter *param_list;
     struct func_body *body;
+    tac_stmt *code;
 } func_decl;
 
 typedef struct decl {
@@ -66,5 +67,7 @@ void print_symtab_decl(decl *d);
 void print_symtab_func_decl(func_decl *fd);
 
 void memory_layout_func_decl(func_decl *fd);
+
+void generate_tac_for_function(func_decl *fd, symtab_stack *st);
 
 #endif

@@ -2,8 +2,8 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <stdbool.h>
-#include "parser.h"
 
+#include "parser.h"
 
 extern void yyerror(const char *msg);
 extern FILE *f_tokens;

@@ -5,7 +5,7 @@
 #include <fcntl.h>
 #include "utils.h"
 
-FILE *f_input, *f_tokens, *f_ast, *f_nowhere, *f_error, *f_symtab;
+FILE *f_input, *f_tokens, *f_ast, *f_nowhere, *f_error, *f_symtab, *f_tac;
 char *input_name;
 extern FILE *yyin;
 
@@ -13,7 +13,7 @@ extern FILE *yyin;
 void process_arguments(int argc, char **argv) {
     // No arguments case
     if(argc == 1) {
-        printf("Usage: %s <input_file> [--show-tokens] [--show-ast]\n", argv[0]);
+        printf("Usage: %s <input_file> [--show-tokens] [--show-ast] [--show-symtab] [--show-tac]\n", argv[0]);
         exit(1);
     }
 
@@ -42,6 +42,11 @@ void process_arguments(int argc, char **argv) {
         }
         if(strcmp(argv[i], "--show-symtab") == 0) {
             f_symtab = fopen("output/symtab.txt", "w");
+            i++;
+            continue;
+        }
+        if(strcmp(argv[i], "--show-tac") == 0) {
+            f_tac = fopen("output/tac.txt", "w");
             i++;
             continue;
         }

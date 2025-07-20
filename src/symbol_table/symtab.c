@@ -15,7 +15,7 @@ void add_symbol(char *name, symbol *sym, symtab *table) {
     table->size++;    
 }
 
-symbol *lookup_symbol(char *name, symtab *table) {
+symbol *lookup_symbol(const char *name, symtab *table) {
     for(int i=0; i<table->size; i++) {
         if(strcmp(table->names[i], name) == 0)
             return table->symbols[i];

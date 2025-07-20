@@ -1,7 +1,7 @@
 #ifndef FUNC_H
 #define FUNC_H
 
-#include "enums.h"
+#include "ast/enums.h"
 #include "ast/exprn.h"
 #include "ast/stmt.h"
 #include "symbol_table/symtab_stack.h"
@@ -63,6 +63,7 @@ void resolve_func_body(func_body *fb, symtab_stack *st);
 void typecheck_func_body(func_body *fb, symtab_stack *st);
 void memory_layout_func_body(func_body *fb);
 
-
+tac_operand *generate_tac_for_func_call(func_call *fc, symtab_stack *st, tac_stmt *code);
+void generate_tac_for_func_argument(argument *arg, symtab_stack *s, tac_stmt *code);
 
 #endif
