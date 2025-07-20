@@ -105,6 +105,17 @@ char *get_op_name(operator_t op) {
     }
 }
 
+char *op_to_string(operation_t op) {
+    if(op == OP_PLUS)
+        return "+";
+    if(op == OP_MINUS)
+        return "-";
+    if(op == OP_MUL)
+        return "*";
+    if(op == OP_DIV)
+        return "/";
+    return NULL;
+}
 char *btoa(bool val) {
     if(val == true)
         return "true";

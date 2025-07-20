@@ -10,7 +10,7 @@ char *itoa(int num);
 void reverse(char *str);
 int get_size_of_type(type_t type);
 operation_t get_op_type(operator_t op);
-
+char *op_to_string(operation_t op);
 
 /* Helper functions to print ast */
 char *get_type_name(type_t type);

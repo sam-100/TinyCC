@@ -28,6 +28,7 @@ tac_operand *create_tac_operand_literal_int(int val);
 tac_operand *create_tac_operand_literal_bool(bool val);
 tac_operand *create_tac_operand_literal_char(char val);
 
+char *tac_op_to_string(tac_operand *t_op);
 
 int getTemp();
 void freeTemp(int);

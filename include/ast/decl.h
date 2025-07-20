@@ -69,5 +69,6 @@ void print_symtab_func_decl(func_decl *fd);
 void memory_layout_func_decl(func_decl *fd);
 
 void generate_tac_for_function(func_decl *fd, symtab_stack *st);
+void print_tac_of_function(func_decl *fd, FILE *f_out);
 
 #endif

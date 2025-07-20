@@ -17,6 +17,6 @@ typedef struct tac_stmt {
 tac_stmt *tac_append(tac_stmt *first, tac_stmt *second);
 tac_stmt *get_last(tac_stmt *t);
 tac_stmt *create_tac_stmt();
-
+void print_tac_stmt(tac_stmt *t, FILE *file);
 
 #endif

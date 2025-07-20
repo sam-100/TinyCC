@@ -24,7 +24,7 @@ void process_arguments(int argc, char **argv) {
     f_ast = f_nowhere;
     f_error = stderr;
     f_symtab = f_nowhere;
-    
+    f_tac = f_nowhere;
     
 
     // processing the arguments

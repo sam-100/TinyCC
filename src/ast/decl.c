@@ -246,3 +246,9 @@ void generate_tac_for_function(func_decl *fd, symtab_stack *st) {
     }
     scope_pop(st);
 }
+
+void print_tac_of_function(func_decl *fd, FILE *f_out) {
+    fprintf(f_out, "FUNCTION %s BEGIN:\n", fd->name);
+    print_tac_stmt(fd->code->next, f_out);
+    fprintf(f_out, "FUNCTION END\n\n");
+}

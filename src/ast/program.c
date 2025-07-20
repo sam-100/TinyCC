@@ -71,6 +71,11 @@ void generate_tac_for_program(program *p) {
     scope_pop(st);
 }
 
-void print_tac_of_program(program *p) {
-    // todo: 
+void print_tac_of_program(program *p, FILE *f_out) {
+    fprintf(f_out, "--------------- Three Address code --------------\n\n");
+    for(decl *d=p->decl_list; d != NULL; d=d->next) {
+        if(d->kind == DECL_VAR)
+            continue;
+        print_tac_of_function(d->fd, f_out);
+    }
 }

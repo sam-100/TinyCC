@@ -67,3 +67,28 @@ void freeTemp(int temp) {
     }
     temp_store[temp] = 0;
 }
+
+char *tac_op_to_string(tac_operand *t_op) {
+    char *str = malloc(100);
+    str[0] = '\0';
+    switch(t_op->kind)
+    {
+        case TAC_OP_VARIABLE:
+            return t_op->name;
+        case TAC_OP_TEMP:
+            strcat(str, "temp_");
+            strcat(str, itoa(t_op->temp));
+            return str;
+        case TAC_OP_LITERAL_INT:
+            return itoa(t_op->literal_int);
+        case TAC_OP_LITERAL_BOOL:
+            return btoa(t_op->literal_bool);
+        case TAC_OP_LITERAL_CHAR:
+            return &t_op->literal_char;
+        case TAC_OP_FUNC_CALL:
+            sprintf(str, "call %s, %d", t_op->name, t_op->arg_cnt);
+            return str;
+    }
+    
+    return NULL;
+}

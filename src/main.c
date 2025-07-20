@@ -18,6 +18,9 @@ void yyerror(const char *msg);
 int main(int argc, char **argv) {
     initialize();
     process_arguments(argc, argv);
+    if(f_tac == f_nowhere)
+        error("something", 4);
+
     yyparse();
     print_program(root);
     printf("Program parsed successfully!\n");
@@ -42,7 +45,7 @@ int main(int argc, char **argv) {
     
     // generate three address code
     generate_tac_for_program(root);
-    print_tac_of_program(root);
+    print_tac_of_program(root, f_tac);
     
     print_symtab_program(root);
     return 0;
