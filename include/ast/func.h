@@ -64,6 +64,6 @@ void typecheck_func_body(func_body *fb, symtab_stack *st);
 void memory_layout_func_body(func_body *fb);
 
 tac_operand *generate_tac_for_func_call(func_call *fc, symtab_stack *st, tac_stmt *code, int *temp_cnt);
-void generate_tac_for_func_argument(argument *arg, symtab_stack *s, tac_stmt *code, int *temp_cnt);
+int generate_tac_for_func_argument(argument *arg, symtab_stack *s, tac_stmt *code, int *temp_cnt);
 
 #endif
