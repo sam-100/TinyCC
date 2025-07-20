@@ -41,9 +41,9 @@ int main(int argc, char **argv) {
     memory_layout_program(root);
     printf("Offsets set for parameters and local variables.\n");
     
-    
     // generate three address code
     generate_tac_for_program(root);
+    printf("Three address code generated successfully!\n");
     print_tac_of_program(root, f_tac);
     
     print_symtab_program(root);

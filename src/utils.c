@@ -50,6 +50,7 @@ char *itoa(int num) {
         str[i] = (char)('0'+num%10);
         num /= 10;
     }
+    reverse(str);
     return str;
 }
 

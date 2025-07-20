@@ -157,15 +157,15 @@ tac_operand *generate_tac_operand_for_exprn(exprn *e, symtab_stack *st, tac_stmt
     // Binary expression :- 
     tac_stmt *curr = create_tac_stmt();
     curr->kind = TAC_ASSIGN_STMT;
-    curr->lhs = create_tac_operand_temp(e->type);   // generate a new temp variable
     curr->op1 = generate_tac_operand_for_exprn(e->left, st, code);
     curr->op2 = generate_tac_operand_for_exprn(e->right, st, code);
+    curr->lhs = create_tac_operand_temp(e->type);   // generate a new temp variable
     curr->op = e->op;
     tac_append(code, curr);
 
     if(curr->op1->kind == TAC_OP_TEMP)
         freeTemp(curr->op1->temp);
-    if(curr->op1->kind == TAC_OP_TEMP)
+    if(curr->op2->kind == TAC_OP_TEMP)
         freeTemp(curr->op2->temp);
 
     return curr->lhs;
