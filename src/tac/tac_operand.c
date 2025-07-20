@@ -12,7 +12,6 @@ tac_operand *create_tac_operand_temp(type_t type) {
     operand->temp = getTemp();
     operand->kind = TAC_OP_TEMP;
     operand->type = type;
-    operand->temp = getTemp();
     return operand;
 }
 

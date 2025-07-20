@@ -18,9 +18,8 @@ void yyerror(const char *msg);
 int main(int argc, char **argv) {
     initialize();
     process_arguments(argc, argv);
-    if(f_tac == f_nowhere)
-        error("something", 4);
 
+    // scanning parsing and ast creation
     yyparse();
     print_program(root);
     printf("Program parsed successfully!\n");

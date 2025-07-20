@@ -37,6 +37,9 @@ operation_t get_op_type(operator_t op) {
 }
 
 char *itoa(int num) {
+    if(num == 0)
+        return "0";
+    
     char *str = malloc(10);
     int i=0;
     if(num < 0) {

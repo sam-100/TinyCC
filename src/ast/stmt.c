@@ -532,6 +532,7 @@ void generate_tac_for_statement(statement *stmt, symtab_stack *st, tac_stmt *cod
         case STMT_RETURN:
             curr->kind = TAC_RETURN_STMT;
             curr->op1 = generate_tac_operand_for_exprn(stmt->ret_stmt->ret_expr, st, code);
+            tac_append(code, curr);
             if(curr->op1->kind == TAC_OP_TEMP)
                 freeTemp(curr->op1->temp);
             break;
