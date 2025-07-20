@@ -120,10 +120,15 @@ char *op_to_string(operation_t op) {
         return "/";
     return NULL;
 }
+
 char *btoa(bool val) {
     if(val == true)
         return "true";
     return "false";
+}
+
+int max(int a, int b) {
+    return a > b ? a : b;
 }
 
 char *get_literal_value(value val, type_t type) {

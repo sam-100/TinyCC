@@ -135,7 +135,7 @@ void typecheck_exprn(exprn *e, symtab_stack *st) {
     }
 }
 
-tac_operand *generate_tac_operand_for_exprn(exprn *e, symtab_stack *st, tac_stmt *code) {
+tac_operand *generate_tac_operand_for_exprn(exprn *e, symtab_stack *st, tac_stmt *code, int *temp_cnt) {
     if(e->kind == LITERAL_EXPRN) {
         if(e->type == TYPE_INTEGER)
             return create_tac_operand_literal_int(e->value.i_val);
@@ -157,9 +157,9 @@ tac_operand *generate_tac_operand_for_exprn(exprn *e, symtab_stack *st, tac_stmt
     // Binary expression :- 
     tac_stmt *curr = create_tac_stmt();
     curr->kind = TAC_ASSIGN_STMT;
-    curr->op1 = generate_tac_operand_for_exprn(e->left, st, code);
-    curr->op2 = generate_tac_operand_for_exprn(e->right, st, code);
-    curr->lhs = create_tac_operand_temp(e->type);   // generate a new temp variable
+    curr->op1 = generate_tac_operand_for_exprn(e->left, st, code, temp_cnt);
+    curr->op2 = generate_tac_operand_for_exprn(e->right, st, code, temp_cnt);
+    curr->lhs = create_tac_operand_temp(e->type, temp_cnt);   // generate a new temp variable
     curr->op = e->op;
     tac_append(code, curr);
 

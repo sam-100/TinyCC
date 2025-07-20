@@ -7,11 +7,12 @@
 
 int temp_store[MAX_TEMP];
 
-tac_operand *create_tac_operand_temp(type_t type) {
+tac_operand *create_tac_operand_temp(type_t type, int *temp_cnt) {
     tac_operand *operand = (tac_operand*)malloc(sizeof(tac_operand));
     operand->temp = getTemp();
     operand->kind = TAC_OP_TEMP;
     operand->type = type;
+    *temp_cnt = max(*temp_cnt, operand->temp+1);
     return operand;
 }
 

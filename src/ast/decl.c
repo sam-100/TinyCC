@@ -239,16 +239,16 @@ void memory_layout_func_decl(func_decl *fd) {
 
 void generate_tac_for_function(func_decl *fd, symtab_stack *st) {
     fd->code = create_tac_stmt();       // dummy head node
-
+    
     scope_push(fd->symtab, st);
     for(statement *stmt = fd->body->stmt_list; stmt != NULL; stmt = stmt->next) {
-        generate_tac_for_statement(stmt, st, fd->code);
+        generate_tac_for_statement(stmt, st, fd->code, &fd->body->temp_cnt);
     }
     scope_pop(st);
 }
 
 void print_tac_of_function(func_decl *fd, FILE *f_out) {
-    fprintf(f_out, "FUNCTION %s BEGIN:\n", fd->name);
+    fprintf(f_out, "FUNCTION %s BEGIN (temp_cnt = %d):\n", fd->name, fd->body->temp_cnt);
     print_tac_stmt(fd->code->next, f_out);
     fprintf(f_out, "FUNCTION END\n\n");
 }

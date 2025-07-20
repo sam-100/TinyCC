@@ -79,6 +79,8 @@ func_body *create_func_body(statement *stmt_list) {
     func_body *fb = (func_body*)malloc(sizeof(func_body));
     fb->stmt_list = stmt_list;
     fb->symtab = NULL;
+    fb->local_len = 0;
+    fb->temp_cnt = 0;
     return fb;
 }
 
@@ -206,14 +208,14 @@ void memory_layout_func_body(func_body *fb) {
     fb->local_len = memory_layout_stmt_list(fb->stmt_list);
 }
 
-tac_operand *generate_tac_for_func_call(func_call *fc, symtab_stack *st, tac_stmt *code) {
+tac_operand *generate_tac_for_func_call(func_call *fc, symtab_stack *st, tac_stmt *code, int *temp_cnt) {
     tac_stmt *curr = create_tac_stmt();
     curr->kind = TAC_COPY_STMT;
-    curr->lhs = create_tac_operand_temp(fc->type);
+    curr->lhs = create_tac_operand_temp(fc->type, temp_cnt);
     
     int arg_cnt = 0;
     for(argument *arg = fc->arg_list; arg != NULL; arg=arg->next) {
-        generate_tac_for_func_argument(arg, st, code);
+        generate_tac_for_func_argument(arg, st, code, temp_cnt);
         arg_cnt++;
     }
 
@@ -225,10 +227,10 @@ tac_operand *generate_tac_for_func_call(func_call *fc, symtab_stack *st, tac_stm
     return curr->lhs;
 }
 
-void generate_tac_for_func_argument(argument *arg, symtab_stack *st, tac_stmt *code) {
+void generate_tac_for_func_argument(argument *arg, symtab_stack *st, tac_stmt *code, int *temp_cnt) {
     tac_stmt *curr = create_tac_stmt();
     curr->kind = TAC_ARGUMENT_STMT;
-    curr->op1 = generate_tac_operand_for_exprn(arg->e, st, code);
+    curr->op1 = generate_tac_operand_for_exprn(arg->e, st, code, temp_cnt);
     tac_append(code, curr);
     if(curr->op1->kind == TAC_OP_TEMP)
         freeTemp(curr->op1->temp);

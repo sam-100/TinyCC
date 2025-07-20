@@ -31,6 +31,6 @@ void resolve_exprn(exprn *e, symtab_stack *st);
 
 void typecheck_exprn(exprn *e, symtab_stack *st);
 
-tac_operand *generate_tac_operand_for_exprn(exprn *e, symtab_stack *st, tac_stmt *code);
+tac_operand *generate_tac_operand_for_exprn(exprn *e, symtab_stack *st, tac_stmt *code, int *temp_cnt);
 
 #endif

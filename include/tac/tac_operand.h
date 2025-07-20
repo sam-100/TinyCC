@@ -22,7 +22,7 @@ typedef struct tac_operand {
     int arg_cnt;
 } tac_operand;
 
-tac_operand *create_tac_operand_temp(type_t type);
+tac_operand *create_tac_operand_temp(type_t type, int *temp_cnt);
 tac_operand *create_tac_operand_variable(const char *name, symtab_stack *st);
 tac_operand *create_tac_operand_literal_int(int val);
 tac_operand *create_tac_operand_literal_bool(bool val);

@@ -488,13 +488,13 @@ int memory_layout_stmt_list(statement *stmt_list) {
     return -offset;
 }
 
-void generate_tac_for_statement(statement *stmt, symtab_stack *st, tac_stmt *code) {
+void generate_tac_for_statement(statement *stmt, symtab_stack *st, tac_stmt *code, int *temp_cnt) {
     tac_stmt *curr = create_tac_stmt();
     tac_operand *operand;
     switch(stmt->kind) {
         case STMT_PRINT:
             curr->kind = TAC_PRINT_STMT;
-            curr->op1 = generate_tac_operand_for_exprn(stmt->p_stmt->arg, st, code);
+            curr->op1 = generate_tac_operand_for_exprn(stmt->p_stmt->arg, st, code, temp_cnt);
             tac_append(code, curr);
             if(curr->op1->kind == TAC_OP_TEMP)
                 freeTemp(curr->op1->temp);
@@ -509,7 +509,7 @@ void generate_tac_for_statement(statement *stmt, symtab_stack *st, tac_stmt *cod
                 break;
             curr->kind = TAC_COPY_STMT;
             curr->lhs = create_tac_operand_variable(stmt->vd_stmt->name, st);
-            curr->op1 = generate_tac_operand_for_exprn(stmt->vd_stmt->rhs, st, code);
+            curr->op1 = generate_tac_operand_for_exprn(stmt->vd_stmt->rhs, st, code, temp_cnt);
             tac_append(code, curr);
             if(curr->op1->kind == TAC_OP_TEMP)
                 freeTemp(curr->op1->temp);
@@ -518,20 +518,20 @@ void generate_tac_for_statement(statement *stmt, symtab_stack *st, tac_stmt *cod
             curr->kind = TAC_COPY_STMT;
             curr->lhs = create_tac_operand_variable(stmt->as_stmt->name, st);
             if(stmt->as_stmt->kind == ASSIGN_EXPRN) {
-                curr->op1 = generate_tac_operand_for_exprn(stmt->as_stmt->e, st, code);
+                curr->op1 = generate_tac_operand_for_exprn(stmt->as_stmt->e, st, code, temp_cnt);
             } else {
-                curr->op1 = generate_tac_for_func_call(stmt->as_stmt->fc, st, code);
+                curr->op1 = generate_tac_for_func_call(stmt->as_stmt->fc, st, code, temp_cnt);
             }
             tac_append(code, curr);
             if(curr->op1->kind == TAC_OP_TEMP)
                 freeTemp(curr->op1->temp);
             break;
         case STMT_FUNC_CALL:
-            generate_tac_for_func_call_stmt(stmt->fc_stmt, st, code);
+            generate_tac_for_func_call_stmt(stmt->fc_stmt, st, code, temp_cnt);
             break;
         case STMT_RETURN:
             curr->kind = TAC_RETURN_STMT;
-            curr->op1 = generate_tac_operand_for_exprn(stmt->ret_stmt->ret_expr, st, code);
+            curr->op1 = generate_tac_operand_for_exprn(stmt->ret_stmt->ret_expr, st, code, temp_cnt);
             tac_append(code, curr);
             if(curr->op1->kind == TAC_OP_TEMP)
                 freeTemp(curr->op1->temp);
@@ -540,10 +540,10 @@ void generate_tac_for_statement(statement *stmt, symtab_stack *st, tac_stmt *cod
     
 }
 
-void generate_tac_for_func_call_stmt(func_call_stmt *fc_stmt, symtab_stack *st, tac_stmt *code) {
+void generate_tac_for_func_call_stmt(func_call_stmt *fc_stmt, symtab_stack *st, tac_stmt *code, int *temp_cnt) {
     tac_stmt *curr = create_tac_stmt();
     curr->kind = TAC_COPY_STMT;
-    curr->lhs = create_tac_operand_temp(fc_stmt->type);
+    curr->lhs = create_tac_operand_temp(fc_stmt->type, temp_cnt);
     curr->op1 = (tac_operand*)malloc(sizeof(tac_operand));
     curr->op1->kind = TAC_OP_FUNC_CALL;
     curr->op1->name = fc_stmt->name;
@@ -551,7 +551,7 @@ void generate_tac_for_func_call_stmt(func_call_stmt *fc_stmt, symtab_stack *st, 
     // append arguments 
     int arg_cnt = 0;
     for(argument *arg=fc_stmt->args; arg != NULL; arg=arg->next) {
-        generate_tac_for_func_argument(arg, st, code);
+        generate_tac_for_func_argument(arg, st, code, temp_cnt);
         arg_cnt++;
     }
     curr->op1->arg_cnt = arg_cnt;
