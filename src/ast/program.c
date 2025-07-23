@@ -9,10 +9,6 @@ program *create_program(decl *d) {
     return p;
 }
 
-void print_program(program *p) {
-    fprintf(f_ast, "AST of given program: \n\n");
-    print_decl(p->decl_list);
-}
 
 void construct_symtab_program(program *p) {
     symtab_stack *st = create_symtab_stack();

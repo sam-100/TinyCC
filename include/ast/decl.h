@@ -40,16 +40,13 @@ typedef struct decl {
     struct decl *next;
 } decl;
 
+/* create declarations */
 decl *create_decl_from_var(var_decl *vd);
 decl *create_decl_from_func(func_decl *fd);
 decl *append_decl(decl *d, decl *nd);
 var_decl *create_var_decl(char *name, type_t type, exprn *e);
 func_decl *create_func_decl(char *name, type_t type, parameter *param_list, func_body *body);
 
-/* Functions to print declaration */
-void print_decl(decl *d);
-void print_var_decl(var_decl *vd);
-void print_func_decl(func_decl *fd);
 
 void construct_symtab_decl(decl *d, symtab_stack *st);
 void construct_symtab_var_decl(var_decl *vd, symtab_stack *st);

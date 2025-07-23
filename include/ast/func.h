@@ -40,24 +40,22 @@ typedef struct func_body {
     int local_len, temp_cnt;
 } func_body;
 
-
+/* create argument, parameter, function body, and function call */
 argument *create_arg(exprn *e);
 argument *append_arg(argument *a, argument *na);
-void print_arg(argument *arg, char *tabs);
-void resolve_arg(argument *arg, symtab_stack *st);
-
 parameter *create_param(char *name, type_t type);
 parameter *append_param(parameter *p, parameter *np);
-void print_param(parameter *p);
+func_call *create_func_call(char *name, argument *arg_list);
+func_body *create_func_body(statement *stmt_list);
+
+
+void resolve_arg(argument *arg, symtab_stack *st);
+
 symbol *construct_symtab_parameter(parameter *par, symtab_stack *st);
 
-func_call *create_func_call(char *name, argument *arg_list);
-void print_func_call(func_call *fc, char *tabs);
 void resolve_func_call(func_call *fc, symtab_stack *st);
 void typecheck_func_call(func_call *fc, symtab_stack *st);
 
-func_body *create_func_body(statement *stmt_list);
-void print_func_body(func_body *fb);
 void construct_symtab_func_body(func_body *body, symtab_stack *st);
 void resolve_func_body(func_body *fb, symtab_stack *st);
 void typecheck_func_body(func_body *fb, symtab_stack *st);

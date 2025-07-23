@@ -13,7 +13,8 @@ BIN= bin/scanner.o \
 	bin/symtab.o \
 	bin/symtab_stack.o \
 	bin/tac_stmt.o \
-	bin/tac_operand.o
+	bin/tac_operand.o \
+	bin/print.o \
 
 CFLAGS= -I include -Werror
 
@@ -47,6 +48,8 @@ bin/program.o: src/ast/program.c include/ast/program.h
 	$(CC) -c -o $@ ${CFLAGS} src/ast/program.c
 bin/func.o: src/ast/func.c include/ast/func.h
 	$(CC) -c -o $@ ${CFLAGS} src/ast/func.c
+bin/print.o: src/ast/print.c include/ast/print.h
+	$(CC) -c -o $@ ${CFLAGS} src/ast/print.c
 
 # Compiling src/symbol_table/
 bin/symbol.o: src/symbol_table/symbol.c include/symbol_table/symbol.h

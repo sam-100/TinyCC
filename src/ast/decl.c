@@ -60,44 +60,6 @@ func_decl *create_func_decl(char *name, type_t type, parameter *param_list, func
 }
 
 
-/* Functions to print declaration */
-void print_decl(decl *d) {
-    if(d == NULL)
-        return;
-    
-    if(d->kind == DECL_VAR) {
-        print_var_decl(d->vd);
-    } else if(d->kind == DECL_FUNC) {
-        print_func_decl(d->fd);
-    } else {
-        fprintf(f_ast, "Unknown declaration: %d\n", d->kind);
-    }
-    print_decl(d->next);
-}
-
-void print_var_decl(var_decl *vd) {
-    fprintf(f_ast, "VAR DECLARATION {\n");
-    fprintf(f_ast, "\tname=%s;\n", vd->name);
-    fprintf(f_ast, "\ttype=%s;\n", get_type_name(vd->type));
-    fprintf(f_ast, "\tline_no=%d;\n", vd->line_no);
-    fprintf(f_ast, "}\n");
-}
-
-void print_func_decl(func_decl *fd) {
-    fprintf(f_ast, "FUNC DECLARATION {\n");
-    fprintf(f_ast, "\tname: %s;\n", fd->name);
-    fprintf(f_ast, "\ttype: %s;\n", get_type_name(fd->type));
-    fprintf(f_ast, "\tline_no: %d;\n", fd->line_no);
-    fprintf(f_ast, "\tparameters: ");
-    print_param(fd->param_list);
-    fprintf(f_ast, ";\n");
-    if(fd->body != NULL) {
-        fprintf(f_ast, "\tbody: \n");
-        print_func_body(fd->body);
-    }
-    fprintf(f_ast, "}\n");
-}
-
 void construct_symtab_decl(decl *d, symtab_stack *st) {
     if(d == NULL)
         return;

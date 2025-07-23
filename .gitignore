@@ -7,6 +7,7 @@ input/*
 output/*
 tinycc
 todo
+stages
 
 !bin/.gitkeep
 !input/.gitkeep

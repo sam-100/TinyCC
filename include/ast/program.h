@@ -9,8 +9,9 @@ typedef struct program {
 } program;
 
 
+/* create program */
 program *create_program(decl *d);
-void print_program(program *p);
+
 
 void construct_symtab_program(program *p);
 void resolve_program(program *p);

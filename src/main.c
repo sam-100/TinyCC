@@ -5,6 +5,7 @@
 #include "ast/program.h"
 #include "utils.h"
 #include "declarations.h"
+#include "ast/print.h"
 
 extern int yylex(void);
 extern int yyparse(void);

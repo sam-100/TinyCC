@@ -25,16 +25,6 @@ argument *append_arg(argument *a, argument *na) {
     return a;
 }
 
-void print_arg(argument *arg, char *tabs) {
-    for(argument *ptr=arg; ptr != NULL; ptr=ptr->next) {
-        fprintf(f_ast, "%sargument {\n", tabs);
-        fprintf(f_ast, "%s\twhich: %d;\n", tabs, ptr->which);
-        print_exprn(ptr->e, strcat(tabs, "\t"));
-        tabs[strlen(tabs)-1]='\0';
-        fprintf(f_ast, "%s}\n", tabs);
-    }
-}
-
 
 parameter *create_param(char *name, type_t type) {
     parameter *p = (parameter*)malloc(sizeof(parameter));
@@ -59,13 +49,6 @@ parameter *append_param(parameter *p, parameter *np) {
 
 
 
-void print_param(parameter *p) {
-    if(p == NULL)
-        return;
-    fprintf(f_ast, "{%s: %s} ", p->name, get_type_name(p->type));
-    print_param(p->next);
-}
-
 // Function call and body
 func_call *create_func_call(char *name, argument *arg_list) {
     func_call *fc = (func_call*)malloc(sizeof(func_call));
@@ -82,34 +65,6 @@ func_body *create_func_body(statement *stmt_list) {
     fb->local_len = 0;
     fb->temp_cnt = 0;
     return fb;
-}
-
-void print_func_call(func_call *fc, char *tabs) {
-    fprintf(f_ast, "%sfunc_call {\n", tabs);
-
-    strcat(tabs, "\t");
-    fprintf(f_ast, "%sname: %s;\n", tabs, fc->name);
-    fprintf(f_ast, "%sarguments: \n", tabs);
-    print_arg(fc->arg_list, strcat(tabs, "\t"));
-    tabs[strlen(tabs)-2]='\0';
-
-    fprintf(f_ast, "\n");
-    fprintf(f_ast, "%s}\n", tabs);
-}
-
-void print_func_body(func_body *fb) {
-    if(fb == NULL)
-        return;
-    
-    char *tabs = (char*)malloc(100);
-    tabs[0] = '\t';
-    tabs[1] = '\0';
-
-    fprintf(f_ast, "\t{\n");
-    print_statement(fb->stmt_list, strcat(tabs, "\t"));
-    fprintf(f_ast, "\t}\n");
-
-    free(tabs);
 }
 
 

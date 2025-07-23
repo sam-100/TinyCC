@@ -64,37 +64,6 @@ statement *append_stmt(statement *stmt, statement *next_stmt) {
     return stmt;
 }
 
-void print_statement(statement *stmt, char *tabs) {
-    if(stmt == NULL)
-        return;
-    
-    switch(stmt->kind)
-    {
-        case STMT_VAR_DECL:
-            print_stmt_var_decl(stmt->vd_stmt, tabs);
-            break;
-        case STMT_ASSIGN:
-            print_stmt_assignment(stmt->as_stmt, tabs);
-            break;
-        case STMT_FUNC_CALL:
-            print_stmt_func_call(stmt->fc_stmt, tabs);
-            break;
-        case STMT_PRINT:
-            print_stmt_print(stmt->p_stmt, tabs);
-            break;
-        case STMT_READ:
-            print_stmt_read(stmt->r_stmt, tabs);
-            break;
-        case STMT_RETURN:
-            print_stmt_return(stmt->ret_stmt, tabs);
-            break;
-        default:
-            fprintf(f_ast, "%sInvalid statement with code %d\n", tabs, (int)stmt->kind);
-            break;
-    }
-    print_statement(stmt->next, tabs);
-}
-
 
 // Creating sub_stmts
 var_decl_stmt *create_var_decl_stmt(char *name, type_t type, exprn *e) {
@@ -156,76 +125,6 @@ func_call_stmt *create_func_call_stmt(char *name, argument *arg_list) {
     return stmt;
 }
 
-
-void print_stmt_var_decl(var_decl_stmt *vd_stmt, char *tabs) {
-    fprintf(f_ast, "%svar_decl_stmt {\n", tabs);
-    fprintf(f_ast, "%s\tname: %s;\n", tabs, vd_stmt->name);
-    fprintf(f_ast, "%s\ttype: %s;\n", tabs, get_type_name(vd_stmt->type));
-    fprintf(f_ast, "%s\tline_no: %d;\n", tabs, vd_stmt->line_no);
-    fprintf(f_ast, "%s\tinit: %s;\n", tabs, btoa(vd_stmt->initialized));
-    fprintf(f_ast, "%s}\n", tabs);
-}
-
-void print_stmt_assignment(assign_stmt *asstmt, char *tabs) {
-    fprintf(f_ast, "%sassign_stmt {\n", tabs);
-    fprintf(f_ast, "%s\tline_no: %d;\n", tabs, asstmt->line_no);
-    fprintf(f_ast, "%s\tlhs: %s;\n", tabs, asstmt->name);
-    fprintf(f_ast, "%s\trhs: \n", tabs);
-    switch(asstmt->kind)
-    {
-        case ASSIGN_EXPRN:
-            print_exprn(asstmt->e, strcat(tabs, "\t\t"));
-            tabs[strlen(tabs)-2] = '\0';
-            break;
-        case ASSIGN_FUNC_CALL:
-            print_func_call(asstmt->fc, strcat(tabs, "\t\t"));
-            tabs[strlen(tabs)-2] = '\0';
-            break;
-        default:
-            fprintf(f_ast, "%s\tInvalid assignment statement code %d\n", tabs, asstmt->kind);
-            break;
-    }
-    fprintf(f_ast, "%s}\n", tabs);
-}
-
-void print_stmt_func_call(func_call_stmt *fc_stmt, char *tabs) {
-    fprintf(f_ast, "%sfunc_call_stmt {\n", tabs);
-    strcat(tabs, "\t");
-    fprintf(f_ast, "%sname: %s;\n", tabs, fc_stmt->name);
-    fprintf(f_ast, "%s\tline_no: %d;\n", tabs, fc_stmt->line_no);
-    // fprintf(f_ast, "%stype: %s;\n", tabs, get_type_name(fc_stmt->type));
-    fprintf(f_ast, "%sarguments: \n", tabs);
-    print_arg(fc_stmt->args, strcat(tabs, "\t"));
-    tabs[strlen(tabs)-1]='\0';
-    tabs[strlen(tabs)-1]='\0';
-    fprintf(f_ast, "%s}\n", tabs);
-}
-
-void print_stmt_print(print_stmt *p_stmt, char *tabs) {
-    fprintf(f_ast, "%sprint_stmt {\n", tabs);
-    fprintf(f_ast, "%s\tline_no: %d;\n", tabs, p_stmt->line_no);
-    fprintf(f_ast, "%s\targuments: \n", tabs);
-    print_exprn(p_stmt->arg, strcat(tabs, "\t\t"));
-    tabs[strlen(tabs)-2]='\0';
-    fprintf(f_ast, "%s}\n", tabs);
-}
-
-void print_stmt_read(read_stmt *r_stmt, char *tabs) {
-    fprintf(f_ast, "%sread_stmt {\n", tabs);
-    fprintf(f_ast, "%s\tline_no: %d;\n", tabs, r_stmt->line_no);
-    fprintf(f_ast, "%s\targument: %s\n", tabs, r_stmt->arg);
-    fprintf(f_ast, "%s}\n", tabs);
-}
-
-void print_stmt_return(return_stmt *ret_stmt, char *tabs) {
-    fprintf(f_ast, "%sreturn_stmt {\n", tabs);
-    fprintf(f_ast, "%s\tline_no: %d;\n", tabs, ret_stmt->line_no);
-    fprintf(f_ast, "%s\targuments: \n", tabs);
-    print_exprn(ret_stmt->ret_expr, strcat(tabs, "\t\t"));
-    tabs[strlen(tabs)-2]='\0';
-    fprintf(f_ast, "%s}\n", tabs);
-
-}
 
 void construct_symtab_stmt(statement *stmt, symtab_stack *st) {
     if(stmt == NULL)
