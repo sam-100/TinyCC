@@ -6,9 +6,19 @@
 #include "declarations.h"
 #include "tac/tac_stmt.h"
 
+extern char *input_name;
 void initialize() {
     for(int i=0; i<MAX_TEMP; i++)
         temp_store[i] = 0;
+    
+    // initializing 
+    input_name = (char*)malloc(50);
+    f_nowhere = fopen("/dev/null", "rw");
+    f_tokens = f_nowhere;
+    f_ast = f_nowhere;
+    f_error = stderr;
+    f_symtab = f_nowhere;
+    f_tac = f_nowhere;
 }
 
 void error(const char *msg, int status) {
@@ -74,6 +84,23 @@ int get_size_of_type(type_t type) {
         default:
             return -1;
     }
+}
+
+char *dup_string(const char *str) {
+    int len = strlen(str);
+    char *new_str = (char*)malloc(len+1);
+    strcpy(new_str, str);
+    return new_str;
+}
+
+char *concat_string(const char *str1, const char *str2) {
+    int len1, len2;
+    len1 = strlen(str1);
+    len2 = strlen(str2);
+    char *str = (char*)malloc(len1+len2+1);
+    strcpy(str, str1);
+    strcpy(str+len1, str2);
+    return str;
 }
 
 /* Helper functions to print ast */

@@ -12,20 +12,11 @@ extern FILE *yyin;
 
 void process_arguments(int argc, char **argv) {
     // No arguments case
-    if(argc == 1) {
+    if(argc < 2) {
         printf("Usage: %s <input_file> [--show-tokens] [--show-ast] [--show-symtab] [--show-tac]\n", argv[0]);
         exit(1);
     }
 
-    // initializing 
-    input_name = (char*)malloc(50);
-    f_nowhere = fopen("/dev/null", "rw");
-    f_tokens = f_nowhere;
-    f_ast = f_nowhere;
-    f_error = stderr;
-    f_symtab = f_nowhere;
-    f_tac = f_nowhere;
-    
 
     // processing the arguments
     int i=1; 
@@ -50,15 +41,6 @@ void process_arguments(int argc, char **argv) {
             i++;
             continue;
         }
-        // if(strcmp(argv[i], "-o") == 0 || strcmp(argv[i], "--output") == 0) {
-        //     if(i+1 == argc) {
-        //         error("Output filename not provided after '-o' flag", -1);
-        //     }
-        //     close(2);
-        //     open(argv[i+1], O_WRONLY);
-        //     i+=2;
-        //     continue;
-        // }
         
         input_name = strcpy(input_name, argv[i]);
         stdin = fopen(argv[i], "r");
@@ -67,8 +49,6 @@ void process_arguments(int argc, char **argv) {
         }
         i++;
         
-        // fprintf(stderr, "Invalid argument: %s\n", argv[i]);
-        // exit(1);
     }
 
     
