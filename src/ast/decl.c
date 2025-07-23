@@ -3,6 +3,7 @@
 #include "ast/enums.h"
 #include "ast/func.h"
 #include "ast/decl.h"
+#include "symbol_table/print.h"
 #include "utils.h"
 
 

@@ -22,6 +22,5 @@ symbol *create_symbol_param(struct parameter *param);
 symbol *create_symbol_func(char *name, type_t type, symbol *param_list);
 const char *codegen_symbol(symbol *sym);
 
-void print_symbol(symbol *sym);
 
 #endif

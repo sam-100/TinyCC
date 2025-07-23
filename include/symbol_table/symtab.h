@@ -15,7 +15,6 @@ typedef struct symtab {
 
 
 symtab *create_symtab();
-void print_symtab(symtab *stab);
 
 void add_symbol(char *name, symbol *sym, symtab *table);
 symbol *lookup_symbol(const char *name, symtab *table);

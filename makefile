@@ -14,7 +14,8 @@ BIN= bin/scanner.o \
 	bin/symtab_stack.o \
 	bin/tac_stmt.o \
 	bin/tac_operand.o \
-	bin/print.o \
+	bin/ast_print.o \
+	bin/symtab_print.o \
 	bin/construct_symtab.o \
 	bin/resolve_name.o \
 	bin/typecheck.o \
@@ -51,7 +52,7 @@ bin/program.o: src/ast/program.c include/ast/program.h
 	$(CC) -c -o $@ ${CFLAGS} src/ast/program.c
 bin/func.o: src/ast/func.c include/ast/func.h
 	$(CC) -c -o $@ ${CFLAGS} src/ast/func.c
-bin/print.o: src/ast/print.c include/ast/print.h
+bin/ast_print.o: src/ast/print.c include/ast/print.h
 	$(CC) -c -o $@ ${CFLAGS} src/ast/print.c
 
 # Compiling src/phases/frontend
@@ -70,6 +71,9 @@ bin/symtab.o: src/symbol_table/symtab.c include/symbol_table/symtab.h
 	$(CC) -c -o $@ ${CFLAGS} src/symbol_table/symtab.c
 bin/symtab_stack.o: src/symbol_table/symtab_stack.c include/symbol_table/symtab_stack.h
 	$(CC) -c -o $@ ${CFLAGS} src/symbol_table/symtab_stack.c
+bin/symtab_print.o: src/symbol_table/print.c include/symbol_table/print.h
+	$(CC) -c -o $@ ${CFLAGS} src/symbol_table/print.c
+
 
 # Compiling src/tac/
 bin/tac_operand.o: src/tac/tac_operand.c include/tac/tac_operand.h
