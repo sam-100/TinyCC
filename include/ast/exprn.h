@@ -27,6 +27,5 @@ exprn *create_exprn_char(char val);
 exprn *create_exprn_bool(bool val);
 
 
-tac_operand *generate_tac_operand_for_exprn(exprn *e, symtab_stack *st, tac_stmt *code, int *temp_cnt);
 
 #endif

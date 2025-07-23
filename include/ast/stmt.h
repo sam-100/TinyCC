@@ -98,8 +98,5 @@ func_call_stmt *create_func_call_stmt(char *name, argument *arg_list);
 
 
 
-int memory_layout_stmt_list(statement *stmt_list);
 
-void generate_tac_for_statement(statement *stmt, symtab_stack *st, tac_stmt *code, int *temp_cnt);
-void generate_tac_for_func_call_stmt(func_call_stmt *stmt, symtab_stack *st, tac_stmt *code, int *temp_cnt);
 #endif

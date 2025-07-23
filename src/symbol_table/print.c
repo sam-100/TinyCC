@@ -1,5 +1,32 @@
 #include "symbol_table/print.h"
 #include "utils.h"
+#include "ast/program.h"
+
+
+void print_symtab_program(program *p) {
+    fprintf(f_symtab, "Global Symbol Table: \n");
+    print_symtab(p->sym_tab);
+
+    // print symbol table of each function
+    print_symtab_decl(p->decl_list);
+}
+
+void print_symtab_decl(decl *d) {
+    if(d == NULL)
+        return;
+    if(d->kind == DECL_FUNC)
+        print_symtab_func_decl(d->fd);
+    print_symtab_decl(d->next);
+}
+
+void print_symtab_func_decl(func_decl *fd) {
+    if(fd->body == NULL)
+        return;
+    fprintf(f_symtab, "Function %s() symtab: \n", fd->name);
+    fprintf(f_symtab, "{local_len: %d}\n", fd->body->local_len);
+    print_symtab(fd->symtab);
+}
+
 
 void print_symbol(symbol *sym) {
     fprintf(f_symtab, "{\n");

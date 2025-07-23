@@ -1,14 +1,22 @@
 #include <stdio.h>
 #include <unistd.h>
 #include <stdlib.h>
-#include "arguments.h"
-#include "ast/program.h"
-#include "utils.h"
 #include "declarations.h"
+#include "arguments.h"
+#include "utils.h"
+
+#include "ast/program.h"
 #include "ast/print.h"
+
+#include "symbol_table/print.h"
+
+#include "tac/print.h"
+
 #include "phases/frontend/construct_symtab.h"
 #include "phases/frontend/resolve_name.h"
 #include "phases/frontend/typecheck.h"
+#include "phases/middleend/generate_tac.h"
+#include "phases/middleend/memory_layout.h"
 
 extern int yylex(void);
 extern int yyparse(void);

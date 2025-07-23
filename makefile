@@ -19,6 +19,9 @@ BIN= bin/scanner.o \
 	bin/construct_symtab.o \
 	bin/resolve_name.o \
 	bin/typecheck.o \
+	bin/generate_tac.o \
+	bin/memory_layout.o \
+	bin/tac_print.o
 
 CFLAGS= -I include -Werror
 
@@ -63,6 +66,13 @@ bin/resolve_name.o: src/phases/frontend/resolve_name.c include/phases/frontend/r
 bin/typecheck.o: src/phases/frontend/typecheck.c include/phases/frontend/typecheck.h
 	$(CC) -c -o $@ ${CFLAGS} src/phases/frontend/typecheck.c
 
+# Compiling src/phases/middleend
+bin/generate_tac.o: src/phases/middleend/generate_tac.c include/phases/middleend/generate_tac.h
+	$(CC) -c -o $@ ${CFLAGS} src/phases/middleend/generate_tac.c
+bin/memory_layout.o: src/phases/middleend/memory_layout.c include/phases/middleend/memory_layout.h
+	$(CC) -c -o $@ ${CFLAGS} src/phases/middleend/memory_layout.c
+
+
 
 # Compiling src/symbol_table/
 bin/symbol.o: src/symbol_table/symbol.c include/symbol_table/symbol.h
@@ -80,6 +90,9 @@ bin/tac_operand.o: src/tac/tac_operand.c include/tac/tac_operand.h
 	$(CC) -c -o $@ ${CFLAGS} src/tac/tac_operand.c
 bin/tac_stmt.o: src/tac/tac_stmt.c include/tac/tac_stmt.h
 	$(CC) -c -o $@ ${CFLAGS} src/tac/tac_stmt.c
+bin/tac_print.o: src/tac/print.c include/tac/print.h
+	$(CC) -c -o $@ ${CFLAGS} src/tac/print.c
+
 
 # Scanner and parser
 src/scanner.c: src/scanner.flex

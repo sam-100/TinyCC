@@ -48,14 +48,4 @@ var_decl *create_var_decl(char *name, type_t type, exprn *e);
 func_decl *create_func_decl(char *name, type_t type, parameter *param_list, func_body *body);
 
 
-
-
-void print_symtab_decl(decl *d);
-void print_symtab_func_decl(func_decl *fd);
-
-void memory_layout_func_decl(func_decl *fd);
-
-void generate_tac_for_function(func_decl *fd, symtab_stack *st);
-void print_tac_of_function(func_decl *fd, FILE *f_out);
-
 #endif

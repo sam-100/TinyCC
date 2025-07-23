@@ -17,6 +17,7 @@
         "symbol.h": "c",
         "arguments.h": "c",
         "tac_stmt.h": "c",
-        "tac_operand.h": "c"
+        "tac_operand.h": "c",
+        "generate_tac.h": "c"
     }
 }
