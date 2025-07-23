@@ -26,9 +26,6 @@ exprn *create_exprn_int(int val);
 exprn *create_exprn_char(char val);
 exprn *create_exprn_bool(bool val);
 
-void resolve_exprn(exprn *e, symtab_stack *st);
-
-void typecheck_exprn(exprn *e, symtab_stack *st);
 
 tac_operand *generate_tac_operand_for_exprn(exprn *e, symtab_stack *st, tac_stmt *code, int *temp_cnt);
 

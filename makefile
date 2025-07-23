@@ -15,6 +15,9 @@ BIN= bin/scanner.o \
 	bin/tac_stmt.o \
 	bin/tac_operand.o \
 	bin/print.o \
+	bin/construct_symtab.o \
+	bin/resolve_name.o \
+	bin/typecheck.o \
 
 CFLAGS= -I include -Werror
 
@@ -50,6 +53,15 @@ bin/func.o: src/ast/func.c include/ast/func.h
 	$(CC) -c -o $@ ${CFLAGS} src/ast/func.c
 bin/print.o: src/ast/print.c include/ast/print.h
 	$(CC) -c -o $@ ${CFLAGS} src/ast/print.c
+
+# Compiling src/phases/frontend
+bin/construct_symtab.o: src/phases/frontend/construct_symtab.c include/phases/frontend/construct_symtab.h
+	$(CC) -c -o $@ ${CFLAGS} src/phases/frontend/construct_symtab.c
+bin/resolve_name.o: src/phases/frontend/resolve_name.c include/phases/frontend/resolve_name.h
+	$(CC) -c -o $@ ${CFLAGS} src/phases/frontend/resolve_name.c
+bin/typecheck.o: src/phases/frontend/typecheck.c include/phases/frontend/typecheck.h
+	$(CC) -c -o $@ ${CFLAGS} src/phases/frontend/typecheck.c
+
 
 # Compiling src/symbol_table/
 bin/symbol.o: src/symbol_table/symbol.c include/symbol_table/symbol.h

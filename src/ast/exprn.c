@@ -54,54 +54,6 @@ exprn *create_exprn_bool(bool val) {
 }
 
 
-void resolve_exprn(exprn *e, symtab_stack *st) {
-    if(e == NULL)
-        return;
-    
-    if(e->kind == BINARY_EXPRN) {
-        resolve_exprn(e->left, st);
-        resolve_exprn(e->right, st);
-        return;
-    }
-
-    if(e->kind == IDENTIFIER_EXPRN) {
-        if(scope_lookup(e->name, st) == false) {
-            fprintf(f_error, "Error: Symbol %s at line no. %d not declared before.\n", e->name, e->line_no);
-            exit(1);
-        }
-        e->sym = scope_lookup(e->name, st);
-        return;
-    }
-
-    if(e->kind == LITERAL_EXPRN) {
-        // todo: handle literal expressions here
-    }
-}
-
-void typecheck_exprn(exprn *e, symtab_stack *st) {
-    if(e->kind == BINARY_EXPRN) {
-        typecheck_exprn(e->left, st);
-        typecheck_exprn(e->right, st);
-
-        if(e->left->type != e->right->type) {
-            fprintf(f_error, "Error (line_no %d): binary operands of different types (lhs %s, rhs %s)for operator %s.\n", e->line_no, get_type_name(e->left->type), get_type_name(e->right->type), get_op_name(e->op));
-            exit(2);
-        } 
-        type_t type = e->left->type;
-        if(get_op_type(e->op) == OP_ARITHMETIC && type != TYPE_INTEGER) {
-            fprintf(f_error, "Error (line_no %d): Operanand operator type mismatch. [ lhs %s, rhs %s]\n", e->line_no, get_type_name(e->left->type), get_type_name(e->right->type));
-        }
-        e->type = type;
-        return;
-    }
-
-    if(e->kind == IDENTIFIER_EXPRN) {
-        symbol *sym = scope_lookup(e->name, st);
-        e->type = sym->type;
-        return;
-    }
-}
-
 tac_operand *generate_tac_operand_for_exprn(exprn *e, symtab_stack *st, tac_stmt *code, int *temp_cnt) {
     if(e->kind == LITERAL_EXPRN) {
         if(e->type == TYPE_INTEGER)

@@ -6,6 +6,9 @@
 #include "utils.h"
 #include "declarations.h"
 #include "ast/print.h"
+#include "phases/frontend/construct_symtab.h"
+#include "phases/frontend/resolve_name.h"
+#include "phases/frontend/typecheck.h"
 
 extern int yylex(void);
 extern int yyparse(void);

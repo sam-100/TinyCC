@@ -48,17 +48,7 @@ var_decl *create_var_decl(char *name, type_t type, exprn *e);
 func_decl *create_func_decl(char *name, type_t type, parameter *param_list, func_body *body);
 
 
-void construct_symtab_decl(decl *d, symtab_stack *st);
-void construct_symtab_var_decl(var_decl *vd, symtab_stack *st);
-void construct_symtab_func_decl(func_decl *fd, symtab_stack *st);
 
-void resolve_decl(decl *d, symtab_stack *st);
-void resolve_var_decl(var_decl *vd, symtab_stack *st);
-void resolve_func_decl(func_decl *fd, symtab_stack *st);
-
-void typecheck_decl(decl *d, symtab_stack *st);
-void typecheck_var_decl(var_decl *vd, symtab_stack *st);
-void typecheck_func_decl(func_decl *fd, symtab_stack *st);
 
 void print_symtab_decl(decl *d);
 void print_symtab_func_decl(func_decl *fd);

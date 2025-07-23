@@ -10,42 +10,12 @@ program *create_program(decl *d) {
 }
 
 
-void construct_symtab_program(program *p) {
-    symtab_stack *st = create_symtab_stack();
-    scope_enter(st);
-    construct_symtab_decl(p->decl_list, st);
-    p->sym_tab = scope_get_current(st);
-    scope_exit(st);
-    destroy_symtab_stack(st);
-}
-
-void resolve_program(program *p) {
-    symtab_stack *st = create_symtab_stack();
-    
-    scope_push(p->sym_tab, st);
-    resolve_decl(p->decl_list, st);
-    scope_exit(st);
-
-    destroy_symtab_stack(st);
-}
-
 void print_symtab_program(program *p) {
     fprintf(f_symtab, "Global Symbol Table: \n");
     print_symtab(p->sym_tab);
 
     // print symbol table of each function
     print_symtab_decl(p->decl_list);
-}
-
-void typecheck_program(program *p) {
-    symtab_stack *st = create_symtab_stack();
-
-    scope_push(p->sym_tab, st);
-    typecheck_decl(p->decl_list, st);
-    scope_pop(st);
-    
-    free(st);
-    return;
 }
 
 void memory_layout_program(program *p) {
