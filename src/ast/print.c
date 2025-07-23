@@ -4,13 +4,13 @@
 #include <string.h>
 
 /* Functions to print program */
-void print_program(program *p) {
+void print_program(const program *p) {
     fprintf(f_ast, "AST of given program: \n\n");
     print_decl(p->decl_list);
 }
 
 /* Functions to print declaration */
-void print_decl(decl *d) {
+void print_decl(const decl *d) {
     if(d == NULL)
         return;
     
@@ -24,7 +24,7 @@ void print_decl(decl *d) {
     print_decl(d->next);
 }
 
-void print_var_decl(var_decl *vd) {
+void print_var_decl(const var_decl *vd) {
     fprintf(f_ast, "VAR DECLARATION {\n");
     fprintf(f_ast, "\tname=%s;\n", vd->name);
     fprintf(f_ast, "\ttype=%s;\n", get_type_name(vd->type));
@@ -32,7 +32,7 @@ void print_var_decl(var_decl *vd) {
     fprintf(f_ast, "}\n");
 }
 
-void print_func_decl(func_decl *fd) {
+void print_func_decl(const func_decl *fd) {
     fprintf(f_ast, "FUNC DECLARATION {\n");
     fprintf(f_ast, "\tname: %s;\n", fd->name);
     fprintf(f_ast, "\ttype: %s;\n", get_type_name(fd->type));
@@ -49,8 +49,8 @@ void print_func_decl(func_decl *fd) {
 
 
 /* Functions to print function body, function call, arguments, and parameters */
-void print_arg(argument *arg, char *tabs) {
-    for(argument *ptr=arg; ptr != NULL; ptr=ptr->next) {
+void print_arg(const argument *arg, char *tabs) {
+    for(const argument *ptr=arg; ptr != NULL; ptr=ptr->next) {
         fprintf(f_ast, "%sargument {\n", tabs);
         fprintf(f_ast, "%s\twhich: %d;\n", tabs, ptr->which);
         print_exprn(ptr->e, strcat(tabs, "\t"));
@@ -59,14 +59,14 @@ void print_arg(argument *arg, char *tabs) {
     }
 }
 
-void print_param(parameter *p) {
+void print_param(const parameter *p) {
     if(p == NULL)
         return;
     fprintf(f_ast, "{%s: %s} ", p->name, get_type_name(p->type));
     print_param(p->next);
 }
 
-void print_func_call(func_call *fc, char *tabs) {
+void print_func_call(const func_call *fc, char *tabs) {
     fprintf(f_ast, "%sfunc_call {\n", tabs);
 
     strcat(tabs, "\t");
@@ -79,7 +79,7 @@ void print_func_call(func_call *fc, char *tabs) {
     fprintf(f_ast, "%s}\n", tabs);
 }
 
-void print_func_body(func_body *fb) {
+void print_func_body(const func_body *fb) {
     if(fb == NULL)
         return;
     
@@ -96,7 +96,7 @@ void print_func_body(func_body *fb) {
 
 
 /* functions to print statements of various types */
-void print_statement(statement *stmt, char *tabs) {
+void print_statement(const const statement *stmt, char *tabs) {
     if(stmt == NULL)
         return;
     
@@ -127,7 +127,7 @@ void print_statement(statement *stmt, char *tabs) {
     print_statement(stmt->next, tabs);
 }
 
-void print_stmt_var_decl(var_decl_stmt *vd_stmt, char *tabs) {
+void print_stmt_var_decl(const const var_decl_stmt *vd_stmt, char *tabs) {
     fprintf(f_ast, "%svar_decl_stmt {\n", tabs);
     fprintf(f_ast, "%s\tname: %s;\n", tabs, vd_stmt->name);
     fprintf(f_ast, "%s\ttype: %s;\n", tabs, get_type_name(vd_stmt->type));
@@ -136,7 +136,7 @@ void print_stmt_var_decl(var_decl_stmt *vd_stmt, char *tabs) {
     fprintf(f_ast, "%s}\n", tabs);
 }
 
-void print_stmt_assignment(assign_stmt *asstmt, char *tabs) {
+void print_stmt_assignment(const const assign_stmt *asstmt, char *tabs) {
     fprintf(f_ast, "%sassign_stmt {\n", tabs);
     fprintf(f_ast, "%s\tline_no: %d;\n", tabs, asstmt->line_no);
     fprintf(f_ast, "%s\tlhs: %s;\n", tabs, asstmt->name);
@@ -158,7 +158,7 @@ void print_stmt_assignment(assign_stmt *asstmt, char *tabs) {
     fprintf(f_ast, "%s}\n", tabs);
 }
 
-void print_stmt_func_call(func_call_stmt *fc_stmt, char *tabs) {
+void print_stmt_func_call(const const func_call_stmt *fc_stmt, char *tabs) {
     fprintf(f_ast, "%sfunc_call_stmt {\n", tabs);
     strcat(tabs, "\t");
     fprintf(f_ast, "%sname: %s;\n", tabs, fc_stmt->name);
@@ -171,7 +171,7 @@ void print_stmt_func_call(func_call_stmt *fc_stmt, char *tabs) {
     fprintf(f_ast, "%s}\n", tabs);
 }
 
-void print_stmt_print(print_stmt *p_stmt, char *tabs) {
+void print_stmt_print(const const print_stmt *p_stmt, char *tabs) {
     fprintf(f_ast, "%sprint_stmt {\n", tabs);
     fprintf(f_ast, "%s\tline_no: %d;\n", tabs, p_stmt->line_no);
     fprintf(f_ast, "%s\targuments: \n", tabs);
@@ -180,14 +180,14 @@ void print_stmt_print(print_stmt *p_stmt, char *tabs) {
     fprintf(f_ast, "%s}\n", tabs);
 }
 
-void print_stmt_read(read_stmt *r_stmt, char *tabs) {
+void print_stmt_read(const const read_stmt *r_stmt, char *tabs) {
     fprintf(f_ast, "%sread_stmt {\n", tabs);
     fprintf(f_ast, "%s\tline_no: %d;\n", tabs, r_stmt->line_no);
     fprintf(f_ast, "%s\targument: %s\n", tabs, r_stmt->arg);
     fprintf(f_ast, "%s}\n", tabs);
 }
 
-void print_stmt_return(return_stmt *ret_stmt, char *tabs) {
+void print_stmt_return(const const return_stmt *ret_stmt, char *tabs) {
     fprintf(f_ast, "%sreturn_stmt {\n", tabs);
     fprintf(f_ast, "%s\tline_no: %d;\n", tabs, ret_stmt->line_no);
     fprintf(f_ast, "%s\targuments: \n", tabs);
@@ -198,7 +198,7 @@ void print_stmt_return(return_stmt *ret_stmt, char *tabs) {
 }
 
 /* Function to print the expression */
-void print_exprn(exprn *e, char *tabs) {
+void print_exprn(const exprn *e, char *tabs) {
     if(e == NULL)
         return;
     

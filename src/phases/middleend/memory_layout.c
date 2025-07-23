@@ -18,7 +18,6 @@ void memory_layout_func_decl(func_decl *fd) {
         offset += get_size_of_type(p->sym->type);
     }
 
-    // todo: local variables
     memory_layout_func_body(fd->body);
 }
 

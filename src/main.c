@@ -58,6 +58,7 @@ int main(int argc, char **argv) {
     printf("Three address code generated successfully!\n");
     print_tac_of_program(root, f_tac);
     
+    
     print_symtab_program(root);
     return 0;
 }

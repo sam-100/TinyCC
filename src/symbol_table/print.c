@@ -3,7 +3,7 @@
 #include "ast/program.h"
 
 
-void print_symtab_program(program *p) {
+void print_symtab_program(const program *p) {
     fprintf(f_symtab, "Global Symbol Table: \n");
     print_symtab(p->sym_tab);
 
@@ -11,7 +11,7 @@ void print_symtab_program(program *p) {
     print_symtab_decl(p->decl_list);
 }
 
-void print_symtab_decl(decl *d) {
+void print_symtab_decl(const decl *d) {
     if(d == NULL)
         return;
     if(d->kind == DECL_FUNC)
@@ -19,7 +19,7 @@ void print_symtab_decl(decl *d) {
     print_symtab_decl(d->next);
 }
 
-void print_symtab_func_decl(func_decl *fd) {
+void print_symtab_func_decl(const func_decl *fd) {
     if(fd->body == NULL)
         return;
     fprintf(f_symtab, "Function %s() symtab: \n", fd->name);
@@ -28,7 +28,7 @@ void print_symtab_func_decl(func_decl *fd) {
 }
 
 
-void print_symbol(symbol *sym) {
+void print_symbol(const symbol *sym) {
     fprintf(f_symtab, "{\n");
     fprintf(f_symtab, "\tname: %s;\n", sym->name);
     fprintf(f_symtab, "\ttype: %s;\n", get_type_name(sym->type));
@@ -59,7 +59,7 @@ void print_symbol(symbol *sym) {
     fprintf(f_symtab, "}\n");
 }
 
-void print_symtab(symtab *stab) {
+void print_symtab(const symtab *stab) {
     fprintf(f_symtab, "---------------SYMTAB START---------------\n");
     for(int i=0; i<stab->size; i++) {
         fprintf(f_symtab, "name: %s\n", stab->names[i]);

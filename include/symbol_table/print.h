@@ -3,12 +3,12 @@
 
 #include "symbol_table/symtab.h"
 
-void print_symtab_program(program *p);
+void print_symtab_program(const program *p);
 
-void print_symtab_decl(decl *d);
-void print_symtab_func_decl(func_decl *fd);
+void print_symtab_decl(const decl *d);
+void print_symtab_func_decl(const func_decl *fd);
 
-void print_symbol(symbol *sym);
-void print_symtab(symtab *stab);
+void print_symbol(const symbol *sym);
+void print_symtab(const symtab *stab);
 
 #endif
