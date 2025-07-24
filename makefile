@@ -21,7 +21,8 @@ BIN= bin/scanner.o \
 	bin/typecheck.o \
 	bin/generate_tac.o \
 	bin/memory_layout.o \
-	bin/tac_print.o
+	bin/tac_print.o \
+	bin/code_gen.o \
 
 CFLAGS= -I include -Werror
 
@@ -32,7 +33,7 @@ tinycc: ${BIN}
 gdb: CFLAGS += -g
 gdb: tinycc
 
-# Compiling src/
+# Compiling src files
 bin/main.o: src/main.c include/arguments.h
 	$(CC) -c -o $@ ${CFLAGS} src/main.c
 bin/scanner.o: src/scanner.c include/parser.h
@@ -44,7 +45,7 @@ bin/arguments.o: src/arguments.c include/arguments.h
 bin/utils.o: src/utils.c include/utils.h
 	$(CC) -c -o $@ ${CFLAGS} src/utils.c
 
-# Compiling src/ast/
+# Compiling src/ast module
 bin/exprn.o: src/ast/exprn.c include/ast/exprn.h
 	$(CC) -c -o $@ ${CFLAGS} src/ast/exprn.c
 bin/stmt.o: src/ast/stmt.c include/ast/stmt.h
@@ -58,7 +59,7 @@ bin/func.o: src/ast/func.c include/ast/func.h
 bin/ast_print.o: src/ast/print.c include/ast/print.h
 	$(CC) -c -o $@ ${CFLAGS} src/ast/print.c
 
-# Compiling src/phases/frontend
+# Compiling src/phases/frontend module
 bin/construct_symtab.o: src/phases/frontend/construct_symtab.c include/phases/frontend/construct_symtab.h
 	$(CC) -c -o $@ ${CFLAGS} src/phases/frontend/construct_symtab.c
 bin/resolve_name.o: src/phases/frontend/resolve_name.c include/phases/frontend/resolve_name.h
@@ -66,15 +67,17 @@ bin/resolve_name.o: src/phases/frontend/resolve_name.c include/phases/frontend/r
 bin/typecheck.o: src/phases/frontend/typecheck.c include/phases/frontend/typecheck.h
 	$(CC) -c -o $@ ${CFLAGS} src/phases/frontend/typecheck.c
 
-# Compiling src/phases/middleend
+# Compiling src/phases/middleend module
 bin/generate_tac.o: src/phases/middleend/generate_tac.c include/phases/middleend/generate_tac.h
 	$(CC) -c -o $@ ${CFLAGS} src/phases/middleend/generate_tac.c
 bin/memory_layout.o: src/phases/middleend/memory_layout.c include/phases/middleend/memory_layout.h
 	$(CC) -c -o $@ ${CFLAGS} src/phases/middleend/memory_layout.c
 
+# Compiling src/phases/backend module
+bin/code_gen.o: src/phases/backend/code_gen.c include/phases/backend/code_gen.h
+	$(CC) -c -o $@ ${CFLAGS} src/phases/backend/code_gen.c
 
-
-# Compiling src/symbol_table/
+# Compiling src/symbol_table module
 bin/symbol.o: src/symbol_table/symbol.c include/symbol_table/symbol.h
 	$(CC) -c -o $@ ${CFLAGS} src/symbol_table/symbol.c
 bin/symtab.o: src/symbol_table/symtab.c include/symbol_table/symtab.h
@@ -85,7 +88,7 @@ bin/symtab_print.o: src/symbol_table/print.c include/symbol_table/print.h
 	$(CC) -c -o $@ ${CFLAGS} src/symbol_table/print.c
 
 
-# Compiling src/tac/
+# Compiling src/tac module
 bin/tac_operand.o: src/tac/tac_operand.c include/tac/tac_operand.h
 	$(CC) -c -o $@ ${CFLAGS} src/tac/tac_operand.c
 bin/tac_stmt.o: src/tac/tac_stmt.c include/tac/tac_stmt.h
@@ -108,7 +111,6 @@ clean:
 		output/* \
 		tinycc
 
-
-
+# Run the compiler on a sample input with all options enabled
 run: tinycc
 	./tinycc input/main.b --show-tokens --show-ast --show-symtab --show-tac

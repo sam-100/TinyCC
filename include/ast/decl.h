@@ -47,5 +47,7 @@ decl *append_decl(decl *d, decl *nd);
 var_decl *create_var_decl(char *name, type_t type, exprn *e);
 func_decl *create_func_decl(char *name, type_t type, parameter *param_list, func_body *body);
 
+int get_local_size(func_decl *fd);
+int get_temp_size(func_decl *fd);
 
 #endif

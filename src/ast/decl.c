@@ -60,5 +60,10 @@ func_decl *create_func_decl(char *name, type_t type, parameter *param_list, func
     return fd;
 }
 
+int get_local_size(func_decl *fd) {
+    return fd->body->local_len;
+}
 
-
+int get_temp_size(func_decl *fd) {
+    return fd->body->temp_cnt*4;
+}

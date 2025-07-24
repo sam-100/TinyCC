@@ -19,6 +19,7 @@ void initialize() {
     f_error = stderr;
     f_symtab = f_nowhere;
     f_tac = f_nowhere;
+    f_asm = fopen("output/out.asm", "w");
 }
 
 void error(const char *msg, int status) {

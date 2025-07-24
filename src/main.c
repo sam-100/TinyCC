@@ -17,6 +17,8 @@
 #include "phases/frontend/typecheck.h"
 #include "phases/middleend/generate_tac.h"
 #include "phases/middleend/memory_layout.h"
+#include "phases/backend/code_gen.h"
+
 
 extern int yylex(void);
 extern int yyparse(void);
@@ -58,6 +60,9 @@ int main(int argc, char **argv) {
     printf("Three address code generated successfully!\n");
     print_tac_of_program(root, f_tac);
     
+    // generate assembly code
+    codegen_program(root, f_asm);
+    printf("Assembly code generated successfully!\n");
     
     print_symtab_program(root);
     return 0;
