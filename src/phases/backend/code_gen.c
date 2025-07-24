@@ -40,7 +40,7 @@ void codegen_text(program *p, FILE *f_out) {
     fprintf(f_out, "section .text\n");
     fprintf(f_out, "global _start\n");
     fprintf(f_out, "_start: \n");
-    fprintf(f_out, "\ncall main\n");
+    fprintf(f_out, "\tcall main\n");
     codegen_exit(f_out);
 
     for(decl *d=p->decl_list; d != NULL; d=d->next) {
