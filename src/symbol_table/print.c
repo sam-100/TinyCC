@@ -23,7 +23,7 @@ void print_symtab_func_decl(const func_decl *fd) {
     if(fd->body == NULL)
         return;
     fprintf(f_symtab, "Function %s() symtab: \n", fd->name);
-    fprintf(f_symtab, "{local_len: %d}\n", fd->body->local_len);
+    fprintf(f_symtab, "{local_len: %d, temp_len: %d}\n", fd->body->local_len, fd->body->temp_cnt*4);
     print_symtab(fd->symtab);
 }
 

@@ -87,6 +87,14 @@ int get_size_of_type(type_t type) {
     }
 }
 
+int align_up(int num, int factor) {
+    int x = num/factor;
+    if(num%factor == 0)
+        return num;
+    return (num/factor)*factor + factor;
+}
+
+/* String functions */
 char *dup_string(const char *str) {
     int len = strlen(str);
     char *new_str = (char*)malloc(len+1);

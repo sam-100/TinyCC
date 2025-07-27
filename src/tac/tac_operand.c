@@ -92,3 +92,22 @@ char *tac_op_to_string(tac_operand *t_op) {
     
     return NULL;
 }
+
+char *get_address(tac_operand *t_op, int local_size) {
+    if(t_op->kind == TAC_OP_VARIABLE) {
+        
+    }
+    if(t_op->kind == TAC_OP_TEMP) {
+
+    }
+    if(t_op->kind == TAC_OP_LITERAL_INT) {
+
+    }
+    if(t_op->kind == TAC_OP_LITERAL_CHAR) {
+
+    }
+    if(t_op->kind == TAC_OP_LITERAL_BOOL) {
+        
+    }
+    return "(address)";
+}
