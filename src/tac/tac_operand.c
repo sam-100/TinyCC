@@ -94,20 +94,25 @@ char *tac_op_to_string(tac_operand *t_op) {
 }
 
 char *get_address(tac_operand *t_op, int local_size) {
-    if(t_op->kind == TAC_OP_VARIABLE) {
-        
-    }
+    char *addr = malloc(20);
+    
+    if(t_op->kind == TAC_OP_LITERAL_CHAR)
+        return itoa((int)(t_op->literal_char));
+    if(t_op->kind == TAC_OP_LITERAL_INT)
+        return itoa((int)(t_op->literal_int));
+    if(t_op->kind == TAC_OP_LITERAL_BOOL)
+        return itoa((int)(t_op->literal_bool));
+    
     if(t_op->kind == TAC_OP_TEMP) {
+        sprintf(addr, "[rbp-%d]", local_size + t_op->temp*8);
+        return addr;
+    }
 
-    }
-    if(t_op->kind == TAC_OP_LITERAL_INT) {
-
-    }
-    if(t_op->kind == TAC_OP_LITERAL_CHAR) {
-
-    }
-    if(t_op->kind == TAC_OP_LITERAL_BOOL) {
-        
-    }
-    return "(address)";
+    
+    // Case: TAC_OP_VARIABLE
+    if(t_op->sym->kind == SYM_VAR) 
+        sprintf(addr, "[rbp-%d]", t_op->sym->offset);
+    else 
+        sprintf(addr, "[rbp+%d]", t_op->sym->offset);
+    return addr;
 }

@@ -50,6 +50,9 @@ int main(int argc, char **argv) {
     // type checking
     typecheck_program(root);
     printf("Typechecking done.\n");
+
+    // return checking
+    // return_check(root);
     
     // memory layout stage
     memory_layout_program(root);
@@ -63,6 +66,9 @@ int main(int argc, char **argv) {
     // generate assembly code
     codegen_program(root, f_asm);
     printf("Assembly code generated successfully!\n");
+
+    // assemble, link, and generate executable
+    
     
     print_symtab_program(root);
     return 0;

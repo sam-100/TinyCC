@@ -65,5 +65,5 @@ int get_local_size(func_decl *fd) {
 }
 
 int get_temp_size(func_decl *fd) {
-    return fd->body->temp_cnt*4;
+    return fd->body->temp_cnt*8;
 }

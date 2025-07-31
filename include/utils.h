@@ -14,6 +14,7 @@ operation_t get_op_type(operator_t op);
 char *op_to_string(operation_t op);
 int max(int a, int b);
 int align_up(int x, int factor);
+int abs(int a);
 
 // string functions 
 char *dup_string(const char *str);                              // copy the string 'str' into a new buffer

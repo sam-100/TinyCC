@@ -94,6 +94,10 @@ int align_up(int num, int factor) {
     return (num/factor)*factor + factor;
 }
 
+int abs(int a) {
+    return (a > 0) ? a : -a;
+}
+
 /* String functions */
 char *dup_string(const char *str) {
     int len = strlen(str);

@@ -15,7 +15,7 @@ void memory_layout_func_decl(func_decl *fd) {
         p->sym->which = index;
         p->sym->offset = offset;
         index++;
-        offset += 4;
+        offset += 8;
     }
 
     memory_layout_func_body(fd->body);
@@ -32,9 +32,9 @@ int memory_layout_stmt_list(statement *stmt_list) {
     for(statement *stmt=stmt_list; stmt != NULL; stmt=stmt->next) {
         if(stmt->kind == STMT_VAR_DECL) {
             index++;
-            offset -= 4;
+            offset -= 8;
             stmt->vd_stmt->sym->which=index;
-            stmt->vd_stmt->sym->offset=offset;
+            stmt->vd_stmt->sym->offset=abs(offset);
         }
     }
     return -offset;
