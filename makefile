@@ -24,10 +24,16 @@ BIN= bin/scanner.o \
 	bin/tac_print.o \
 	bin/code_gen.o \
 	bin/return_check.o \
+	bin/integer_to_string.o \
+	bin/string_to_integer.o \
+	bin/read_int.o \
+	bin/print_int.o \
+	bin/print_char.o \
+	bin/read_char.o \
 
 CFLAGS= -I include -Werror
 
-# Target compiler rules
+# Link all object files to produce the final executible
 tinycc: ${BIN}
 	$(CC) -o $@ ${BIN}
 
@@ -98,6 +104,20 @@ bin/tac_stmt.o: src/tac/tac_stmt.c include/tac/tac_stmt.h
 	$(CC) -c -o $@ ${CFLAGS} src/tac/tac_stmt.c
 bin/tac_print.o: src/tac/print.c include/tac/print.h
 	$(CC) -c -o $@ ${CFLAGS} src/tac/print.c
+
+# Compiling src/runtime-support module
+bin/string_to_integer.o: src/runtime-support/string_to_integer.c
+	$(CC) -c -o $@ ${CFLAGS} src/runtime-support/string_to_integer.c
+bin/integer_to_string.o: src/runtime-support/integer_to_string.c
+	$(CC) -c -o $@ ${CFLAGS} src/runtime-support/integer_to_string.c
+bin/read_int.o: src/runtime-support/read_int.asm
+	nasm -f elf64 -Iinclude/runtime-support/ -o $@ src/runtime-support/read_int.asm
+bin/print_int.o: src/runtime-support/print_int.asm
+	nasm -f elf64 -Iinclude/runtime-support/ -o $@ src/runtime-support/print_int.asm
+bin/read_char.o: src/runtime-support/read_char.asm
+	nasm -f elf64 -o $@ src/runtime-support/read_char.asm
+bin/print_char.o: src/runtime-support/print_char.asm
+	nasm -f elf64 -o $@ src/runtime-support/print_char.asm
 
 
 # Scanner and parser
