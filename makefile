@@ -23,6 +23,7 @@ BIN= bin/scanner.o \
 	bin/memory_layout.o \
 	bin/tac_print.o \
 	bin/code_gen.o \
+	bin/return_check.o \
 
 CFLAGS= -I include -Werror
 
@@ -72,6 +73,8 @@ bin/generate_tac.o: src/phases/middleend/generate_tac.c include/phases/middleend
 	$(CC) -c -o $@ ${CFLAGS} src/phases/middleend/generate_tac.c
 bin/memory_layout.o: src/phases/middleend/memory_layout.c include/phases/middleend/memory_layout.h
 	$(CC) -c -o $@ ${CFLAGS} src/phases/middleend/memory_layout.c
+bin/return_check.o: src/phases/middleend/return_check.c include/phases/middleend/return_check.h
+	$(CC) -c -o $@ ${CFLAGS} src/phases/middleend/return_check.c
 
 # Compiling src/phases/backend module
 bin/code_gen.o: src/phases/backend/code_gen.c include/phases/backend/code_gen.h

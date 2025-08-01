@@ -97,9 +97,11 @@ void generate_tac_for_statement(statement *stmt, symtab_stack *st, tac_stmt *cod
             break;
         case STMT_RETURN:
             curr->kind = TAC_RETURN_STMT;
-            curr->op1 = generate_tac_operand_for_exprn(stmt->ret_stmt->ret_expr, st, code, temp_cnt);
-            tac_append(code, curr);
-            if(curr->op1->kind == TAC_OP_TEMP)
+            if(stmt->ret_stmt->fd->type != TYPE_VOID) {
+                curr->op1 = generate_tac_operand_for_exprn(stmt->ret_stmt->ret_expr, st, code, temp_cnt);
+                tac_append(code, curr);
+            }
+            if(curr->op1 && curr->op1->kind == TAC_OP_TEMP)
                 freeTemp(curr->op1->temp);
             break;
     }
@@ -128,6 +130,8 @@ void generate_tac_for_func_call_stmt(func_call_stmt *fc_stmt, symtab_stack *st, 
 
 
 tac_operand *generate_tac_operand_for_exprn(exprn *e, symtab_stack *st, tac_stmt *code, int *temp_cnt) {
+    if(e == NULL)
+        return NULL;
     if(e->kind == LITERAL_EXPRN) {
         if(e->type == TYPE_INTEGER)
             return create_tac_operand_literal_int(e->value.i_val);

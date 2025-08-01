@@ -17,6 +17,7 @@
 #include "phases/frontend/typecheck.h"
 #include "phases/middleend/generate_tac.h"
 #include "phases/middleend/memory_layout.h"
+#include "phases/middleend/return_check.h"
 #include "phases/backend/code_gen.h"
 
 
@@ -52,7 +53,8 @@ int main(int argc, char **argv) {
     printf("Typechecking done.\n");
 
     // return checking
-    // return_check(root);
+    if(!return_check_program(root))
+        error("Error: return-check error.", 1);
     
     // memory layout stage
     memory_layout_program(root);
