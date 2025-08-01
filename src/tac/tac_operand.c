@@ -49,6 +49,14 @@ tac_operand *create_tac_operand_literal_char(char val) {
     return curr;
 }
 
+tac_operand *create_tac_operand_func_call(type_t type, const char *name) {
+    tac_operand *t_operand = (tac_operand*)malloc(sizeof(tac_operand));
+    t_operand->kind = TAC_OP_FUNC_CALL;
+    t_operand->name = dup_string(name);
+    t_operand->type = type;
+    return t_operand;
+}
+
 
 int getTemp() {
     for(int i=0; i<MAX_TEMP; i++) {

@@ -56,29 +56,21 @@ int generate_tac_for_func_argument(argument *arg, symtab_stack *st, tac_stmt *co
 
 void generate_tac_for_statement(statement *stmt, symtab_stack *st, tac_stmt *code, int *temp_cnt) {
     tac_stmt *curr = create_tac_stmt();
-    tac_operand *operand;
     switch(stmt->kind) {
         case STMT_PRINT:
             curr->kind = TAC_PRINT_STMT;
             curr->op1 = generate_tac_operand_for_exprn(stmt->p_stmt->arg, st, code, temp_cnt);
-            tac_append(code, curr);
-            if(curr->op1->kind == TAC_OP_TEMP)
-                freeTemp(curr->op1->temp);
             break;
         case STMT_READ:
             curr->kind = TAC_READ_STMT;
             curr->op1 = create_tac_operand_variable(stmt->r_stmt->arg, st);
-            tac_append(code, curr);
             break;
         case STMT_VAR_DECL:
             if(!stmt->vd_stmt->initialized)
-                break;
+                return;
             curr->kind = TAC_COPY_STMT;
             curr->lhs = create_tac_operand_variable(stmt->vd_stmt->name, st);
             curr->op1 = generate_tac_operand_for_exprn(stmt->vd_stmt->rhs, st, code, temp_cnt);
-            tac_append(code, curr);
-            if(curr->op1->kind == TAC_OP_TEMP)
-                freeTemp(curr->op1->temp);
             break;
         case STMT_ASSIGN:
             curr->kind = TAC_COPY_STMT;
@@ -88,33 +80,32 @@ void generate_tac_for_statement(statement *stmt, symtab_stack *st, tac_stmt *cod
             } else {
                 curr->op1 = generate_tac_for_func_call(stmt->as_stmt->fc, st, code, temp_cnt);
             }
-            tac_append(code, curr);
-            if(curr->op1->kind == TAC_OP_TEMP)
-                freeTemp(curr->op1->temp);
             break;
         case STMT_FUNC_CALL:
-            generate_tac_for_func_call_stmt(stmt->fc_stmt, st, code, temp_cnt);
+            curr->kind = TAC_COPY_STMT;
+            curr->lhs = create_tac_operand_temp(stmt->fc_stmt->type, temp_cnt);
+            curr->op1 = generate_tac_for_func_call_stmt(stmt->fc_stmt, st, code, temp_cnt);
             break;
         case STMT_RETURN:
-            curr->kind = TAC_RETURN_STMT;
-            if(stmt->ret_stmt->fd->type != TYPE_VOID) {
+            if(stmt->ret_stmt->fd->type == TYPE_VOID) {
+                curr->kind = TAC_RETURN_VOID_STMT;
+            } else {
+                curr->kind = TAC_RETURN_STMT;
                 curr->op1 = generate_tac_operand_for_exprn(stmt->ret_stmt->ret_expr, st, code, temp_cnt);
-                tac_append(code, curr);
             }
-            if(curr->op1 && curr->op1->kind == TAC_OP_TEMP)
-                freeTemp(curr->op1->temp);
             break;
     }
-    
+    tac_append(code, curr);
+
+    // free temps here
+    if(curr->op1 && curr->op1->kind == TAC_OP_TEMP)
+        freeTemp(curr->op1->temp);
+    if(curr->op2 && curr->op2->kind == TAC_OP_TEMP)
+        freeTemp(curr->op2->temp);
 }
 
-void generate_tac_for_func_call_stmt(func_call_stmt *fc_stmt, symtab_stack *st, tac_stmt *code, int *temp_cnt) {
-    tac_stmt *curr = create_tac_stmt();
-    curr->kind = TAC_COPY_STMT;
-    curr->lhs = create_tac_operand_temp(fc_stmt->type, temp_cnt);
-    curr->op1 = (tac_operand*)malloc(sizeof(tac_operand));
-    curr->op1->kind = TAC_OP_FUNC_CALL;
-    curr->op1->name = fc_stmt->name;
+tac_operand *generate_tac_for_func_call_stmt(func_call_stmt *fc_stmt, symtab_stack *st, tac_stmt *code, int *temp_cnt) {
+    tac_operand *curr = create_tac_operand_func_call(fc_stmt->type, fc_stmt->name);
 
     // append arguments 
     int arg_cnt = 0;
@@ -122,10 +113,9 @@ void generate_tac_for_func_call_stmt(func_call_stmt *fc_stmt, symtab_stack *st, 
         generate_tac_for_func_argument(arg, st, code, temp_cnt);
         arg_cnt++;
     }
-    curr->op1->arg_cnt = arg_cnt;
+    curr->arg_cnt = arg_cnt;
 
-    tac_append(code, curr);
-    freeTemp(curr->lhs->temp);
+    return curr;
 }
 
 

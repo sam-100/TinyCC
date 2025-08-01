@@ -27,6 +27,7 @@ tac_operand *create_tac_operand_variable(const char *name, symtab_stack *st);
 tac_operand *create_tac_operand_literal_int(int val);
 tac_operand *create_tac_operand_literal_bool(bool val);
 tac_operand *create_tac_operand_literal_char(char val);
+tac_operand *create_tac_operand_func_call(type_t type, const char *name);
 
 char *tac_op_to_string(tac_operand *t_op);
 char *get_address(tac_operand *t_op, int local_size);

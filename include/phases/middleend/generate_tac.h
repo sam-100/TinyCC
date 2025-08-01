@@ -11,7 +11,7 @@ void generate_tac_for_program(program *p);
 void generate_tac_for_function(func_decl *fd, symtab_stack *st);
 
 void generate_tac_for_statement(statement *stmt, symtab_stack *st, tac_stmt *code, int *temp_cnt);
-void generate_tac_for_func_call_stmt(func_call_stmt *stmt, symtab_stack *st, tac_stmt *code, int *temp_cnt);
+tac_operand *generate_tac_for_func_call_stmt(func_call_stmt *stmt, symtab_stack *st, tac_stmt *code, int *temp_cnt);
 
 tac_operand *generate_tac_for_func_call(func_call *fc, symtab_stack *st, tac_stmt *code, int *temp_cnt);
 int generate_tac_for_func_argument(argument *arg, symtab_stack *s, tac_stmt *code, int *temp_cnt);

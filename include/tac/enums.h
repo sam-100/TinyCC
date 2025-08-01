@@ -14,6 +14,7 @@ typedef enum {
     TAC_PRINT_STMT, 
     TAC_READ_STMT, 
     TAC_RETURN_STMT, 
+    TAC_RETURN_VOID_STMT, 
     TAC_ASSIGN_STMT, 
     TAC_FUNC_CALL_STMT, 
     TAC_COPY_STMT, 
