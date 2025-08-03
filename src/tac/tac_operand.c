@@ -101,7 +101,7 @@ char *tac_op_to_string(tac_operand *t_op) {
     return NULL;
 }
 
-char *get_address(tac_operand *t_op, int local_size) {
+char *get_value(tac_operand *t_op, int local_size) {
     char *addr = malloc(20);
     
     if(t_op->kind == TAC_OP_LITERAL_CHAR)

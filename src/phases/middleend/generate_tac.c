@@ -39,12 +39,20 @@ tac_operand *generate_tac_for_func_call(func_call *fc, symtab_stack *st, tac_stm
     return curr->lhs;
 }
 
+/* Generate tac for function arguments by pushing them in reverse order */
 int generate_tac_for_func_argument(argument *arg, symtab_stack *st, tac_stmt *code, int *temp_cnt) {
     if(arg == NULL)
         return 0;
     
+    // add a prepare stack element
+    tac_stmt *prepare_stack = create_tac_stmt();
+    prepare_stack->kind = TAC_PREPARE_STACK;
+    tac_append(code, prepare_stack);
+
+    // push arguments in reverse order
     int arg_cnt = 1 + generate_tac_for_func_argument(arg->next, st, code, temp_cnt);
 
+    // push current argument
     tac_stmt *curr = create_tac_stmt();
     curr->kind = TAC_ARGUMENT_STMT;
     curr->op1 = generate_tac_operand_for_exprn(arg->e, st, code, temp_cnt);
@@ -106,6 +114,11 @@ void generate_tac_for_statement(statement *stmt, symtab_stack *st, tac_stmt *cod
 
 tac_operand *generate_tac_for_func_call_stmt(func_call_stmt *fc_stmt, symtab_stack *st, tac_stmt *code, int *temp_cnt) {
     tac_operand *curr = create_tac_operand_func_call(fc_stmt->type, fc_stmt->name);
+
+    // add a prepare stack element
+    tac_stmt *prepare_stack = create_tac_stmt();
+    prepare_stack->kind = TAC_PREPARE_STACK;
+    tac_append(code, prepare_stack);
 
     // append arguments 
     int arg_cnt = 0;

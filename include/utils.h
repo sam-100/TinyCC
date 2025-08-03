@@ -2,6 +2,7 @@
 #define UTILS_H
 #include "ast/enums.h"
 #include <stdbool.h>
+#include "tac/enums.h"
 
 void error(const char *msg, int status);
 void initialize();
@@ -16,6 +17,7 @@ int max(int a, int b);
 int align_up(int x, int factor);
 int abs(int a);
 
+
 // string functions 
 char *dup_string(const char *str);                              // copy the string 'str' into a new buffer
 char *concat_string(const char *str1, const char *str2);        // concatinate strings 'str1' and 'str2' into a new buffer
@@ -28,5 +30,7 @@ char *get_literal_value(value val, type_t type);
 char *get_scope_name(scope_t scope);
 char *get_symbol_kind_name(symbol_t kind);
 
+/* Helper functions to print tac */
+const char *get_tac_stmt_name(tac_stmt_t kind);
 
 #endif

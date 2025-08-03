@@ -15,9 +15,11 @@ void codegen_bss(program *p, FILE *f_out);
 void codegen_text(program *p, FILE *f_out);
 
 void codegen_function(func_decl *fd, FILE *f_out);
-void codegen_tac_stmt(tac_stmt *stmt, FILE *f_out, int local_size);
+void codegen_tac_stmt(tac_stmt *stmt, FILE *f_out, int local_size, int temp_size);
 tac_stmt *codegen_tac_function_call(tac_stmt *t_stmt, FILE *f_out, int local_size, int temp_size);
-
+void codegen_assign_stmt(tac_stmt *stmt, int local_size, FILE *f_out);
+void codegen_print_stmt(type_t type, FILE *f_out);
+void codegen_read_stmt(type_t type, FILE *f_out);
 /* helper functions */
 void codegen_exit(FILE *f_out);
 

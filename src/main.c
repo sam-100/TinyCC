@@ -69,8 +69,11 @@ int main(int argc, char **argv) {
     codegen_program(root, f_asm);
     printf("Assembly code generated successfully!\n");
 
-    // assemble, link, and generate executable
-    
+    // assemble, link, and generate executable  
+    system("nasm -f elf64 output/out.asm");
+    system(
+        "ld output/out.o bin/print_int.o bin/read_int.o bin/integer_to_string.o bin/string_to_integer.o -o main"
+    );
     
     print_symtab_program(root);
     return 0;

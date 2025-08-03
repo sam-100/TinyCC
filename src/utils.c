@@ -211,3 +211,28 @@ char *get_symbol_kind_name(symbol_t kind) {
         return "FUNCTION";
     return "UNKNOWN TYPE";
 }
+
+const char *get_tac_stmt_name(tac_stmt_t kind) {
+    switch(kind)
+    {
+        case TAC_PRINT_STMT:
+            return "TAC_PRINT_STMT";
+        case TAC_READ_STMT:
+            return "TAC_READ_STMT";
+        case TAC_RETURN_STMT:
+            return "TAC_RETURN_STMT";
+        case TAC_RETURN_VOID_STMT:
+            return "TAC_RETURN_VOID_STMT";
+        case TAC_ASSIGN_STMT:
+            return "TAC_ASSIGN_STMT";
+        case TAC_FUNC_CALL_STMT:
+            return "TAC_FUNC_CALL_STMT";
+        case TAC_COPY_STMT:
+            return "TAC_COPY_STMT";
+        case TAC_ARGUMENT_STMT:
+            return "TAC_ARGUMENT_STMT";
+        case TAC_PREPARE_STACK:
+            return "TAC_PREPARE_STACK";
+    };
+    return "invalid-stmt";
+}

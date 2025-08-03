@@ -19,6 +19,7 @@ typedef enum {
     TAC_FUNC_CALL_STMT, 
     TAC_COPY_STMT, 
     TAC_ARGUMENT_STMT, 
+    TAC_PREPARE_STACK, 
 } tac_stmt_t;
 
 #endif
