@@ -21,11 +21,14 @@ typedef struct exprn {
 /* create expression */
 exprn *create_exprn(exprn *lhs, operator_t op, exprn *rhs);
 exprn *negate_exprn(exprn *exprn);
+exprn *create_not_exprn(exprn *e);
 exprn *create_exprn_id(char *name);
 exprn *create_exprn_int(int val);
 exprn *create_exprn_char(char val);
 exprn *create_exprn_bool(bool val);
 
 
+/* helper functions */
+exprn_t get_op_kind(operator_t op);
 
 #endif

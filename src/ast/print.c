@@ -210,7 +210,9 @@ void print_exprn(const exprn *e, char *tabs) {
     tabs = strcat(tabs, "\t");
     switch(e->kind)
     {
-        case BINARY_EXPRN:
+        case ARITHMETIC_EXPRN:
+        case BOOLEAN_EXPRN:
+        case COMPARISON_EXPRN:
             fprintf(f_ast, "%slhs:\n", tabs);
             print_exprn(e->left, strcat(tabs, "\t"));
             tabs[strlen(tabs)-1]='\0';

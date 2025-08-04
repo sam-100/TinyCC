@@ -27,9 +27,12 @@ typedef enum {
 } decl_t;
 
 typedef enum {
-    BINARY_EXPRN, 
+    ARITHMETIC_EXPRN, 
+    COMPARISON_EXPRN, 
+    BOOLEAN_EXPRN, 
     IDENTIFIER_EXPRN, 
-    LITERAL_EXPRN
+    LITERAL_EXPRN, 
+    UNKNOWN_EXPRN, 
 } exprn_t;
 
 typedef enum {
@@ -38,16 +41,24 @@ typedef enum {
 } assign_t;
 
 typedef enum {
+    /* arithmetic operators */
     OP_PLUS, 
     OP_MINUS, 
     OP_MUL, 
     OP_DIV, 
-} operator_t;
 
-typedef enum {
-    OP_ARITHMETIC, 
-    OP_BOOLEAN, 
-} operation_t;
+    /* comparison operators */
+    OP_LT, 
+    OP_LE, 
+    OP_EQ, 
+    OP_GE, 
+    OP_GT, 
+
+    /* boolean operators */
+    OP_AND, 
+    OP_OR, 
+    OP_NOT, 
+} operator_t;
 
 typedef union {
         int i_val;

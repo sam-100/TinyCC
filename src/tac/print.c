@@ -9,6 +9,7 @@ void print_tac_of_program(const program *p, FILE *f_out) {
             continue;
         print_tac_of_function(d->fd, f_out);
     }
+    fclose(f_out);
 }
 
 void print_tac_of_function(const func_decl *fd, FILE *f_out) {
@@ -59,6 +60,9 @@ void print_tac_stmt(tac_stmt *t, FILE *file) {
             fprintf(file, "\targ %s\n", 
                 tac_op_to_string(t->op1)
             );
+            break;
+        case TAC_PREPARE_STACK:
+            fprintf(file, "\t--- prepare stack --- \n");
             break;
     }
 

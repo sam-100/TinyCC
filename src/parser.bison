@@ -18,13 +18,15 @@ extern program *root;
 %token PRINT READ                          
 %token IDENTIFIER INTEGER_LITERAL BOOLEAN_LITERAL CHAR_LITERAL
 %token COLON SEMICOLON SINGLE_QUOTE DOUBLE_QUOTE COMMA DOT          
-%token PLUS MINUS MULTIPLY DIVIDE                                               // arithmetic operators
-%token LT GT EQ LE GE                                                           // comparison operators
-%token ASSIGN
+%token AND OR NOT                                               // boolean operators
+%token PLUS MINUS MULTIPLY DIVIDE                               // arithmetic operators
+%token LT GT EQ LE GE                                           // comparison operators
+%token ASSIGN                                                   // '=' assignment operator
 %token OPEN_BRACKET CLOSED_BRACKET 
 %token OPEN_SQUARE_BRACKET CLOSED_SQUARE_BRACKET
 %token OPEN_CURLY_BRACKET CLOSED_CURLY_BRACKET 
 
+%left AND OR NOT
 %left LT LE EQ GT GE
 %left PLUS MINUS
 %left MULTIPLY DIVIDE
@@ -101,7 +103,7 @@ var_decl:
                                                                 $$ = create_var_decl($1, $3, NULL); 
                                                                 $$->line_no = @1.first_line;
                                                         }
-        | IDENTIFIER COLON type ASSIGN exprn SEMICOLON  { 
+        | IDENTIFIER COLON type ASSIGN literal SEMICOLON  { 
                                                                 $$ = create_var_decl($1, $3, $5); 
                                                                 $$->line_no = @1.first_line;
                                                         }
@@ -147,6 +149,38 @@ exprn:
         | MINUS exprn %prec UMINUS              { 
                                                         $$ = negate_exprn($2); 
                                                         $$->line_no = @1.first_line;
+                                                }
+        | exprn AND exprn                       {
+                                                        $$ = create_exprn($1, OP_AND, $3);
+                                                        $$->line_no = @2.first_line;
+                                                }
+        | exprn OR exprn                        {
+                                                        $$ = create_exprn($1, OP_OR, $3);
+                                                        $$->line_no = @2.first_line;
+                                                }
+        | NOT exprn                             {
+                                                        $$ = create_not_exprn($2);
+                                                        $$->line_no = @2.first_line;
+                                                }
+        | exprn GT exprn                        {
+                                                        $$ = create_exprn($1, OP_GT, $3);
+                                                        $$->line_no = @2.first_line;
+                                                }
+        | exprn GE exprn                        {
+                                                        $$ = create_exprn($1, OP_GE, $3);
+                                                        $$->line_no = @2.first_line;
+                                                }
+        | exprn EQ exprn                        {
+                                                        $$ = create_exprn($1, OP_EQ, $3);
+                                                        $$->line_no = @2.first_line;
+                                                }
+        | exprn LE exprn                        {
+                                                        $$ = create_exprn($1, OP_LE, $3);
+                                                        $$->line_no = @2.first_line;
+                                                }
+        | exprn LT exprn                        {
+                                                        $$ = create_exprn($1, OP_LT, $3);
+                                                        $$->line_no = @2.first_line;
                                                 }
         | IDENTIFIER                            { 
                                                         $$ = create_exprn_id($1); 

@@ -201,18 +201,24 @@ void typecheck_func_body(func_body *fb, symtab_stack *st) {
 }
 
 void typecheck_exprn(exprn *e, symtab_stack *st) {
-    if(e->kind == BINARY_EXPRN) {
+    if(e->kind == ARITHMETIC_EXPRN) {
         typecheck_exprn(e->left, st);
         typecheck_exprn(e->right, st);
 
+        // if rhs and lhs are not same type, then exit
         if(e->left->type != e->right->type) {
             fprintf(f_error, "Error (line_no %d): binary operands of different types (lhs %s, rhs %s)for operator %s.\n", e->line_no, get_type_name(e->left->type), get_type_name(e->right->type), get_op_name(e->op));
             exit(2);
         } 
+        
         type_t type = e->left->type;
-        if(get_op_type(e->op) == OP_ARITHMETIC && type != TYPE_INTEGER) {
+        if(get_op_kind(e->op) == ARITHMETIC_EXPRN && type != TYPE_INTEGER) {
             fprintf(f_error, "Error (line_no %d): Operanand operator type mismatch. [ lhs %s, rhs %s]\n", e->line_no, get_type_name(e->left->type), get_type_name(e->right->type));
         }
+        if(get_op_kind(e->op) == BOOLEAN_EXPRN && type != TYPE_BOOLEAN) {
+            fprintf(f_error, "Error (line_no %d): Operanand operator type mismatch. [ lhs %s, rhs %s]\n", e->line_no, get_type_name(e->left->type), get_type_name(e->right->type));
+        }
+
         e->type = type;
         return;
     }

@@ -22,7 +22,7 @@ letter  [a-zA-Z]
 
 %%
 
-
+"//".*                                      { /* Ignore the comments */ }
 [ \t]                                       ;
 \n                                          { line_no++; }
 
@@ -90,98 +90,115 @@ return                                      {
                                             }
 
 
-\+                                          { 
+"+"                                         {
                                                 fprintf(f_tokens, "Token: PLUS, lexeme: \"%s\", line_no: %d\n", yytext, line_no); 
                                                 return PLUS; 
                                             }
-\-                                          { 
+"-"                                         {
                                                 fprintf(f_tokens, "Token: MINUS, lexeme: \"%s\", line_no: %d\n", yytext, line_no); 
                                                 return MINUS; 
                                             }
-\*                                          { 
+"*"                                         {
                                                 fprintf(f_tokens, "Token: MULTIPLY, lexeme: \"%s\", line_no: %d\n", yytext, line_no); 
                                                 return MULTIPLY; 
                                             }
-\/                                          { 
+"/"                                         {
                                                 fprintf(f_tokens, "Token: DIVIDE, lexeme: \"%s\", line_no: %d\n", yytext, line_no); 
                                                 return DIVIDE; 
                                             }
-\=                                          { 
+
+"="                                         {
                                                 fprintf(f_tokens, "Token: ASSIGN, lexeme: \"%s\", line_no: %d\n", yytext, line_no); 
                                                 return ASSIGN; 
                                             }
-\<                                          { 
+
+
+"<"                                         {
                                                 fprintf(  f_tokens, "Token: GT, lexeme: \"%s\", line_no: %d\n", yytext, line_no); 
                                                 return GT;
                                             }
-\<\=                                        { 
+"<="                                        { 
                                                 fprintf(f_tokens, "Token: LE, lexeme: \"%s\", line_no: %d\n", yytext, line_no); 
                                                 return LE; 
                                             }
-\>                                          { 
+">"                                         { 
                                                 fprintf(f_tokens, "Token: LT, lexeme: \"%s\", line_no: %d\n", yytext, line_no); 
                                                 return LT; 
                                             }
-\>\=                                        { 
+">="                                        { 
                                                 fprintf(f_tokens, "Token: GE, lexeme: \"%s\", line_no: %d\n", yytext, line_no); 
                                                 return GE; 
                                             }
-\=\=                                        { 
+"=="                                        { 
                                                 fprintf(f_tokens, "Token: EQ, lexeme: \"%s\", line_no: %d\n", yytext, line_no); 
                                                 return EQ; 
                                             }
 
 
+"&&"                                        {
+                                                fprintf(f_tokens, "Token: AND, lexeme: \"%s\", line_no: %d\n", yytext, line_no);
+                                                return AND;
+                                            }
+"||"                                        {
+                                                fprintf(f_tokens, "Token: OR, lexeme: \"%s\", line_no: %d\n", yytext, line_no);
+                                                return OR;
+                                            }
+"!"                                         {
+                                                fprintf(f_tokens, "Token: NOT, lexeme: \"%s\", line_no: %d\n", yytext, line_no);
+                                                return NOT;
+                                            }
 
-\(                                          { 
+
+"("                                         { 
                                                 fprintf(f_tokens, "Token: OPEN_BRACKET, lexeme: \"%s\", line_no: %d\n", yytext, line_no); 
                                                 return OPEN_BRACKET; 
                                             }
-\)                                          { 
+")"                                         { 
                                                 fprintf(f_tokens, "Token: CLOSED_BRACKET, lexeme: \"%s\", line_no: %d\n", yytext, line_no); 
                                                 return CLOSED_BRACKET; 
                                             }
-\[                                          { 
+"["                                         { 
                                                 fprintf(f_tokens, "Token: OPEN_SQUARE_BRACKET, lexeme: \"%s\", line_no: %d\n", yytext, line_no); 
                                                 return OPEN_SQUARE_BRACKET; 
                                             }
-\]                                          { 
+"]"                                         { 
                                                 fprintf(f_tokens, "Token: CLOSED_SQUARE_BRACKET, lexeme: \"%s\", line_no: %d\n", yytext, line_no); 
                                                 return CLOSED_SQUARE_BRACKET; 
                                             }
-\{                                          { 
+"{"                                         { 
                                                 fprintf(f_tokens, "Token: OPEN_CURLY_BRACKET, lexeme: \"%s\", line_no: %d\n", yytext, line_no); 
                                                 return OPEN_CURLY_BRACKET; 
                                             }
-\}                                          { 
+"}"                                         { 
                                                 fprintf(f_tokens, "Token: CLOSED_CURLY_BRACKET, lexeme: \"%s\", line_no: %d\n", yytext, line_no); 
                                                 return CLOSED_CURLY_BRACKET; 
                                             }
 
-\:                                          { 
+
+":"                                         { 
                                                 fprintf(f_tokens, "Token: COLON, lexeme: \"%s\", line_no: %d\n", yytext, line_no); 
                                                 return COLON; 
                                             }
-\;                                          { 
+";"                                         { 
                                                 fprintf(f_tokens, "Token: SEMICOLON, lexeme: \"%s\", line_no: %d\n", yytext, line_no); 
                                                 return SEMICOLON; 
                                             }
 
-\.                                          { 
+"."                                         { 
                                                 fprintf(f_tokens, "Token: DOT, lexeme: \"%s\", line_no: %d\n", yytext, line_no); 
                                                 return DOT; 
                                             }
-\,                                          { 
+","                                         { 
                                                 fprintf(f_tokens, "Token: COMMA, lexeme: \"%s\", line_no: %d\n", yytext, line_no); 
                                                 return COMMA; 
                                             }
+
 
 {letter}({letter}|{digit})*                 { 
                                                 yylval.s_val = strdup(yytext);
                                                 fprintf(f_tokens, "Token: IDENTIFIER, lexeme: \"%s\", line_no: %d\n", yytext, line_no); 
                                                 return IDENTIFIER; 
                                             }
-
 .                                           { 
                                                 yyerror("Invalid Token!"); 
                                                 exit(1);

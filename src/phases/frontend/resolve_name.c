@@ -168,7 +168,7 @@ void resolve_exprn(exprn *e, symtab_stack *st) {
     if(e == NULL)
         return;
     
-    if(e->kind == BINARY_EXPRN) {
+    if(e->kind == ARITHMETIC_EXPRN || e->kind == BOOLEAN_EXPRN || e->kind == COMPARISON_EXPRN) {
         resolve_exprn(e->left, st);
         resolve_exprn(e->right, st);
         return;

@@ -24,13 +24,21 @@ void generate_tac_for_function(func_decl *fd, symtab_stack *st) {
 }
 
 tac_operand *generate_tac_for_func_call(func_call *fc, symtab_stack *st, tac_stmt *code, int *temp_cnt) {
+    // create a temporary operand
     tac_stmt *curr = create_tac_stmt();
     curr->kind = TAC_COPY_STMT;
     curr->lhs = create_tac_operand_temp(fc->type, temp_cnt);
+
+    // add a prepare stack element
+    tac_stmt *prepare_stack = create_tac_stmt();
+    prepare_stack->kind = TAC_PREPARE_STACK;
+    tac_append(code, prepare_stack);
     
+    // generate tac to push arguments
     int arg_cnt = 0;
     arg_cnt = generate_tac_for_func_argument(fc->arg_list, st, code, temp_cnt);
 
+    // temp = call func, n
     curr->op1 = (tac_operand*)malloc(sizeof(tac_operand));
     curr->op1->kind = TAC_OP_FUNC_CALL;
     curr->op1->name = fc->name;
@@ -44,11 +52,6 @@ int generate_tac_for_func_argument(argument *arg, symtab_stack *st, tac_stmt *co
     if(arg == NULL)
         return 0;
     
-    // add a prepare stack element
-    tac_stmt *prepare_stack = create_tac_stmt();
-    prepare_stack->kind = TAC_PREPARE_STACK;
-    tac_append(code, prepare_stack);
-
     // push arguments in reverse order
     int arg_cnt = 1 + generate_tac_for_func_argument(arg->next, st, code, temp_cnt);
 

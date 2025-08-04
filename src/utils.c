@@ -41,12 +41,6 @@ type_t get_type(int t) {
     }
 }
 
-operation_t get_op_type(operator_t op) {
-    if(op == OP_PLUS || op == OP_MINUS || op == OP_MUL || op == OP_DIV)
-        return OP_ARITHMETIC;
-    return -1;        
-}
-
 char *itoa(int num) {
     if(num == 0)
         return "0";
@@ -149,16 +143,36 @@ char *get_op_name(operator_t op) {
     }
 }
 
-char *op_to_string(operation_t op) {
-    if(op == OP_PLUS)
-        return "+";
-    if(op == OP_MINUS)
-        return "-";
-    if(op == OP_MUL)
-        return "*";
-    if(op == OP_DIV)
-        return "/";
-    return NULL;
+char *op_to_string(operator_t op) {
+    switch(op)
+    {
+        case OP_PLUS:
+            return "+";
+        case OP_MINUS:
+            return "-";
+        case OP_MUL:
+            return "*";
+        case OP_DIV:
+            return "/";
+        case OP_AND:
+            return "&&";
+        case OP_OR:
+            return "||";
+        case OP_NOT:
+            return "!";
+        case OP_GT:
+            return ">";
+        case OP_GE:
+            return ">=";
+        case OP_EQ:
+            return "==";
+        case OP_LT:
+            return "<";
+        case OP_LE:
+            return "<=";
+        default:
+            return "<Unknown-operator>";
+    }
 }
 
 char *btoa(bool val) {

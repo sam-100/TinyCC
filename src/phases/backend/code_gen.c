@@ -225,13 +225,6 @@ tac_stmt *codegen_tac_function_call(tac_stmt *t_stmt, FILE *f_out, int local_siz
     return curr_stmt->next;
 }
 
-// void codegen_read_stmt(tac_stmt *stmt, FILE *f_out) {
-
-// }
-
-// void codegen_print_stmt() {
-
-// }
 
 void codegen_assign_stmt(tac_stmt *stmt, int local_size, FILE *f_out) {
     fprintf(f_out, "\tmov eax, %s\n", get_value(stmt->op1, local_size));

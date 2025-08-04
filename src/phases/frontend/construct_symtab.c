@@ -81,21 +81,6 @@ void construct_symtab_stmt(statement *stmt, symtab_stack *st) {
         case STMT_VAR_DECL:
             construct_symtab_var_decl_stmt(stmt->vd_stmt, st);
             break;
-        case STMT_ASSIGN:
-            // assign_stmt_construct_symtab(stmt->as_stmt, st);
-            break;
-        case STMT_FUNC_CALL:
-            // func_call_stmt_construct_symtab(stmt->fc_stmt, st);
-            break;
-        case STMT_PRINT:
-            // print_stmt_construct_symtab(stmt->p_stmt, st);
-            break;
-        case STMT_READ:
-            // read_stmt_construct_symtab(stmt->r_stmt, st);
-            break;
-        case STMT_RETURN:
-            // ret_stmt_construct_symtab(stmt->ret_stmt, st);
-            break;
     }
 
     construct_symtab_stmt(stmt->next, st);
