@@ -134,6 +134,11 @@ void resolve_ret_stmt(return_stmt *ret_stmt, symtab_stack *st) {
     return;
 }
 
+void resolve_block_stmt(block_stmt *blk_stmt, symtab_stack *st) {
+    scope_push(blk_stmt->symbol_table, st);
+    resolve_stmt(blk_stmt->stmt_list, st);
+    scope_pop(st);
+}
 
 void resolve_stmt(statement *stmt, symtab_stack *st) {
     if(stmt == NULL)
@@ -141,6 +146,9 @@ void resolve_stmt(statement *stmt, symtab_stack *st) {
     
     switch(stmt->kind)
     {
+        case STMT_BLOCK:
+            resolve_block_stmt(stmt->blk_stmt, st);
+            break;
         case STMT_VAR_DECL:
             resolve_var_decl_stmt(stmt->vd_stmt, st);
             break;
