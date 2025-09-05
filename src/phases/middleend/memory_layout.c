@@ -18,11 +18,11 @@ void memory_layout_func_decl(func_decl *fd) {
         offset += 8;
     }
 
-    memory_layout_func_body(fd->body);
+    memory_layout_block_stmt(fd->body);
 }
 
-void memory_layout_func_body(func_body *fb) {
-    fb->local_len = memory_layout_stmt_list(fb->stmt_list);
+void memory_layout_block_stmt(block_stmt *blk_stmt) {
+    blk_stmt->local_len = memory_layout_stmt_list(blk_stmt->stmt_list);
 }
 
 int memory_layout_stmt_list(statement *stmt_list) {

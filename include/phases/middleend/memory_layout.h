@@ -9,6 +9,6 @@
 void memory_layout_program(program *p);
 void memory_layout_func_decl(func_decl *fd);
 int memory_layout_stmt_list(statement *stmt_list);
-void memory_layout_func_body(func_body *fb);
+void memory_layout_block_stmt(block_stmt *blk_stmt);
 
 #endif

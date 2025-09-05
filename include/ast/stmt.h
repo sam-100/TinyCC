@@ -61,6 +61,7 @@ typedef struct block_stmt {
     statement *stmt_list;
     symtab *symbol_table;
     int line_no;
+    int local_len, temp_cnt;
 } block_stmt;
 
 typedef struct statement {

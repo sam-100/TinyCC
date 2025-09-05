@@ -27,7 +27,7 @@ typedef struct func_decl {
     symbol *sym;
     symtab *symtab;
     struct parameter *param_list;
-    struct func_body *body;
+    struct block_stmt *body;
     tac_stmt *code;
 } func_decl;
 
@@ -45,7 +45,7 @@ decl *create_decl_from_var(var_decl *vd);
 decl *create_decl_from_func(func_decl *fd);
 decl *append_decl(decl *d, decl *nd);
 var_decl *create_var_decl(char *name, type_t type, exprn *e);
-func_decl *create_func_decl(char *name, type_t type, parameter *param_list, func_body *body);
+func_decl *create_func_decl(char *name, type_t type, parameter *param_list, block_stmt *body);
 
 int get_local_size(func_decl *fd);
 int get_temp_size(func_decl *fd);

@@ -51,7 +51,7 @@ var_decl *create_var_decl(char *name, type_t type, exprn *e) {
     return vd;
 }
 
-func_decl *create_func_decl(char *name, type_t type, parameter *param_list, func_body *body) {
+func_decl *create_func_decl(char *name, type_t type, parameter *param_list, block_stmt *body) {
     func_decl *fd = (func_decl*)malloc(sizeof(func_decl));
     fd->name = name;
     fd->type = type;

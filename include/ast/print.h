@@ -29,7 +29,7 @@ void print_stmt_block(const block_stmt *blk_stmt, char *tabs);
 void print_arg(const argument *arg, char *tabs);
 void print_param(const parameter *p);
 void print_func_call(const func_call *fc, char *tabs);
-void print_func_body(const func_body *fb);
+void print_stmt_block(const block_stmt *fb, char *tabs);
 
 /* Function to print the expression */
 void print_exprn(const exprn *e, char *tabs);

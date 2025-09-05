@@ -30,7 +30,7 @@ void typecheck_decl(decl *d, symtab_stack *st) {
 }
 
 void typecheck_func_decl(func_decl *fd, symtab_stack *st) {
-    typecheck_func_body(fd->body, st);
+    typecheck_block_stmt(fd->body, st);
 }
 
 void typecheck_var_decl(var_decl *vd, symtab_stack *st) {

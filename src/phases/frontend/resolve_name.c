@@ -44,7 +44,7 @@ void resolve_func_decl(func_decl *fd, symtab_stack *st) {
         fd->sym->next_param = scope_lookup(fd->param_list->name, st);
 
     if(fd->body)    
-        resolve_func_body(fd->body, st);
+        resolve_block_stmt(fd->body, st);
     scope_pop(st);         // exit function scope
     return;
 }

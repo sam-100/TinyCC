@@ -42,7 +42,11 @@ void print_func_decl(const func_decl *fd) {
     fprintf(f_ast, ";\n");
     if(fd->body != NULL) {
         fprintf(f_ast, "\tbody: \n");
-        print_func_body(fd->body);
+        char *tabs = (char*)malloc(100);
+        tabs[0] = '\t';
+        tabs[1] = '\0';
+        print_stmt_block(fd->body, tabs);
+        free(tabs);
     }
     fprintf(f_ast, "}\n");
 }
@@ -77,21 +81,6 @@ void print_func_call(const func_call *fc, char *tabs) {
 
     fprintf(f_ast, "\n");
     fprintf(f_ast, "%s}\n", tabs);
-}
-
-void print_func_body(const func_body *fb) {
-    if(fb == NULL)
-        return;
-    
-    char *tabs = (char*)malloc(100);
-    tabs[0] = '\t';
-    tabs[1] = '\0';
-
-    fprintf(f_ast, "\t{\n");
-    print_statement(fb->stmt_list, strcat(tabs, "\t"));
-    fprintf(f_ast, "\t}\n");
-
-    free(tabs);
 }
 
 
@@ -201,12 +190,13 @@ void print_stmt_return(const return_stmt *ret_stmt, char *tabs) {
 
 }
 
-void print_stmt_block(const block_stmt *blk_stmt, char *tabs) {
-    fprintf(f_ast, "%sBLOCK (line_no: %d)\n", tabs, blk_stmt->line_no);
+void print_stmt_block(const block_stmt *stmt, char *tabs) {
+    fprintf(f_ast, "%sBLOCK (line_no: %d)\n", tabs, stmt->line_no);
+    if(stmt->stmt_list == NULL)
+        return;
+    
     fprintf(f_ast, "%s{\n", tabs);
-    tabs = strcat(tabs, "\t");
-    print_statement(blk_stmt->stmt_list, tabs);
-    tabs[strlen(tabs)-2]='\0';
+    print_statement(stmt->stmt_list, strcat(tabs, "\t"));
     fprintf(f_ast, "%s}\n", tabs);
 }
 

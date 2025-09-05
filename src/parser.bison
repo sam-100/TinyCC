@@ -43,7 +43,6 @@ extern program *root;
 %type <e> exprn literal
 %type <param> param_list param_declaration
 %type <arg> arg_list argument
-%type <fb> func_body
 %type <as_stmt> assign_stmt
 %type <vd_stmt> var_decl_stmt
 %type <fc_stmt> func_call_stmt
@@ -76,7 +75,6 @@ extern program *root;
         struct block_stmt *b_stmt;
         struct exprn *e;
         struct func_call *fc;
-        struct func_body *fb;
         struct parameter *param;
         struct argument *arg;
         int i_val;
@@ -117,7 +115,7 @@ func_decl:
                                                                                                         $$ = create_func_decl($1, $4, $6, NULL); 
                                                                                                         $$->line_no = @1.first_line;
                                                                                                 }
-        | IDENTIFIER COLON FUNCTION type OPEN_BRACKET param_list CLOSED_BRACKET func_body       { 
+        | IDENTIFIER COLON FUNCTION type OPEN_BRACKET param_list CLOSED_BRACKET block_stmt      {
                                                                                                         $$ = create_func_decl($1, $4, $6, $8); 
                                                                                                         $$->line_no = @1.first_line;
                                                                                                 }
@@ -198,10 +196,6 @@ param_list:
         param_list COMMA param_declaration              { $$ = append_param($1, $3); }
         | param_declaration                             { $$ = $1; }
         |                                               { $$ = NULL; }
-        ;
-
-func_body: 
-        OPEN_CURLY_BRACKET stmt_list CLOSED_CURLY_BRACKET       { $$ = create_func_body($2); }
         ;
 
 
