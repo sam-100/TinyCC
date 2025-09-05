@@ -19,6 +19,7 @@ typedef enum {
     STMT_READ, 
     STMT_FUNC_CALL, 
     STMT_BLOCK, 
+    STMT_IF, 
 } stmt_t;
 
 

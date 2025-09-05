@@ -47,6 +47,7 @@ extern program *root;
 %type <vd_stmt> var_decl_stmt
 %type <fc_stmt> func_call_stmt
 %type <ret_stmt> return_stmt
+%type <if_stmt> if_stmt;
 %type <p_stmt> print_stmt
 %type <r_stmt> read_stmt
 %type <b_stmt> block_stmt
@@ -68,6 +69,7 @@ extern program *root;
         struct statement *stmt;
         struct print_stmt *p_stmt;
         struct read_stmt *r_stmt;
+        struct if_stmt *if_stmt;
         struct var_decl_stmt *vd_stmt;
         struct func_call_stmt *fc_stmt;
         struct return_stmt *ret_stmt;
@@ -220,17 +222,25 @@ statement:
         | read_stmt                             { $$ = create_stmt_from_read($1); }
         | func_call_stmt                        { $$ = create_stmt_from_func_call($1); }
         | block_stmt                            { $$ = create_stmt_from_block($1); }
+        | if_stmt                               { $$ = create_stmt_from_if($1); }
         ;
 
+if_stmt:
+        IF OPEN_BRACKET exprn CLOSED_BRACKET block_stmt         { 
+                                                                        $$ = create_if_stmt($3, $5); 
+                                                                        $$->line_no = @1.first_line;
+                                                                }
+
+
 var_decl_stmt:
-        IDENTIFIER COLON type SEMICOLON                 { 
-                                                                $$ = create_var_decl_stmt($1, $3, NULL); 
-                                                                $$->line_no = @1.first_line;
-                                                        }
-        | IDENTIFIER COLON type ASSIGN exprn SEMICOLON  { 
-                                                                $$ = create_var_decl_stmt($1, $3, $5); 
-                                                                $$->line_no = @1.first_line;
-                                                        }
+        IDENTIFIER COLON type SEMICOLON                         { 
+                                                                        $$ = create_var_decl_stmt($1, $3, NULL); 
+                                                                        $$->line_no = @1.first_line;
+                                                                }
+        | IDENTIFIER COLON type ASSIGN exprn SEMICOLON          { 
+                                                                        $$ = create_var_decl_stmt($1, $3, $5); 
+                                                                        $$->line_no = @1.first_line;
+                                                                }
         ;
 
 

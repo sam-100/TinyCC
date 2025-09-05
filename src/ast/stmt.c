@@ -66,6 +66,15 @@ statement *create_stmt_from_block(block_stmt *blk_stmt) {
     return stmt;
 }
 
+statement *create_stmt_from_if(if_stmt *if_stmt) {
+    statement *stmt = (statement*)malloc(sizeof(statement));
+    stmt->kind = STMT_IF;
+    stmt->line_no = if_stmt->line_no;
+    stmt->if_stmt = if_stmt;
+    stmt->next = NULL;
+    return stmt;
+}
+
 statement *append_stmt(statement *stmt, statement *next_stmt) {
     statement *ptr = stmt;
     while(ptr->next)
@@ -141,6 +150,12 @@ block_stmt *create_block_stmt(statement *stmt_list) {
     return stmt;
 }
 
+if_stmt *create_if_stmt(exprn *condition, block_stmt *b_stmt) {
+    if_stmt *stmt = malloc(sizeof(if_stmt));
+    stmt->condition = condition;
+    stmt->block = b_stmt;
+    return stmt;
+}
 
 void construct_symtab_var_decl_stmt(var_decl_stmt *vd_stmt, symtab_stack *st) {
     if(scope_lookup_current(vd_stmt->name, st) != NULL) {

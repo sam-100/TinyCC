@@ -20,6 +20,7 @@ void typecheck_assign_stmt(assign_stmt *as_stmt, symtab_stack *st);
 void typecheck_func_call_stmt(func_call_stmt *fc_stmt, symtab_stack *st);
 void typecheck_print_stmt(print_stmt *p_stmt, symtab_stack *st);
 void typecheck_read_stmt(read_stmt *r_stmt, symtab_stack *st);
+void typecheck_if_stmt(if_stmt *stmt, symtab_stack *st);
 void typecheck_ret_stmt(return_stmt *ret_stmt, symtab_stack *st);
 
 void typecheck_func_call(func_call *fc, symtab_stack *st);

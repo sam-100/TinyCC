@@ -112,6 +112,9 @@ void print_statement(const statement *stmt, char *tabs) {
         case STMT_BLOCK:
             print_stmt_block(stmt->blk_stmt, tabs);
             break;
+        case STMT_IF:
+            print_stmt_if(stmt->if_stmt, tabs);
+            break;
         default:
             fprintf(f_ast, "%sInvalid statement with code %d\n", tabs, (int)stmt->kind);
             break;
@@ -197,6 +200,18 @@ void print_stmt_block(const block_stmt *stmt, char *tabs) {
     
     fprintf(f_ast, "%s{\n", tabs);
     print_statement(stmt->stmt_list, strcat(tabs, "\t"));
+    tabs[strlen(tabs)-2]='\0';
+    fprintf(f_ast, "%s}\n", tabs);
+}
+
+void print_stmt_if(const if_stmt *stmt, char *tabs) {
+    fprintf(f_ast, "%sif_stmt {\n", tabs);
+    fprintf(f_ast, "%scondition:\n", tabs);
+    print_exprn(stmt->condition, strcat(tabs, "\t"));
+    tabs[strlen(tabs)-2]='\0';
+    fprintf(f_ast, "%sBlock:\n", tabs);
+    print_stmt_block(stmt->block, strcat(tabs, "\t"));
+    tabs[strlen(tabs)-2]='\0';
     fprintf(f_ast, "%s}\n", tabs);
 }
 

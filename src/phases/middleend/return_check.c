@@ -29,8 +29,8 @@ bool return_check_stmt(statement *stmt) {
         return false;
     if(stmt->kind == STMT_RETURN)
         return true;
-    if(stmt->kind == STMT_BLOCK) {
-        return return_check_stmt(stmt->blk_stmt->stmt_list);
+    if(stmt->kind == STMT_BLOCK && return_check_stmt(stmt->blk_stmt->stmt_list)) {
+        return true;
     }
     return return_check_stmt(stmt->next);
 }

@@ -72,6 +72,8 @@ symbol *construct_symtab_parameter(parameter *par, symtab_stack *st) {
     return sym;
 }
 
+
+
 void construct_symtab_stmt(statement *stmt, symtab_stack *st) {
     if(stmt == NULL)
         return;
@@ -84,6 +86,9 @@ void construct_symtab_stmt(statement *stmt, symtab_stack *st) {
         case STMT_BLOCK:
             construct_symtab_block_stmt(stmt->blk_stmt, st);
             break;
+        case STMT_IF:
+            construct_symtab_if_stmt(stmt->if_stmt, st);
+            break;
     }
 
     construct_symtab_stmt(stmt->next, st);
@@ -94,4 +99,8 @@ void construct_symtab_block_stmt(block_stmt *stmt, symtab_stack *st) {
     construct_symtab_stmt(stmt->stmt_list, st);
     stmt->symbol_table = scope_get_current(st);
     scope_pop(st);
+}
+
+void construct_symtab_if_stmt(if_stmt *stmt, symtab_stack *st) {
+    construct_symtab_block_stmt(stmt->block, st);
 }

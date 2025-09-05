@@ -69,11 +69,6 @@ void resolve_func_call(func_call *fc, symtab_stack *st) {
     resolve_arg(fc->arg_list, st);
 }
 
-void resolve_func_body(func_body *fb, symtab_stack *st) {
-    resolve_stmt(fb->stmt_list, st);
-    fb->symtab = scope_get_current(st);
-}
-
 
 
 void resolve_var_decl_stmt(var_decl_stmt *vd_stmt, symtab_stack *st) {
@@ -139,6 +134,10 @@ void resolve_block_stmt(block_stmt *blk_stmt, symtab_stack *st) {
     scope_pop(st);
 }
 
+void resolve_if_stmt(if_stmt *if_stmt, symtab_stack *st) {
+    resolve_block_stmt(if_stmt->block, st);
+}
+
 void resolve_stmt(statement *stmt, symtab_stack *st) {
     if(stmt == NULL)
         return;
@@ -162,6 +161,9 @@ void resolve_stmt(statement *stmt, symtab_stack *st) {
             break;
         case STMT_READ:
             resolve_read_stmt(stmt->r_stmt, st);
+            break;
+        case STMT_IF:
+            resolve_if_stmt(stmt->if_stmt, st);
             break;
         case STMT_RETURN:
             resolve_ret_stmt(stmt->ret_stmt, st);

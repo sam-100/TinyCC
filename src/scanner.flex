@@ -122,7 +122,7 @@ else                                        {
 
 "<"                                         {
                                                 fprintf(  f_tokens, "Token: GT, lexeme: \"%s\", line_no: %d\n", yytext, line_no); 
-                                                return GT;
+                                                return LT;
                                             }
 "<="                                        { 
                                                 fprintf(f_tokens, "Token: LE, lexeme: \"%s\", line_no: %d\n", yytext, line_no); 
@@ -130,7 +130,7 @@ else                                        {
                                             }
 ">"                                         { 
                                                 fprintf(f_tokens, "Token: LT, lexeme: \"%s\", line_no: %d\n", yytext, line_no); 
-                                                return LT; 
+                                                return GT; 
                                             }
 ">="                                        { 
                                                 fprintf(f_tokens, "Token: GE, lexeme: \"%s\", line_no: %d\n", yytext, line_no); 

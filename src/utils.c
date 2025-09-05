@@ -138,6 +138,16 @@ char *get_op_name(operator_t op) {
             return "MULTIPLY";
         case OP_DIV:
             return "DIVIDE";
+        case OP_LT:
+            return "LESS_THAN";
+        case OP_LE:
+            return "LESS_THAN_OR_EQUAL_TO";
+        case EQ:
+            return "EQUAL_TO";
+        case OP_GT:
+            return "GREATER_THAN";
+        case OP_GE:
+            return "GREATER_THAN_OR_EQUAL_TO";
         default:
             return "UNKNOWN-OPERATOR";
     }

@@ -74,12 +74,22 @@ void typecheck_stmt(statement *stmt, symtab_stack *st) {
         case STMT_READ:
             typecheck_read_stmt(stmt->r_stmt, st);
             break;
+        case STMT_IF:
+            typecheck_if_stmt(stmt->if_stmt, st);
+            break;
         case STMT_RETURN:
             typecheck_ret_stmt(stmt->ret_stmt, st);
             break;
     }
 
     typecheck_stmt(stmt->next, st);
+}
+
+void typecheck_if_stmt(if_stmt *stmt, symtab_stack *st) {
+    typecheck_exprn(stmt->condition, st);
+    if(stmt->condition->type != TYPE_BOOLEAN)
+        fprintf(f_error, "Error: exprn of type '%s' as condition in if statement at line no. %d\n", get_type_name(stmt->condition->type), stmt->line_no);
+    typecheck_block_stmt(stmt->block, st);
 }
 
 void typecheck_var_decl_stmt(var_decl_stmt *vd_stmt, symtab_stack *st) {
@@ -210,7 +220,7 @@ void typecheck_func_body(func_body *fb, symtab_stack *st) {
 }
 
 void typecheck_exprn(exprn *e, symtab_stack *st) {
-    if(e->kind == ARITHMETIC_EXPRN) {
+    if(e->kind == ARITHMETIC_EXPRN || e->kind == BOOLEAN_EXPRN || e->kind == COMPARISON_EXPRN) {
         typecheck_exprn(e->left, st);
         typecheck_exprn(e->right, st);
 
@@ -228,7 +238,7 @@ void typecheck_exprn(exprn *e, symtab_stack *st) {
             fprintf(f_error, "Error (line_no %d): Operanand operator type mismatch. [ lhs %s, rhs %s]\n", e->line_no, get_type_name(e->left->type), get_type_name(e->right->type));
         }
 
-        e->type = type;
+        e->type = (e->kind == COMPARISON_EXPRN) ? TYPE_BOOLEAN : type;
         return;
     }
 

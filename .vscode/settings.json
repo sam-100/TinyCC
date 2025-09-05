@@ -18,6 +18,7 @@
         "arguments.h": "c",
         "tac_stmt.h": "c",
         "tac_operand.h": "c",
-        "generate_tac.h": "c"
+        "generate_tac.h": "c",
+        "return_check.h": "c"
     }
 }
