@@ -63,8 +63,8 @@ symtab *scope_get_current(symtab_stack *st) {
 
 func_decl *scope_get_curr_func(symtab_stack *st) {
     for(int i=st->top; i >= 0; i--) {
-        if(st->arr[st->top]->fd != NULL)
-            return st->arr[st->top]->fd;
+        if(st->arr[i]->fd != NULL)
+            return st->arr[i]->fd;
     }
     return NULL;
 }

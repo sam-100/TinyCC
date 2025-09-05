@@ -45,7 +45,7 @@ void process_arguments(int argc, char **argv) {
         input_name = strcpy(input_name, argv[i]);
         stdin = fopen(argv[i], "r");
         if(!stdin) {
-            error("Unable to open input file", -1);
+            error("Error: Unable to open input file", -1);
         }
         i++;
         

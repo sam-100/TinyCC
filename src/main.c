@@ -55,8 +55,10 @@ int main(int argc, char **argv) {
     
     // return checking
     if(!return_check_program(root))
-    error("Error: return-check error.", 1);
+        error("Error: return-check error.", 1);
+    printf("return check done.\n");
 
+    // print the ast now
     print_program(root);
     fflush(f_ast);
     
