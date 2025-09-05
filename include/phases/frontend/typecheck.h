@@ -14,6 +14,7 @@ void typecheck_var_decl(var_decl *vd, symtab_stack *st);
 void typecheck_func_decl(func_decl *fd, symtab_stack *st);
 
 void typecheck_stmt(statement *stmt, symtab_stack *st);
+void typecheck_block_stmt(block_stmt *blk_stmt, symtab_stack *st);
 void typecheck_var_decl_stmt(var_decl_stmt *vd_stmt, symtab_stack *st);
 void typecheck_assign_stmt(assign_stmt *as_stmt, symtab_stack *st);
 void typecheck_func_call_stmt(func_call_stmt *fc_stmt, symtab_stack *st);

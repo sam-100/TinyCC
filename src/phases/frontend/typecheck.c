@@ -44,12 +44,21 @@ void typecheck_var_decl(var_decl *vd, symtab_stack *st) {
     }
 }
 
+void typecheck_block_stmt(block_stmt *blk_stmt, symtab_stack *st) {
+    scope_push(blk_stmt->symbol_table, st);
+    typecheck_stmt(blk_stmt->stmt_list, st);
+    scope_pop(st);
+}
+
 void typecheck_stmt(statement *stmt, symtab_stack *st) {
     if(stmt == NULL)
         return;
 
     switch(stmt->kind)
     {
+        case STMT_BLOCK:
+            typecheck_block_stmt(stmt->blk_stmt, st);
+            break;
         case STMT_VAR_DECL:
             typecheck_var_decl_stmt(stmt->vd_stmt, st);
             break;
@@ -91,7 +100,7 @@ void typecheck_assign_stmt(assign_stmt *as_stmt, symtab_stack *st) {
         case ASSIGN_EXPRN:
             typecheck_exprn(as_stmt->e, st);
             if(type != as_stmt->e->type) {
-                fprintf(f_error, "Error (line_no %d): Varialbe of type %s assigned with expression of type %s.\n", as_stmt->line_no, get_type_name(as_stmt->type), get_type_name(as_stmt->e->type));
+                fprintf(f_error, "Error (line_no %d): Varialbe of type %s assigned with expression of type %s.\n", as_stmt->line_no, get_type_name(as_stmt->sym->type), get_type_name(as_stmt->e->type));
                 exit(2);
             }
             break;

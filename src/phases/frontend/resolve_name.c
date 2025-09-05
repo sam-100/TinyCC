@@ -1,6 +1,6 @@
 #include "phases/frontend/resolve_name.h"
 #include <stdlib.h>
-
+#include "utils.h"
 
 void resolve_program(program *p) {
     symtab_stack *st = create_symtab_stack();
@@ -116,7 +116,6 @@ void resolve_func_call_stmt(func_call_stmt *fc_stmt, symtab_stack *st) {
 void resolve_print_stmt(print_stmt *p_stmt, symtab_stack *st) {
     resolve_exprn(p_stmt->arg, st);
 }
-
 
 void resolve_read_stmt(read_stmt *r_stmt, symtab_stack *st) {
     if(scope_lookup(r_stmt->arg, st) == false) {

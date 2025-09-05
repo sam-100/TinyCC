@@ -1,5 +1,6 @@
 #include "symbol_table/symtab_stack.h"
 #include <stdlib.h>
+#include "symbol_table/print.h"
 
 
 symtab_stack *create_symtab_stack() {
