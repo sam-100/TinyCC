@@ -16,6 +16,7 @@ extern program *root;
 // Here tokens -->
 %token INTEGER CHARACTER BOOLEAN VOID FUNCTION RETURN       
 %token PRINT READ                          
+%token IF ELSE
 %token IDENTIFIER INTEGER_LITERAL BOOLEAN_LITERAL CHAR_LITERAL
 %token COLON SEMICOLON SINGLE_QUOTE DOUBLE_QUOTE COMMA DOT          
 %token AND OR NOT                                               // boolean operators
@@ -49,6 +50,7 @@ extern program *root;
 %type <ret_stmt> return_stmt
 %type <p_stmt> print_stmt
 %type <r_stmt> read_stmt
+%type <b_stmt> block_stmt
 
 %type <s_val> IDENTIFIER
 %type <i_val> INTEGER VOID BOOLEAN CHARACTER
@@ -71,6 +73,7 @@ extern program *root;
         struct func_call_stmt *fc_stmt;
         struct return_stmt *ret_stmt;
         struct assign_stmt *as_stmt;
+        struct block_stmt *b_stmt;
         struct exprn *e;
         struct func_call *fc;
         struct func_body *fb;
@@ -222,6 +225,7 @@ statement:
         | print_stmt                            { $$ = create_stmt_from_print($1); }
         | read_stmt                             { $$ = create_stmt_from_read($1); }
         | func_call_stmt                        { $$ = create_stmt_from_func_call($1); }
+        | block_stmt                            { $$ = create_stmt_from_block($1); }
         ;
 
 var_decl_stmt:
@@ -292,6 +296,12 @@ return_stmt:
                                                         $$->line_no = @1.first_line;
                                                 }
         ;
+
+block_stmt:
+        OPEN_CURLY_BRACKET stmt_list CLOSED_CURLY_BRACKET       {
+                                                                        $$ = create_block_stmt($2);
+                                                                        $$->line_no = @1.first_line;
+                                                                }
 
 func_call: 
         IDENTIFIER OPEN_BRACKET arg_list CLOSED_BRACKET         { 

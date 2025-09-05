@@ -16,6 +16,7 @@ typedef struct var_decl_stmt var_decl_stmt;
 typedef struct func_call_stmt func_call_stmt;
 typedef struct assign_stmt assign_stmt;
 typedef struct return_stmt return_stmt;
+typedef struct block_stmt block_stmt;
 
 typedef struct exprn exprn;
 

@@ -56,6 +56,16 @@ statement *create_stmt_from_func_call(func_call_stmt *fs) {
     stmt->next = NULL;
     return stmt;
 }
+
+statement *create_stmt_from_block(block_stmt *blk_stmt) {
+    statement *stmt = (statement*)malloc(sizeof(statement));
+    stmt->kind = STMT_BLOCK;
+    stmt->blk_stmt = blk_stmt;
+    stmt->line_no = blk_stmt->line_no;
+    stmt->next = NULL;
+    return stmt;
+}
+
 statement *append_stmt(statement *stmt, statement *next_stmt) {
     statement *ptr = stmt;
     while(ptr->next)
@@ -122,6 +132,12 @@ func_call_stmt *create_func_call_stmt(char *name, argument *arg_list) {
     func_call_stmt *stmt = (func_call_stmt*)malloc(sizeof(func_call_stmt));
     stmt->name = name;
     stmt->args = arg_list;
+    return stmt;
+}
+
+block_stmt *create_block_stmt(statement *stmt_list) {
+    block_stmt *stmt = (block_stmt*)malloc(sizeof(block_stmt));
+    stmt->stmt_list = stmt_list;
     return stmt;
 }
 

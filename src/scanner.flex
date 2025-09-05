@@ -88,7 +88,14 @@ return                                      {
                                                 fprintf(f_tokens, "Token: RETURN, lexeme: \"%s\", line_no: %d\n", yytext, line_no); 
                                                 return RETURN; 
                                             }
-
+if                                          {
+                                                fprintf(f_tokens, "Token: IF, lexeme: \"%s\", line_no: %d\n", yytext, line_no);
+                                                return IF;
+                                            }
+else                                        {
+                                                fprintf(f_tokens, "Token: ELSE, lexeme: \"%s\", line_no: %d\n", yytext, line_no);
+                                                return ELSE;
+                                            }
 
 "+"                                         {
                                                 fprintf(f_tokens, "Token: PLUS, lexeme: \"%s\", line_no: %d\n", yytext, line_no); 

@@ -37,15 +37,17 @@ int main(int argc, char **argv) {
     // scanning parsing and ast creation
     yyparse();
     printf("Program parsed successfully!\n");
+    fflush(f_tokens);
     
     // Symbol table construction
     construct_symtab_program(root);
     printf("Symbol table constructed.\n");
+    print_symtab_program(root);
+    fflush(f_symtab);
     
     // name resolution
     resolve_program(root);
     printf("Symbol table resolved.\n");
-    
     
     // type checking
     typecheck_program(root);
@@ -54,7 +56,9 @@ int main(int argc, char **argv) {
     // return checking
     if(!return_check_program(root))
     error("Error: return-check error.", 1);
+
     print_program(root);
+    fflush(f_ast);
     
     // memory layout stage
     memory_layout_program(root);

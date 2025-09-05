@@ -96,7 +96,7 @@ void print_func_body(const func_body *fb) {
 
 
 /* functions to print statements of various types */
-void print_statement(const const statement *stmt, char *tabs) {
+void print_statement(const statement *stmt, char *tabs) {
     if(stmt == NULL)
         return;
     
@@ -120,6 +120,9 @@ void print_statement(const const statement *stmt, char *tabs) {
         case STMT_RETURN:
             print_stmt_return(stmt->ret_stmt, tabs);
             break;
+        case STMT_BLOCK:
+            print_stmt_block(stmt->blk_stmt, tabs);
+            break;
         default:
             fprintf(f_ast, "%sInvalid statement with code %d\n", tabs, (int)stmt->kind);
             break;
@@ -127,7 +130,7 @@ void print_statement(const const statement *stmt, char *tabs) {
     print_statement(stmt->next, tabs);
 }
 
-void print_stmt_var_decl(const const var_decl_stmt *vd_stmt, char *tabs) {
+void print_stmt_var_decl(const var_decl_stmt *vd_stmt, char *tabs) {
     fprintf(f_ast, "%svar_decl_stmt {\n", tabs);
     fprintf(f_ast, "%s\tname: %s;\n", tabs, vd_stmt->name);
     fprintf(f_ast, "%s\ttype: %s;\n", tabs, get_type_name(vd_stmt->type));
@@ -136,7 +139,7 @@ void print_stmt_var_decl(const const var_decl_stmt *vd_stmt, char *tabs) {
     fprintf(f_ast, "%s}\n", tabs);
 }
 
-void print_stmt_assignment(const const assign_stmt *asstmt, char *tabs) {
+void print_stmt_assignment(const assign_stmt *asstmt, char *tabs) {
     fprintf(f_ast, "%sassign_stmt {\n", tabs);
     fprintf(f_ast, "%s\tline_no: %d;\n", tabs, asstmt->line_no);
     fprintf(f_ast, "%s\tlhs: %s;\n", tabs, asstmt->name);
@@ -158,7 +161,7 @@ void print_stmt_assignment(const const assign_stmt *asstmt, char *tabs) {
     fprintf(f_ast, "%s}\n", tabs);
 }
 
-void print_stmt_func_call(const const func_call_stmt *fc_stmt, char *tabs) {
+void print_stmt_func_call(const func_call_stmt *fc_stmt, char *tabs) {
     fprintf(f_ast, "%sfunc_call_stmt {\n", tabs);
     strcat(tabs, "\t");
     fprintf(f_ast, "%sname: %s;\n", tabs, fc_stmt->name);
@@ -171,7 +174,7 @@ void print_stmt_func_call(const const func_call_stmt *fc_stmt, char *tabs) {
     fprintf(f_ast, "%s}\n", tabs);
 }
 
-void print_stmt_print(const const print_stmt *p_stmt, char *tabs) {
+void print_stmt_print(const print_stmt *p_stmt, char *tabs) {
     fprintf(f_ast, "%sprint_stmt {\n", tabs);
     fprintf(f_ast, "%s\tline_no: %d;\n", tabs, p_stmt->line_no);
     fprintf(f_ast, "%s\targuments: \n", tabs);
@@ -180,14 +183,14 @@ void print_stmt_print(const const print_stmt *p_stmt, char *tabs) {
     fprintf(f_ast, "%s}\n", tabs);
 }
 
-void print_stmt_read(const const read_stmt *r_stmt, char *tabs) {
+void print_stmt_read(const read_stmt *r_stmt, char *tabs) {
     fprintf(f_ast, "%sread_stmt {\n", tabs);
     fprintf(f_ast, "%s\tline_no: %d;\n", tabs, r_stmt->line_no);
     fprintf(f_ast, "%s\targument: %s\n", tabs, r_stmt->arg);
     fprintf(f_ast, "%s}\n", tabs);
 }
 
-void print_stmt_return(const const return_stmt *ret_stmt, char *tabs) {
+void print_stmt_return(const return_stmt *ret_stmt, char *tabs) {
     fprintf(f_ast, "%sreturn_stmt {\n", tabs);
     // fprintf(f_ast, "type: %s\n", get_type_name(ret_stmt->type));
     fprintf(f_ast, "%s\tline_no: %d;\n", tabs, ret_stmt->line_no);
@@ -196,6 +199,15 @@ void print_stmt_return(const const return_stmt *ret_stmt, char *tabs) {
     tabs[strlen(tabs)-2]='\0';
     fprintf(f_ast, "%s}\n", tabs);
 
+}
+
+void print_stmt_block(const block_stmt *blk_stmt, char *tabs) {
+    fprintf(f_ast, "%sBLOCK (line_no: %d)\n", tabs, blk_stmt->line_no);
+    fprintf(f_ast, "%s{\n", tabs);
+    tabs = strcat(tabs, "\t");
+    print_statement(blk_stmt->stmt_list, tabs);
+    tabs[strlen(tabs)-2]='\0';
+    fprintf(f_ast, "%s}\n", tabs);
 }
 
 /* Function to print the expression */

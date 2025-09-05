@@ -57,6 +57,12 @@ typedef struct assign_stmt {
     };
 } assign_stmt;
 
+typedef struct block_stmt {
+    statement *stmt_list;
+    symtab *symbol_table;
+    int line_no;
+} block_stmt;
+
 typedef struct statement {
     stmt_t kind;
     int line_no;
@@ -67,6 +73,7 @@ typedef struct statement {
         func_call_stmt *fc_stmt;
         assign_stmt *as_stmt;
         return_stmt *ret_stmt;
+        block_stmt *blk_stmt;
     };
     struct statement *next;
 } statement;
@@ -78,6 +85,7 @@ statement *create_stmt_from_return(return_stmt *rt);
 statement *create_stmt_from_print(print_stmt *ps);
 statement *create_stmt_from_read(read_stmt *rs);
 statement *create_stmt_from_func_call(func_call_stmt *fs);
+statement *create_stmt_from_block(block_stmt *blk_stmt);
 statement *append_stmt(statement *stmt, statement *next_stmt);
 
 /* functions to create statements of various type */
@@ -88,6 +96,7 @@ return_stmt *create_ret_stmt(exprn *e);
 print_stmt *create_print_stmt(exprn *e);
 read_stmt *create_read_stmt(char *name);
 func_call_stmt *create_func_call_stmt(char *name, argument *arg_list);
+block_stmt *create_block_stmt(statement *stmt_list);
 
 
 // void assign_stmt_construct_symtab(assign_stmt *as_stmt, symtab_stack *st);

@@ -18,6 +18,7 @@ void construct_symtab_func_body(func_body *body, symtab_stack *st);
 
 void construct_symtab_stmt(statement *stmt, symtab_stack *st);
 void construct_symtab_var_decl_stmt(var_decl_stmt *vd_stmt, symtab_stack *st);
+void construct_symtab_block_stmt(block_stmt *stmt, symtab_stack *st);
 
 
 #endif

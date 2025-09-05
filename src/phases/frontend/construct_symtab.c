@@ -81,8 +81,17 @@ void construct_symtab_stmt(statement *stmt, symtab_stack *st) {
         case STMT_VAR_DECL:
             construct_symtab_var_decl_stmt(stmt->vd_stmt, st);
             break;
+        case STMT_BLOCK:
+            construct_symtab_block_stmt(stmt->blk_stmt, st);
+            break;
     }
 
     construct_symtab_stmt(stmt->next, st);
 }
 
+void construct_symtab_block_stmt(block_stmt *stmt, symtab_stack *st) {
+    scope_enter(st);
+    construct_symtab_stmt(stmt->stmt_list, st);
+    stmt->symbol_table = scope_get_current(st);
+    scope_pop(st);
+}

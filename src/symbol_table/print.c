@@ -25,6 +25,25 @@ void print_symtab_func_decl(const func_decl *fd) {
     fprintf(f_symtab, "Function %s() symtab: \n", fd->name);
     fprintf(f_symtab, "{local_len: %d, temp_len: %d}\n", fd->body->local_len, fd->body->temp_cnt*4);
     print_symtab(fd->symtab);
+    for(statement *stmt = fd->body->stmt_list; stmt != NULL; stmt=stmt->next) {
+        if(stmt->kind == STMT_BLOCK)
+            print_symtab_block_stmt(stmt->blk_stmt, fd);
+    }
+}
+
+void print_symtab_block_stmt(const block_stmt *blk_stmt, const func_decl *fd) {
+    static int level = 0;
+    level++;
+    fprintf(f_symtab, "----- Local scope (level %d) enter [function: %s] --------\n", level, fd->name);
+    print_symtab(blk_stmt->symbol_table);
+    fprintf(f_symtab, "----- Local scope (level %d) exit [function: %s] --------\n", level, fd->name);
+    fprintf(f_symtab, "\n\n");
+    
+    for(statement *stmt = blk_stmt->stmt_list; stmt != NULL; stmt = stmt->next) {
+        if(stmt->kind == STMT_BLOCK)
+            print_symtab_block_stmt(stmt->blk_stmt, fd);
+    }
+    level--;
 }
 
 

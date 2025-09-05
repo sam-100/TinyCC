@@ -23,6 +23,7 @@ void print_stmt_func_call(const func_call_stmt *fc_stmt, char *tab);
 void print_stmt_print(const print_stmt *p, char *tab);
 void print_stmt_read(const read_stmt *r_stmt, char *tabs);
 void print_stmt_return(const return_stmt *ret_stmt, char *tabs);
+void print_stmt_block(const block_stmt *blk_stmt, char *tabs);
 
 /* Functions to print function body, function call, arguments, and parameters */
 void print_arg(const argument *arg, char *tabs);
