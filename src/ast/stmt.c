@@ -75,6 +75,25 @@ statement *create_stmt_from_if(if_stmt *if_stmt) {
     return stmt;
 }
 
+statement *create_stmt_from_for(for_stmt *for_stmt) {
+    statement *stmt = (statement*)malloc(sizeof(statement));
+    stmt->kind = STMT_FOR;
+    stmt->line_no = for_stmt->line_no;
+    stmt->for_stmt = for_stmt;
+    stmt->next = NULL;
+    return stmt;
+}
+
+statement *create_stmt_from_while(while_stmt *w_stmt) {
+    statement *stmt = (statement*)malloc(sizeof(statement));
+    stmt->kind = STMT_WHILE;
+    stmt->line_no = w_stmt->line_no;
+    stmt->while_stmt = w_stmt;
+    stmt->next = NULL;
+    return stmt;
+}
+
+
 statement *append_stmt(statement *stmt, statement *next_stmt) {
     statement *ptr = stmt;
     while(ptr->next)
@@ -150,12 +169,49 @@ block_stmt *create_block_stmt(statement *stmt_list) {
     return stmt;
 }
 
-if_stmt *create_if_stmt(exprn *condition, block_stmt *b_stmt) {
+if_stmt *create_if_stmt(exprn *condition, block_stmt *b_stmt, else_part *next) {
     if_stmt *stmt = malloc(sizeof(if_stmt));
     stmt->condition = condition;
     stmt->block = b_stmt;
+    stmt->next = next;
     return stmt;
 }
+
+else_part *create_else_if_part(exprn *condition, block_stmt *block, else_part *next) {
+    else_part *stmt = malloc(sizeof(else_part));
+    stmt->kind = ELSE_IF_STMT;
+    stmt->condition = condition;
+    stmt->block = block;
+    stmt->next = next;
+    return stmt;
+}
+
+else_part *create_else_part(block_stmt *block) {
+    else_part *stmt = malloc(sizeof(else_part));
+    stmt->kind = ELSE_STMT;
+    stmt->block = block;
+    stmt->condition = NULL;
+    stmt->next = NULL;
+    return stmt;
+}
+
+for_stmt *create_for_stmt(exprn *e1, exprn *e2, exprn *e3, block_stmt *block) {
+    for_stmt *stmt = malloc(sizeof(for_stmt));
+    stmt->init = e1;
+    stmt->cond = e2;
+    stmt->update = e3;
+    stmt->block = block;
+    return NULL;
+}
+
+while_stmt *create_while_stmt(exprn *condition, block_stmt *block) {
+    while_stmt *stmt = malloc(sizeof(while_stmt));
+    stmt->condition = condition;
+    stmt->block = block;
+    return stmt;
+}
+
+while_stmt *create_while_stmt(exprn *condition, block_stmt *block);
 
 void construct_symtab_var_decl_stmt(var_decl_stmt *vd_stmt, symtab_stack *st) {
     if(scope_lookup_current(vd_stmt->name, st) != NULL) {

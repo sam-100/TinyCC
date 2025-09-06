@@ -67,9 +67,35 @@ typedef struct block_stmt {
 typedef struct if_stmt {
     exprn *condition;
     block_stmt *block;
+    else_part *next;
     int line_no;
 } if_stmt;
 
+typedef struct else_part {
+    else_t kind;
+    exprn *condition;
+    block_stmt *block;
+    else_part *next;
+    int line_no;
+} else_part;
+
+typedef struct if_else_stmt {
+    exprn *condition;
+    block_stmt *if_block, *else_block;
+    int line_no;
+} if_else_stmt;
+
+typedef struct for_stmt {
+    exprn *init, *cond, *update;
+    block_stmt *block;
+    int line_no;
+} for_stmt;
+
+typedef struct while_stmt {
+    exprn *condition;
+    block_stmt *block;
+    int line_no;
+} while_stmt;
 
 typedef struct statement {
     stmt_t kind;
@@ -83,6 +109,8 @@ typedef struct statement {
         return_stmt *ret_stmt;
         block_stmt *blk_stmt;
         if_stmt *if_stmt;
+        for_stmt *for_stmt;
+        while_stmt *while_stmt;
     };
     struct statement *next;
 } statement;
@@ -96,6 +124,8 @@ statement *create_stmt_from_read(read_stmt *rs);
 statement *create_stmt_from_func_call(func_call_stmt *fs);
 statement *create_stmt_from_block(block_stmt *blk_stmt);
 statement *create_stmt_from_if(if_stmt *if_stmt);
+statement *create_stmt_from_for(for_stmt *for_stmt);
+statement *create_stmt_from_while(while_stmt *while_stmt);
 statement *append_stmt(statement *stmt, statement *next_stmt);
 
 /* functions to create statements of various type */
@@ -107,7 +137,11 @@ print_stmt *create_print_stmt(exprn *e);
 read_stmt *create_read_stmt(char *name);
 func_call_stmt *create_func_call_stmt(char *name, argument *arg_list);
 block_stmt *create_block_stmt(statement *stmt_list);
-if_stmt *create_if_stmt(exprn *condition, block_stmt *blk_stmt);
+if_stmt *create_if_stmt(exprn *condition, block_stmt *blk_stmt, else_part *next);
+else_part *create_else_if_part(exprn *condition, block_stmt *block, else_part *next);
+else_part *create_else_part(block_stmt *block);
+for_stmt *create_for_stmt(exprn *e1, exprn *e2, exprn *e3, block_stmt *block);
+while_stmt *create_while_stmt(exprn *condition, block_stmt *block);
 
 // void assign_stmt_construct_symtab(assign_stmt *as_stmt, symtab_stack *st);
 // void func_call_stmt_construct_symtab(func_call_stmt *fc_stmt, symtab_stack *st);

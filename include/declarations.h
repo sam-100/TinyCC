@@ -18,6 +18,9 @@ typedef struct assign_stmt assign_stmt;
 typedef struct return_stmt return_stmt;
 typedef struct block_stmt block_stmt;
 typedef struct if_stmt if_stmt;
+typedef struct else_part else_part;
+typedef struct for_stmt for_stmt;
+typedef struct while_stmt while_stmt;
 
 typedef struct exprn exprn;
 

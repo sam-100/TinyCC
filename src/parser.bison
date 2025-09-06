@@ -16,7 +16,7 @@ extern program *root;
 // Here tokens -->
 %token INTEGER CHARACTER BOOLEAN VOID FUNCTION RETURN       
 %token PRINT READ                          
-%token IF ELSE
+%token IF ELSE FOR WHILE
 %token IDENTIFIER INTEGER_LITERAL BOOLEAN_LITERAL CHAR_LITERAL
 %token COLON SEMICOLON SINGLE_QUOTE DOUBLE_QUOTE COMMA DOT          
 %token AND OR NOT                                               // boolean operators
@@ -40,7 +40,7 @@ extern program *root;
 %type <fc> func_call
 %type <i_val> type
 %type <stmt> stmt_list statement
-%type <e> exprn literal
+%type <e> exprn literal opt_exprn
 %type <param> param_list param_declaration
 %type <arg> arg_list argument
 %type <as_stmt> assign_stmt
@@ -48,6 +48,9 @@ extern program *root;
 %type <fc_stmt> func_call_stmt
 %type <ret_stmt> return_stmt
 %type <if_stmt> if_stmt;
+%type <else_part> else_part;
+%type <for_stmt> for_stmt;
+%type <while_stmt> while_stmt;
 %type <p_stmt> print_stmt
 %type <r_stmt> read_stmt
 %type <b_stmt> block_stmt
@@ -70,6 +73,9 @@ extern program *root;
         struct print_stmt *p_stmt;
         struct read_stmt *r_stmt;
         struct if_stmt *if_stmt;
+        struct else_part *else_part;
+        struct for_stmt *for_stmt;
+        struct while_stmt *while_stmt;
         struct var_decl_stmt *vd_stmt;
         struct func_call_stmt *fc_stmt;
         struct return_stmt *ret_stmt;
@@ -223,13 +229,55 @@ statement:
         | func_call_stmt                        { $$ = create_stmt_from_func_call($1); }
         | block_stmt                            { $$ = create_stmt_from_block($1); }
         | if_stmt                               { $$ = create_stmt_from_if($1); }
+        | for_stmt                              { $$ = create_stmt_from_for($1); }
+        | while_stmt                            { $$ = create_stmt_from_while($1); }
         ;
 
 if_stmt:
-        IF OPEN_BRACKET exprn CLOSED_BRACKET block_stmt         { 
-                                                                        $$ = create_if_stmt($3, $5); 
-                                                                        $$->line_no = @1.first_line;
-                                                                }
+        IF OPEN_BRACKET exprn CLOSED_BRACKET block_stmt else_part       
+                { 
+                        $$ = create_if_stmt($3, $5, $6); 
+                        $$->line_no = @1.first_line;
+                }
+        ;
+
+else_part:
+        ELSE IF OPEN_BRACKET exprn CLOSED_BRACKET block_stmt else_part
+                {
+                        $$ = create_else_if_part($4, $6, $7);
+                        $$->line_no = @2.first_line;
+                }
+        | ELSE block_stmt
+                {
+                        $$ = create_else_part($2);
+                        $$->line_no = @1.first_line;
+                }
+        | /* empty */
+                {
+                        $$ = NULL;      // no else condition
+                }
+        ;
+
+for_stmt:
+        FOR OPEN_BRACKET opt_exprn SEMICOLON opt_exprn SEMICOLON opt_exprn CLOSED_BRACKET block_stmt
+                {
+                        $$ = create_for_stmt($3, $5, $7, $9);
+                        $$->line_no = @1.first_line;
+                }
+        ;
+
+while_stmt:
+        WHILE OPEN_BRACKET exprn CLOSED_BRACKET block_stmt
+                {
+                        $$ = create_while_stmt($3, $5);
+                        $$->line_no = @1.first_line;
+                }
+        ;
+
+opt_exprn:
+        exprn
+        |       { $$ = NULL; }
+        ;
 
 
 var_decl_stmt:

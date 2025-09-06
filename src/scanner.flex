@@ -96,6 +96,14 @@ else                                        {
                                                 fprintf(f_tokens, "Token: ELSE, lexeme: \"%s\", line_no: %d\n", yytext, line_no);
                                                 return ELSE;
                                             }
+for                                         {
+                                                fprintf(f_tokens, "Token: FOR, lexeme: \"%s\", line_no: %d\n", yytext, line_no);
+                                                return FOR;
+                                            }
+while                                       {
+                                                fprintf(f_tokens, "Token: WHILE, lexeme: \"%s\", line_no: %d\n", yytext, line_no);
+                                                return WHILE;
+                                            }
 
 "+"                                         {
                                                 fprintf(f_tokens, "Token: PLUS, lexeme: \"%s\", line_no: %d\n", yytext, line_no); 

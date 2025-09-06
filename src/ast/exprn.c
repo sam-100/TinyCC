@@ -6,7 +6,7 @@
 #include "ast/enums.h"
 #include "tac/tac_stmt.h"
 
-exprn *create_exprn(exprn *lhs, operator_t op, exprn *rhs) {
+exprn *create_exprn(exprn *lhs, operator_t op, exprn *rhs) {        // create a binary expression [arithmetic, boolean, comparison]
     exprn *e = (exprn*)malloc(sizeof(exprn));
     e->kind = get_op_kind(op);
     e->left = lhs;

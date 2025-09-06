@@ -20,9 +20,15 @@ typedef enum {
     STMT_FUNC_CALL, 
     STMT_BLOCK, 
     STMT_IF, 
+    STMT_FOR, 
+    STMT_WHILE, 
 } stmt_t;
 
 
+typedef enum {
+    ELSE_IF_STMT, 
+    ELSE_STMT
+} else_t;
 typedef enum {
     DECL_VAR, 
     DECL_FUNC
