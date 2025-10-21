@@ -79,11 +79,6 @@ typedef struct else_part {
     int line_no;
 } else_part;
 
-typedef struct if_else_stmt {
-    exprn *condition;
-    block_stmt *if_block, *else_block;
-    int line_no;
-} if_else_stmt;
 
 typedef struct for_stmt {
     exprn *init, *cond, *update;

@@ -40,6 +40,7 @@ typedef enum {
     BOOLEAN_EXPRN, 
     IDENTIFIER_EXPRN, 
     LITERAL_EXPRN, 
+    ASSIGNMENT_EXPRN, 
     UNKNOWN_EXPRN, 
 } exprn_t;
 

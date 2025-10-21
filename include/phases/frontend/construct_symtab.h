@@ -20,6 +20,8 @@ void construct_symtab_stmt(statement *stmt, symtab_stack *st);
 void construct_symtab_var_decl_stmt(var_decl_stmt *vd_stmt, symtab_stack *st);
 void construct_symtab_block_stmt(block_stmt *stmt, symtab_stack *st);
 void construct_symtab_if_stmt(if_stmt *stmt, symtab_stack *st);
-
+void construct_symtab_for_stmt(for_stmt *stmt, symtab_stack *st);
+void construct_symtab_while_stmt(while_stmt *stmt, symtab_stack *st);
+void construct_symtab_exprn(exprn *e, symtab_stack *st);
 
 #endif

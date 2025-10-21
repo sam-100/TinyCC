@@ -26,7 +26,7 @@ exprn *create_exprn_id(char *name);
 exprn *create_exprn_int(int val);
 exprn *create_exprn_char(char val);
 exprn *create_exprn_bool(bool val);
-
+exprn *create_exprn_assign(char *name, exprn *rhs);
 
 /* helper functions */
 exprn_t get_op_kind(operator_t op);

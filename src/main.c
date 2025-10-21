@@ -25,10 +25,12 @@ extern int yylex(void);
 extern int yyparse(void);
 program *root;
 
+extern char *input_name, *output_dir, *output_filename;
 
 int yywrap(void);
 void yyerror(const char *msg);
 
+enum stop_after_t stop_after = STOP_NEVER;
 
 int main(int argc, char **argv) {
     initialize();
@@ -39,16 +41,33 @@ int main(int argc, char **argv) {
     printf("Program parsed successfully!\n");
     fflush(f_tokens);
 
+    if(stop_after == STOP_AFTER_PARSING) {
+        print_program(root);
+        fflush(f_ast);
+        return 0;
+    }
+
     // Symbol table construction
     construct_symtab_program(root);
     printf("Symbol table constructed.\n");
     print_symtab_program(root);
     fflush(f_symtab);
+
+    if(stop_after == STOP_AFTER_SYMTAB) {
+        print_symtab_program(root);
+        fflush(f_symtab);
+        return 0;
+    }
     
     // name resolution
     resolve_program(root);
     printf("Symbol table resolved.\n");
     
+    if(stop_after == STOP_AFTER_NAME_RESOLUTION) {
+        print_symtab_program(root);
+        fflush(f_symtab);
+        return 0;
+    }
     
     // return checking
     if(!return_check_program(root))
@@ -58,6 +77,12 @@ int main(int argc, char **argv) {
     // type checking
     typecheck_program(root);
     printf("Typechecking done.\n");
+
+    if(stop_after == STOP_AFTER_TYPECHECK) {
+        print_symtab_program(root);
+        fflush(f_symtab);
+        return 0;
+    }
 
     // print the ast now
     print_program(root);
@@ -79,19 +104,44 @@ int main(int argc, char **argv) {
     generate_tac_for_program(root);
     printf("Three address code generated successfully!\n");
     print_tac_of_program(root, f_tac);
+
+    if(stop_after == STOP_AFTER_TAC_GEN) {
+        print_tac_of_program(root, f_tac);
+        fflush(f_tac);
+        return 0;
+    }
     
     // generate assembly code
     codegen_program(root, f_asm);
     printf("Assembly code generated successfully!\n");
 
+    if(stop_after == STOP_AFTER_CODEGEN) {
+        fflush(f_asm);
+        return 0;
+    }
+
     // assemble, link, and generate executable  
-    system("nasm -f elf64 output/out.asm");
-    system(
-        "ld output/out.o bin/print_int.o bin/read_int.o bin/integer_to_string.o bin/string_to_integer.o -o main"
+    char *assemble_command, *link_command;
+    assemble_command = (char*)malloc(512);
+    link_command = (char*)malloc(512);
+    snprintf(assemble_command, 512,
+        "nasm -f elf64 -o %s/out.o %s/out.asm", output_dir, output_dir
     );
+    snprintf(link_command, 512,
+        "ld %s/out.o bin/print_int.o bin/read_int.o bin/integer_to_string.o bin/string_to_integer.o -o %s/%s.out", output_dir, output_dir, output_filename
+    );
+
+    system(assemble_command);
+    system(link_command);
+    printf("Executable generated successfully!\n");
     
+    // cleanup();
     return 0;
 }
+
+// void cleanup() {
+//     // todo: 
+// }
 
 int yywrap(void) {
     return 1;

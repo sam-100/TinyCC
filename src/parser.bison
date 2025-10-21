@@ -198,6 +198,9 @@ exprn:
         | literal                               { 
                                                         $$ = $1; 
                                                 }
+        | IDENTIFIER ASSIGN exprn               {
+                                                        $$ = create_exprn_assign($1, $3);
+                                                }
         ;
 
 param_list:     

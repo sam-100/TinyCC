@@ -1,4 +1,5 @@
 #include "phases/frontend/construct_symtab.h"
+#include "stdlib.h"
 
 void construct_symtab_program(program *p) {
     symtab_stack *st = create_symtab_stack();
@@ -89,6 +90,14 @@ void construct_symtab_stmt(statement *stmt, symtab_stack *st) {
         case STMT_IF:
             construct_symtab_if_stmt(stmt->if_stmt, st);
             break;
+        case STMT_FOR:
+            construct_symtab_for_stmt(stmt->for_stmt, st);
+            break;
+        case STMT_WHILE:
+            construct_symtab_while_stmt(stmt->while_stmt, st);
+            break;
+        default:
+            break;
     }
 
     construct_symtab_stmt(stmt->next, st);
@@ -102,5 +111,58 @@ void construct_symtab_block_stmt(block_stmt *stmt, symtab_stack *st) {
 }
 
 void construct_symtab_if_stmt(if_stmt *stmt, symtab_stack *st) {
+    construct_symtab_exprn(stmt->condition, st);
     construct_symtab_block_stmt(stmt->block, st);
 }
+
+void construct_symtab_for_stmt(for_stmt *stmt, symtab_stack *st) {
+    construct_symtab_exprn(stmt->init, st);
+    construct_symtab_exprn(stmt->cond, st);
+    construct_symtab_exprn(stmt->update, st);
+    construct_symtab_block_stmt(stmt->block, st);
+}
+
+void construct_symtab_while_stmt(while_stmt *stmt, symtab_stack *st) {
+    construct_symtab_exprn(stmt->condition, st);
+    construct_symtab_block_stmt(stmt->block, st);
+}
+
+void construct_symtab_exprn(exprn *e, symtab_stack *st) {
+    if(e == NULL)
+        return;
+    
+    switch(e->kind)
+    {
+        case ARITHMETIC_EXPRN:
+        case COMPARISON_EXPRN:
+        case BOOLEAN_EXPRN:
+            construct_symtab_exprn(e->left, st);
+            construct_symtab_exprn(e->right, st);
+            break;
+        case ASSIGNMENT_EXPRN:
+            {
+                symbol *sym = scope_lookup_current(e->name, st);
+                if(sym == NULL) {
+                    fprintf(f_error, "Error: variable %s used before declaration at line no. %d\n", e->name, e->line_no);
+                    exit(1);
+                }
+                e->sym = sym;
+                construct_symtab_exprn(e->right, st);
+            }
+            break;
+        case IDENTIFIER_EXPRN:
+            {
+                symbol *sym = scope_lookup_current(e->name, st);
+                if(sym == NULL) {
+                    fprintf(f_error, "Error: variable %s used before declaration at line no. %d\n", e->name, e->line_no);
+                    exit(1);
+                }
+                e->sym = sym;
+            }
+            break;
+        case LITERAL_EXPRN:
+        case UNKNOWN_EXPRN:
+            break;
+    }
+}
+

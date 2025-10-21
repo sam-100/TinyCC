@@ -61,6 +61,14 @@ exprn *create_exprn_bool(bool val) {
     return e;
 }
 
+exprn *create_exprn_assign(char *name, exprn *rhs) {
+    exprn *e = (exprn*)malloc(sizeof(exprn));
+    e->kind = ASSIGNMENT_EXPRN;
+    e->name = name;
+    e->right = rhs;
+    return e;
+}
+
 
 /* helper functions */
 exprn_t get_op_kind(operator_t op) {

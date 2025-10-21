@@ -12,14 +12,13 @@ void initialize() {
         temp_store[i] = 0;
     
     // initializing 
-    input_name = (char*)malloc(50);
     f_nowhere = fopen("/dev/null", "rw");
     f_tokens = f_nowhere;
     f_ast = f_nowhere;
     f_error = stderr;
     f_symtab = f_nowhere;
     f_tac = f_nowhere;
-    f_asm = fopen("output/out.asm", "w");
+    f_asm = f_nowhere;
 }
 
 void error(const char *msg, int status) {
