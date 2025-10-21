@@ -65,30 +65,30 @@ extern program *root;
 %locations
 
 %union {
-        struct program *p;
-        struct decl *d;
-        struct func_decl *fd;
-        struct var_decl *vd;
-        struct statement *stmt;
-        struct print_stmt *p_stmt;
-        struct read_stmt *r_stmt;
-        struct if_stmt *if_stmt;
-        struct else_part *else_part;
-        struct for_stmt *for_stmt;
-        struct while_stmt *while_stmt;
-        struct var_decl_stmt *vd_stmt;
-        struct func_call_stmt *fc_stmt;
-        struct return_stmt *ret_stmt;
-        struct assign_stmt *as_stmt;
-        struct block_stmt *b_stmt;
-        struct exprn *e;
-        struct func_call *fc;
-        struct parameter *param;
-        struct argument *arg;
-        int i_val;
-        bool b_val;
-        char c_val;
-        char *s_val;
+        struct program                  *p;
+        struct decl                     *d;
+        struct func_decl                *fd;
+        struct var_decl                 *vd;
+        struct statement                *stmt;
+        struct print_stmt               *p_stmt;
+        struct read_stmt                *r_stmt;
+        struct if_stmt                  *if_stmt;
+        struct else_part                *else_part;
+        struct for_stmt                 *for_stmt;
+        struct while_stmt               *while_stmt;
+        struct var_decl_stmt            *vd_stmt;
+        struct func_call_stmt           *fc_stmt;
+        struct return_stmt              *ret_stmt;
+        struct assign_stmt              *as_stmt;
+        struct block_stmt               *b_stmt;
+        struct exprn                    *e;
+        struct func_call                *fc;
+        struct parameter                *param;
+        struct argument                 *arg;
+        int                             i_val;
+        bool                            b_val;
+        char                            c_val;
+        char                            *s_val;
 };
 
 %start program

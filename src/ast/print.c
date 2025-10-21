@@ -187,6 +187,7 @@ void print_stmt_return(const return_stmt *ret_stmt, char *tabs) {
     // fprintf(f_ast, "type: %s\n", get_type_name(ret_stmt->type));
     fprintf(f_ast, "%s\tline_no: %d;\n", tabs, ret_stmt->line_no);
     fprintf(f_ast, "%s\targuments: \n", tabs);
+    // fprintf(f_ast, "%s\ttype: %s\n", tabs, get_type_name(ret_stmt->fd->type));
     print_exprn(ret_stmt->ret_expr, strcat(tabs, "\t\t"));
     tabs[strlen(tabs)-2]='\0';
     fprintf(f_ast, "%s}\n", tabs);

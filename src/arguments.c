@@ -6,7 +6,7 @@
 #include "utils.h"
 
 FILE *f_input, *f_tokens, *f_ast, *f_nowhere, *f_error, *f_symtab, *f_tac, *f_asm;
-char *input_name;
+char *input_name = NULL;
 extern FILE *yyin;
 
 
@@ -21,6 +21,7 @@ void process_arguments(int argc, char **argv) {
     // processing the arguments
     int i=1; 
     while(i < argc) {
+    // for(int i=1; i<argc; i++)
         if(strcmp(argv[i], "--show-tokens") == 0) {
             f_tokens = fopen("output/tokens.txt", "w");
             i++;
@@ -42,14 +43,14 @@ void process_arguments(int argc, char **argv) {
             continue;
         }
         
+        // if(input_name != NULL) {
+        //     error("Error: multiple input files provided as input.", -1);
+        // }
         input_name = strcpy(input_name, argv[i]);
         stdin = fopen(argv[i], "r");
         if(!stdin) {
             error("Error: Unable to open input file", -1);
         }
         i++;
-        
     }
-
-    
 }

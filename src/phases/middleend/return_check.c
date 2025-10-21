@@ -14,25 +14,28 @@ bool return_check_program(program *p) {
 }
 
 bool return_check_function(func_decl *fd) {
-    if(return_check_stmt(fd->body->stmt_list))
+    if(return_check_stmt(fd->body->stmt_list, fd))
         return true;
     if(fd->type == TYPE_VOID) {
         add_return_stmt(fd->body->stmt_list, fd);
         return true;
     }
-    return return_check_stmt(fd->body->stmt_list);
+    return false;
 }
 
 
-bool return_check_stmt(statement *stmt) {
+bool return_check_stmt(statement *stmt, func_decl *fd) {
     if(stmt == NULL)
         return false;
-    if(stmt->kind == STMT_RETURN)
-        return true;
-    if(stmt->kind == STMT_BLOCK && return_check_stmt(stmt->blk_stmt->stmt_list)) {
+    if(stmt->kind == STMT_RETURN) {
+        stmt->ret_stmt->fd = fd;
         return true;
     }
-    return return_check_stmt(stmt->next);
+    if(stmt->kind == STMT_BLOCK && return_check_stmt(stmt->blk_stmt->stmt_list, fd)) {
+        return true;
+    }
+    return return_check_stmt(stmt->next, fd);
+    // todo: add return check for if, if-else, for, while statements
 }
 
 bool add_return_stmt(statement *stmt, func_decl *fd) {

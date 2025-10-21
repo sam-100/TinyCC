@@ -47,7 +47,7 @@ void construct_symtab_func_decl(func_decl *fd, symtab_stack *st) {
     scope_enter_func(fd, st);
     construct_symtab_parameter(fd->param_list, st);
     construct_symtab_block_stmt(fd->body, st);
-    fd->symtab = scope_get_current(st);       // save function scope
+    fd->symtab = fd->body->symbol_table;       // save function scope
     scope_exit(st);
 }
 

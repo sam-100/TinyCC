@@ -38,7 +38,7 @@ int main(int argc, char **argv) {
     yyparse();
     printf("Program parsed successfully!\n");
     fflush(f_tokens);
-    
+
     // Symbol table construction
     construct_symtab_program(root);
     printf("Symbol table constructed.\n");
@@ -49,14 +49,15 @@ int main(int argc, char **argv) {
     resolve_program(root);
     printf("Symbol table resolved.\n");
     
-    // type checking
-    typecheck_program(root);
-    printf("Typechecking done.\n");
     
     // return checking
     if(!return_check_program(root))
         error("Error: return-check error.", 1);
     printf("return check done.\n");
+
+    // type checking
+    typecheck_program(root);
+    printf("Typechecking done.\n");
 
     // print the ast now
     print_program(root);
@@ -65,6 +66,14 @@ int main(int argc, char **argv) {
     // memory layout stage
     memory_layout_program(root);
     printf("Offsets set for parameters and local variables.\n");
+
+    // construct_symtab_program(root);
+    // printf("Symbol table constructed.\n");
+    // print_symtab_program(root);
+
+
+    // resolve_program(root);
+    // printf("Name resolution of program done.\n");
     
     // generate three address code
     generate_tac_for_program(root);
@@ -81,7 +90,6 @@ int main(int argc, char **argv) {
         "ld output/out.o bin/print_int.o bin/read_int.o bin/integer_to_string.o bin/string_to_integer.o -o main"
     );
     
-    print_symtab_program(root);
     return 0;
 }
 
